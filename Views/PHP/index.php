@@ -1,5 +1,6 @@
 <?php
-
+	
+	
 
 ?>
 <!DOCTYPE html>
@@ -11,8 +12,11 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<title>TwitchCord</title>
-		
+
 	</head>
 	<body>
+		<form>
+
+		</form>
 	</body>
 </html>
