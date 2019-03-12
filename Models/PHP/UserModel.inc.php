@@ -1,90 +1,67 @@
 <?php
 	
+	include 'ModelBase.php';
+
 	class UserModel extends Model{
 
 		private $username;
 		private $email;
-		private $phone;
-		private $pic_id;
-		private $displayname;
+		private $user_id;
+		private $pwd_hash;
 
-		function __construct($username, $email, $phone)
+		function __construct($username, $email, $pwd_hash)
 		{
-			//Record DB Information (This model looks more like Profile)
+			//Record DB Information
 			$this->setDBName()('User');
 			$this->setDBfields(
 				['username' 	=> $this->username, 
-				 'email' 		=> $this->email, 
-				 'phone' 		=> $this->phone, 
-				 'picture_id'   => $this->pic_id, 
-				 'display_name' => $this->displayname]);
+				 'email' 		=> $this->email,
+				 'pwd_hash'		=> $this->pwd_hash]);
 
 			//Init
 			$this->username = $username;
 			$this->email = $email;
-			$this->phone = $phone;
+			$this->pwd_hash = $pwd_hash;
 
 		}
 
-		function checkPwd($password, $password_repeat)
+		public function getUserId(){
+
+			return $this->user_id;
+
+		}
+
+		public function getEmail(){
+
+			return $this->email;
+
+		}
+
+		public function getUsername(){
+
+			return $this->username;
+
+		}
+
+		public function getPwdHash(){
+
+			return $this->pwd_hash;
+
+		}
+
+		public function setPwdHash($pwd){
+
+			//REMEMBER TO HASH IT FIRST
+			$this->pwd_hash = $pwd;
+			//update db too
+
+		}
+
+		public function setUsername($username)
 		{
 
-			if(empty($password) || empty($password_repeat))
-			{
-
-				return 'empty';
-
-			}
-			else if($password != $password_repeat)
-			{
-
-				return 'notmatch';
-
-			}
-			else
-			{
-
-				password_hash($password, PASSWORD_BCRYPT);
-
-			}
-
-		}
-
-		function checkUser()
-		{
-			$username = $this->username;
-
-			if(empty($username))
-			{
-
-				return 'empty';
-
-			}
-			else
-			{
-
-				return preg_match("/^[a-zA-Z0-9]*$/", $username);
-
-			}
-
-		}
-
-		function checkEmail(){
-
-			$email = $this->email;
-
-			if(empty($email))
-			{
-
-				return 'empty';
-
-			}
-			else
-			{
-
-				return filter_var($email, FILTER_VALIDATE_EMAIL);
-
-			}
+			$this->username = $username;
+			//UPDATE DB TOO
 
 		}
 
