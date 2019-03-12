@@ -1,6 +1,6 @@
 <?php
 	
-	class UserModel{
+	class UserModel extends Model{
 
 		private $username;
 		private $email;
@@ -10,7 +10,16 @@
 
 		function __construct($username, $email, $phone)
 		{
+			//Record DB Information (This model looks more like Profile)
+			$this->setDBName()('User');
+			$this->setDBfields(
+				['username' 	=> $this->username, 
+				 'email' 		=> $this->email, 
+				 'phone' 		=> $this->phone, 
+				 'picture_id'   => $this->pic_id, 
+				 'display_name' => $this->displayname]);
 
+			//Init
 			$this->username = $username;
 			$this->email = $email;
 			$this->phone = $phone;
@@ -41,8 +50,9 @@
 
 		}
 
-		function checkUser($username = $this->username)
+		function checkUser()
 		{
+			$username = $this->username;
 
 			if(empty($username))
 			{
@@ -59,7 +69,9 @@
 
 		}
 
-		function checkEmail($email = $this->email){
+		function checkEmail(){
+
+			$email = $this->email;
 
 			if(empty($email))
 			{
