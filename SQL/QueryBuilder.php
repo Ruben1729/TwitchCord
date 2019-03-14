@@ -1,103 +1,120 @@
 
 <?php
+require_once('Builder.php');
 
-class QueryBuilder{
+    class QueryBuilder extends Builder {
 
-    private $table;
-    private $select = [];
-    private $where = [];
-    private $having = [];
-    private $groupby = [];
+        //SQL items
+        private $selectedModel;
+        private $join = []; // JOIN works like this EX: (selected model) a (JOIN TYPE) (Other Model) b ON a.(field) = b.(field) 
+        private $where = [];
 
-    private $PDO;
+        //Classes
+        private $PDO;
+        private $SQL;
 
-    public function __construct($PDO){
-        $this->PDO = $PDO;
+        //constants
+        private $FIELD = 0;
+        private $COMPARISION = 1;
 
-    }
+        public function __construct($PDO, $SQL){
+            $this->PDO = $PDO;
+            $this->SQL = $SQL;
+        }
 
-    
-    // //Hardcoded to only work with MySQL
-    // public function Where($comparision){
-    //     $this->where[] = $comparision;
-    //     return $this;
-    // }
+        public function Model($modelID){
+            $this->selectedModel = MODEL::GetModelName($modelID);
+            return $this;
+        }
 
-    // public function Select(array $field){
-    //     $this->select = $field;
-    //     return $this;
-    // }
+        public function JoinUsing($type, $modelID, $field){
+            $modelName = Model::GetModelName($modelID);
+            //Duplicate with is to replicate ON functionality since Using is Syntactic sugar
+            array_push($this->join, $type, $modelName, $field, $field);
+            return $this;
+        }
 
-    // public function SelectAll(){
-    //     $this->select[] = '*';
-    //     return $this;
-    // }
+        public function JoinOn($type, $modelID, $field, $field2){
+            $modelName = Model::GetModelName($modelID);
+            array_push($this->join, $type, $modelName, $field, $field2);
+            return $this;
+        }
 
-    // public function From($tablename){
-    //     if(!is_null($this->table))
-    //         throw new Exception('You can only reference one table in a QueryBuilder');
+        public function Where($field, $comparision){
+            array_push($this->where, $field, $comparision);
+            return $this;
+        }
 
-    //     $this->table = $tablename;
-    //     return $this;
-    // }
+        public function Get(){
+            return $this->Execute()->fetchAll();
+        }
 
-    // public function Execute(){
-    //     //Verify that supplied table is inside the database
-    //     $fromField = 'FROM ';
-    //     if($this->SQLObj->IsValidTable($this->table)){
-    //         $fromField .= $this->table . ' ';
-    //     }else{
-    //         throw new Exception("Table isn't inside database");
-    //     }
-    //     //Build Select and Where statements
-    //     $selectField = $this->buildSelect(count($this->select));
-    //     $whereField = $this->buildWhere(count($this->where));
-    //     //Feed query string to PDO 
-    //     $final = $selectField . $fromField . $whereField;
-    //     //Bind any value set
-    //     $stmt = $this->PDO->prepare($final);
-    //     $this->bindWhere($this->where, $stmt);
+        public function GetAs($class){
+            return $this->Execute()->fetchObject($class);
+        }
 
-    //     $stmt->execute();
-    //     //Return PDOStatement so that the user can manipulate it as they need
-    //     return $stmt;
-    // }
+        private function Execute(){
+            $query = $this->BuildString();
+            $stmt = $this->PDO->prepare($query);
+            //Bind values
+            $this->BindValues(':where', $this->where, $stmt);
+            $stmt->execute();
+            return $stmt;
+        }
 
-    // //Building the string for the prepared statement
-    // private function buildSelect($count){
-    //     //No values provided, assume all records
-    //     if($count <= 0)
-    //         throw new Exception('Empty select statement');
-        
-    //     foreach($this->select as &$field){
-    //         if(!$this->SQLObj->IsValidColumn($field))
-    //             throw new Exception("field is not in database");
-    //     }
-    //     return 'SELECT ' . implode(',', $this->select);
-    // }
+        private function BuildString(){
+            $query = "SELECT * FROM {$this->selectedModel} ";
+            if(!empty($this->where))
+                $query .= $this->BuildStatement('WHERE', ':where', '<=>', 'AND', $this->where);
+            if(!empty($this->join))
+                $query .= $this->BuildJoin();
+            return $query;
+        }
 
-    // //Assume for now the Where's count is always event
-    // private function buildWhere($count){
-    //     if($count == 0)
-    //         return '';
+        private function BuildJoin(){
+            $query = 'a ';
+            $alias = 'a';
+            //incrementing by 4 because there are four fields (join type, joining model, )
+            for ($i=0; $i < count($this->join); $i+= 4) { 
+                $joinType = $this->join[$i];
+                $joinModel = $this->join[$i + 1];
+                $field1 = strtolower($this->join[$i + 2]);
+                $field2 = strtolower($this->join[$i + 3]);
+                $currentAlias = ++$alias;
 
-    //     $whereField = 'WHERE ';
-    //     for ($i=1; $i <= $count ; $i += 2) { 
-    //         $first = $i;
-    //         $second = $i + 1;
-    //         $whereField .= ':where' . $first . ' <=> ' . ':where' . $second;
-    //     }
+                if(!$this->SQL->IsValidColumn($field1) || !$this->SQL->IsValidColumn($field2))
+                    throw new Exception("Can not find column inside database");
 
-    //     return $whereField;
-    // }
+                $query .= "$joinType $joinModel $currentAlias ON a.$field1 = $currentAlias.$field2 ";
+            }
+            return $query;
+        }
 
-    // //Binding for prepared statement
-    // private function bindWhere($values, &$stmt){
-    //     for ($i=1; $i <= count($values); $i++) {
-    //         $statement = $values[$i - 1];
-    //         $second = $i + 1;
-    //         $stmt->bindParam(':where'.$i, $statement[0], $statement[1]);
-    //         $stmt->bindParam(':where'.$second, $statement[0], $statement[1]);
-    //     }
-    // }
+        private function BuildStatement($type, $placeholder, $operator, $joiner, $array){
+            $query = "$type ";
+            //incrementing by 2 because there are two conditions to add into the statement
+            for($i= 0; $i < count($array); $i+= 2){
+                //Insert field
+                $field = strtolower($array[$i]);
+                if($this->SQL->IsValidColumn($field)){
+                    $query .= " $field ";
+                }
+                else {
+                    throw new Exception('Field/Table is not in the database');
+                }
+                //insert comparision to EX: WHERE <=> :placeholder
+                $query .= " $operator  $placeholder" . ($i + 1);
+                
+                if($i > 0 && isset($joiner))
+                    $query .= " $joiner ";
+            }
+            return $query;
+        }
+
+        private function BindValues($placeholder, $array, &$stmt){
+            for($i= 0; $i < count($this->where) / 2; $i++){
+                //First variable inside array is the field (WHERE)
+                $stmt->bindValue($placeholder . ($i + 1), $array[$i + 1], $this->GetPDOType($array[$i + 1]));
+            }
+        }
 }

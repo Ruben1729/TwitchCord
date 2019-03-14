@@ -1,28 +1,20 @@
 <?php
-	
-	include 'ModelBase.php';
 
-	class UserModel extends Model{
+	include 'Model.php';
 
-		private $username;
-		private $email;
-		private $user_id;
-		private $pwd_hash;
+	class User extends Model{
 
-		function __construct($username, $email, $pwd_hash)
+		protected $username;
+		protected $email;
+		protected $user_id;
+		protected $pwd_hash;
+
+		function __construct($user_id, $username, $email, $pwd_hash)
 		{
-			//Record DB Information
-			$this->setDBName()('User');
-			$this->setDBfields(
-				['username' 	=> $this->username, 
-				 'email' 		=> $this->email,
-				 'pwd_hash'		=> $this->pwd_hash]);
-
-			//Init
+			$this->user_id = $user_id;
 			$this->username = $username;
 			$this->email = $email;
 			$this->pwd_hash = $pwd_hash;
-
 		}
 
 		public function getUserId(){

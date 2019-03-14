@@ -1,6 +1,6 @@
 <?php
 	
-	include 'ModelBase.php';
+	include 'Model.php';
 
 	class Profile extends Model{
 
@@ -12,15 +12,6 @@
 
 		function __construct($user_id, $displayname, $phone, $pic_id, $created_on)
 		{
-			//Record DB Information
-			$this->setDBName()('Profile');
-			$this->setDBfields(
-				['user_id' 		=> $this->user_id, 
-				 'displayname' 	=> $this->displayname, 
-				 'phone' 		=> $this->phone, 
-				 'picture_id'   => $this->pic_id, 
-				 'created_on' 	=> $this->created_on]);
-
 			//Init
 			$this->user_id = $user_id;
 			$this->displayname = $displayname;

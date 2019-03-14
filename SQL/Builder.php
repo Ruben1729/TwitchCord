@@ -2,7 +2,7 @@
 
     class Builder{
 
-        private function GetPDOType($value){
+        public function GetPDOType($value){
             switch(gettype($value)){
                 case 'boolean':
                     return PDO::PARAM_BOOL;
@@ -16,5 +16,4 @@
                     return PDO::PARAM_STR;
             }
         }
-        
     }
