@@ -2,8 +2,8 @@
 
     class App{
 
-        protected $controller = 'Main';
-        protected $method = 'Index';
+        protected $controller = 'User';
+        protected $method = 'Login';
         protected $params = [];
         
         public function __construct()

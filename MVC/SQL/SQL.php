@@ -3,7 +3,7 @@
 require_once('QueryBuilder.php');
 require_once('InsertBuilder.php');
 
-// //Example Usage
+/*// //Example Usage
 require_once('../Models/PHP/UserModel.inc.php');
 $SQL = SQL::GetConnection();
 $Model = new User('1', 'test2', 'test@email.com', 'myPassHash');
@@ -14,7 +14,7 @@ $result =
     // ->GetAs('UserModel');
 
 // See the output of the query
-var_dump($result);
+var_dump($result);*/
 
 class SQL{
 
