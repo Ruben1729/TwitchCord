@@ -1,5 +1,6 @@
 <?php
-
+	
+	include '../SQL/SQL.php';
 	include 'Model.php';
 
 	class User extends Model{
@@ -15,6 +16,19 @@
 			$this->username = $username;
 			$this->email = $email;
 			$this->pwd_hash = $pwd_hash;
+		}
+
+		public function getUser($username){
+
+			$SQL = SQL::GetConnection();
+			$newUser = $SQL 
+				-> Search()
+				-> Model(Model::USER)
+				-> Where("username", $username)
+				-> GetAs('User');
+
+			return $newUser;
+
 		}
 
 		public function getUserId(){
