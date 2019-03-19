@@ -9,7 +9,7 @@
 		protected $user_id;
 		protected $pwd_hash;
 
-		function createUser($user_id, $username, $email, $pwd_hash)
+		public static function createUser($user_id, $username, $email, $pwd_hash)
 		{
 			$this->user_id = $user_id;
 			$this->username = $username;
