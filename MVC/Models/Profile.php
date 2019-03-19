@@ -10,7 +10,7 @@
 		private $pic_id;
 		private $created_on;
 
-		function __construct($user_id, $displayname, $phone, $pic_id, $created_on)
+		function createProfile($user_id, $displayname, $phone, $pic_id, $created_on)
 		{
 			//Init
 			$this->user_id = $user_id;
