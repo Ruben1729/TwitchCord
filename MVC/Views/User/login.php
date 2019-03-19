@@ -3,7 +3,7 @@
 ?>
 	<body>
 		<main>
-			<form action="User/POST_Login" method="post">
+			<form action="Login" method="post">
 				<input type="text" name="uid" placeholder="Username">
 				<input type="password" name="pwd" placeholder="Password">
 				<div>Forgot your password?</div>

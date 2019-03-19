@@ -7,9 +7,7 @@
 		}
 
 		public function POST_Login($username = null, $password = null){
-
 			$this->view('User/login');
-
 		}
 
 	}
