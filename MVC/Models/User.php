@@ -1,7 +1,12 @@
 <?php
+<<<<<<< HEAD
 	
 	include '../SQL/SQL.php';
 	include 'Model.php';
+=======
+
+	include '../Core/Model.php';
+>>>>>>> 95595041142f4fbe2365f0b5c34910b8600c6aee
 
 	class User extends Model{
 

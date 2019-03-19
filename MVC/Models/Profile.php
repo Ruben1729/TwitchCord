@@ -1,6 +1,6 @@
 <?php
 	
-	include 'Model.php';
+	include '../Core/Model.php';
 
 	class Profile extends Model{
 
