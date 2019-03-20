@@ -18,6 +18,12 @@
 			$this->pwd_hash = $pwd_hash;
 		}
 
+		public function insertUser($username, $email, $pwd_hash){
+
+
+
+		}
+
 		public function getUser($username){
 
 			$SQL = SQL::GetConnection();

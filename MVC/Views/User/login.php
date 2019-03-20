@@ -10,7 +10,7 @@
 
 				<button type="submit" name="login-btn">Login</button>
 			</form>
-			<div>Don't have an account yet? <a href="register.php">Register!</a></div>
+			<div>Don't have an account yet? <a href="Register">Register!</a></div>
 		</main>
 	</body>
 <?php
