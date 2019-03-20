@@ -25,13 +25,4 @@ class Model{
     //Constants for DB Queries
     const USER = 1;
     const PROFILE = 2;
-
-    public static function GetModelName($modelID){
-        switch ($modelID){
-            case 1:
-                return 'User';
-            case 2:
-                return 'Profile';
-        }
-    }
 }

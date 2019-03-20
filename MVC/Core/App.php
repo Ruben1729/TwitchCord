@@ -22,7 +22,6 @@
             if(isset($url[1]) && method_exists($this->controller, $url[1])){
                 $type = $_SERVER['REQUEST_METHOD'] == 'GET' ?   '' : $_SERVER['REQUEST_METHOD'] . '_';
                 $this->method = $type.$url[1];
-                echo $this->method;
                 unset($url[1]);
             }
 

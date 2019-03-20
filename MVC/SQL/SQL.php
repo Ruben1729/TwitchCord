@@ -23,7 +23,7 @@ class SQL{
     private $allowedColumns = ['*' => true];
 
     //Static class for connection setup
-    public static function GetConnection($file = '../config.ini'){
+    public static function GetConnection($file = '../MVC/config.ini'){
         try{
             $settings = parse_ini_file($file);
             $options = [

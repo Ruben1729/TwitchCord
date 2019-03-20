@@ -22,8 +22,8 @@ require_once('Builder.php');
             $this->SQL = $SQL;
         }
 
-        public function Model($modelID){
-            $this->selectedModel = MODEL::GetModelName($modelID);
+        public function Model($modelName){
+            $this->selectedModel = $modelName;
             return $this;
         }
 

@@ -1,16 +1,16 @@
 <?php
 
-	include '../SQL/SQL.php';
-	include '../Core/Model.php';
+	include '../MVC/Core/Model.php';
+	include '../MVC/SQL/SQL.php';
 
-	class User extends Model{
+	class UserModel extends Model{
 
 		protected $username;
 		protected $email;
 		protected $user_id;
 		protected $pwd_hash;
 
-		public static function createUser($user_id, $username, $email, $pwd_hash)
+		public function createUser($user_id, $username, $email, $pwd_hash)
 		{
 			$this->user_id = $user_id;
 			$this->username = $username;
@@ -23,7 +23,7 @@
 			$SQL = SQL::GetConnection();
 			$newUser = $SQL 
 				-> Search()
-				-> Model(Model::USER)
+				-> Model('UserModel')
 				-> Where("username", $username)
 				-> GetAs('User');
 
