@@ -10,7 +10,7 @@
 				<input type="password" name="pwd-repeat" placeholder="Repeat Password">
 
 				<button type="submit" name="register-btn">Register</button>
-				<div>Already have an account?<a>Login</a></div>
+				<div>Already have an account?<a href="Login">Login</a></div>
 			</form>
 		</main>
 	</body>
