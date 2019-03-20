@@ -12,10 +12,12 @@
 
 		public function createUser($user_id, $username, $email, $pwd_hash)
 		{
-			$this->user_id = $user_id;
-			$this->username = $username;
-			$this->email = $email;
-			$this->pwd_hash = $pwd_hash;
+			$obj = new UserModel();
+			$obj->user_id = $user_id;
+			$obj->username = $username;
+			$obj->email = $email;
+			$obj->pwd_hash = $pwd_hash;
+			return $obj;
 		}
 
 		public function getUser($username){

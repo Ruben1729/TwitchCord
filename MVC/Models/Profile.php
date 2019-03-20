@@ -12,13 +12,13 @@
 
 		public static function createProfile($user_id, $displayname, $phone, $pic_id, $created_on)
 		{
-			//Init
-			$this->user_id = $user_id;
-			$this->displayname = $displayname;
-			$this->phone = $phone;
-			$this->pic_id = $pic_id;
-			$this->created_on = $created_on;
-
+			$obj = new Profile();
+			$obj->user_id = $user_id;
+			$obj->displayname = $displayname;
+			$obj->phone = $phone;
+			$obj->pic_id = $pic_id;
+			$obj->created_on = $created_on;
+			return $obj;
 		}
 
 		/* getters and setters */
