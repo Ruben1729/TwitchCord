@@ -19,8 +19,10 @@
             
             $this->controller = new $this->controller;
             
-            if(isset($url[1]) && method_exists($this->controller, $url[1])){
-                $type = $_SERVER['REQUEST_METHOD'] == 'GET' ?   '' : $_SERVER['REQUEST_METHOD'] . '_';
+            //Get the REQUEST type and check to see if a method exists for that request type
+            //All methods are assumed to be GET requests by default.
+            $type = $_SERVER['REQUEST_METHOD'] == 'GET' ?  '' : $_SERVER['REQUEST_METHOD'] . '_';
+            if(isset($url[1]) && method_exists($this->controller, $type.$url[1])){
                 $this->method = $type.$url[1];
                 unset($url[1]);
             }
