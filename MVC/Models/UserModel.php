@@ -8,7 +8,7 @@
 		protected $username;
 		protected $email;
 		protected $user_id;
-		protected $pwd_hash;
+		protected $password_hash;
 
 		public function createUser($user_id, $username, $email, $pwd_hash)
 		{
@@ -16,13 +16,22 @@
 			$obj->user_id = $user_id;
 			$obj->username = $username;
 			$obj->email = $email;
-			$obj->pwd_hash = $pwd_hash;
+			$obj->password_hash = $pwd_hash;
 			return $obj;
 		}
 
 		public function insertUser($username, $email, $pwd_hash){
 
+			$obj = new UserModel();
+			$obj->user_id = null;
+			$obj->username = $username;
+			$obj->email = $email;
+			$obj->password_hash = $pwd_hash;
 
+			$SQL = SQL::GetConnection();
+			$result = $SQL
+				->Modify()
+				->Submit($obj);
 
 		}
 
@@ -59,14 +68,14 @@
 
 		public function getPwdHash(){
 
-			return $this->pwd_hash;
+			return $this->password_hash;
 
 		}
 
 		public function setPwdHash($pwd){
 
 			//REMEMBER TO HASH IT FIRST
-			$this->pwd_hash = $pwd;
+			$this->password_hash = $pwd;
 			//update db too
 
 		}
