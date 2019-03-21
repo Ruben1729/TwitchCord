@@ -3,7 +3,7 @@
 ?>
 	<body>
 		<main>
-			<form>
+			<form action="Register" method="post">
 				<input type="text" name="uid" placeholder="Username">
 				<input type="text" name="email" placeholder="Email">
 				<input type="password" name="pwd" placeholder="Password">

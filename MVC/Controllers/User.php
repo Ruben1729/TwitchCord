@@ -8,14 +8,14 @@
 
 		}
 
-		/*public function POST_Register(){
+		public function POST_Register(){
 
 			$username = $_POST['uid'];
 			$password = $_POST['pwd'];
-			$password_repeat = $POST['pwd-repeat'];
-			$email = $_POST['email']
+			$password_repeat = $_POST['pwd-repeat'];
+			$email = $_POST['email'];
 
-			if($username === null || $password === null || $password_repeat === null || $email === null)
+			if(empty($username) || empty($password) || empty($password_repeat) || empty($email))
 			{
 
 				echo 'I just pooped again';
@@ -44,18 +44,29 @@
 				else
 				{
 
-					$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
+					$newUser = $this->model('UserModel')->getUser($username);
+
+					if(empty($newUser)){
+
+						$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
+						$newUser = $this->model('UserModel')->insertUser($username, $email, $hash_pwd);
+
+					}else
+					{
+
+						echo "user exists";
+
+					}
+
+					
 
 				}
 
 			}
 
-			$newUser = $this->model('UserModel')->createUser($username, $email, $hash_pwd);
-
-
 			$this->view('User/register');
 
-		}*/
+		}
 
 		public function Login(){
 			$this->view('User/login'); 
@@ -66,25 +77,36 @@
 			$username = $_POST['uid'];
 			$password = $_POST['pwd'];
 
-			if($username === null || $password === null)
+			if(empty($username) || empty($password))//strlen() for length
 			{
 
+				//error its not the correct size
 				echo "I just pooped";
 
 			}
 			else
 			{
 
-				$loginUser = $this->model('UserModel')->getUser($username);
-				
-				print_r($loginUser);
+				if(!ctype_alnum($username)){
 
-				if($loginUser !== null)
+					echo "non alphanumeric";
+
+				}
+
+				$loginUser = $this->model('UserModel')->getUser($username);
+
+				if(!empty($loginUser))
+				{
+					echo "user doesn't exist";
+
+				}
+				else
 				{
 
-					if(password_verify($password, $loginUser->getPwdHash()))
+					if(password_verify($password, $loginUser->password_hash))
 					{
 
+						echo "we in the safe room";
 						//RETURN TO SAFE PLACE
 
 					}
