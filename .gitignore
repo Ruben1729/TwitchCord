@@ -1,0 +1,2 @@
+#Ignore transpiled JS files in Public
+Public/Vue/

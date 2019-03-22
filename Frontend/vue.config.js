@@ -1,20 +1,29 @@
 //vue.config.js
 module.exports = {
+    //pages will correspond to the Views in our MVC controller
     pages: {
+      //Main/Index
       index: {
         // entry for the page
-        entry: 'src/main.js',
+        entry: 'src/pages/Main/main.js',
         // the source template
         template: 'public/index.html',
         // output as dist/index.html
-        filename: 'index.html',
+        //filename: 'index.html',
         // when using title option,
         // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-        title: 'Index Page',
+        title: 'TwitchCord',
         // chunks to include on this page, by default includes
         // extracted common chunks and vendor chunks.
-        chunks: ['chunk-vendors', 'chunk-common', 'index']
+        chunks: ['chunk-vendors', 'chunk-common']
       },
+      //User/Signin
+      signin: {
+        entry: 'src/pages/SignIn/main.js',
+        template: 'public/index.html',
+        title: 'Sign Up',
+        chunks: ['chunk-vendors', 'chunk-common']
+      }
     },
     filenameHashing: false,
     publicPath: './Vue/',
