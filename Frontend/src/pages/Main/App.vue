@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <b-navbar type="dark" variant="dark">
-      <b-navbar-brand href="#">Home</b-navbar-brand>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item href="User/Login">Login</b-nav-item>
-        <b-nav-item href="User/Register">Register</b-nav-item>
-      </b-navbar-nav>
-    </b-navbar>
-    
+    <Navbar />
+    <b-jumbotron header="Streams" lead="Like a content creator? Join their community!"> 
+    </b-jumbotron>
+
+    <b-row class="centerText">
+        <b-col>1 of 3</b-col>
+        <b-col>2 of 3</b-col>
+        <b-col>3 of 3</b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
+import Navbar from "../../components/Navbar.vue"
 export default {
   name: "app",
-  components: {}
+  components: {
+    Navbar
+  }
 };
 </script>
 

@@ -2,13 +2,54 @@
 
     class App{
 
-        protected $controller = 'Main';
-        protected $method = 'Index';
+        protected $controller = '';
+        protected $method = '';
         protected $params = [];
         
         public function __construct()
         {
             $url = $this->parseUrl();
+            if(isset($url[0]) && $url[0] == "API"){
+                $this->handleAPI($url);
+                unset($url[0]);
+            }
+            else{
+                $this->handleController($url);
+            }  
+        }
+
+        // handleAPI and handleController are too similar
+        // Can be refactored probably 
+
+        // [Endpoint] / [Method] / Params
+        public function handleAPI($url){
+            $this->controller = 'APIError';
+            $this->method = 'default';
+
+            if(isset($url[1]) && file_exists('../API/' . $url[1] . '.php')){
+                $this->controller = $url[1];
+                unset($url[1]);
+            }
+
+            require_once '../API/' . $this->controller . '.php';
+
+            $this->controller = new $this->controller;
+
+            if(isset($url[2]) && method_exists($this->controller, $url[2])){
+                $this->method = $url[2];
+                unset($url[2]);
+            }
+                
+            $this->params = $url ? array_values($url) : [];
+
+            call_user_func_array([$this->controller, $this->method], $this->params);
+        }
+
+        // [Controller] / [Method] / [Params]
+        public function handleController($url){
+            //Defaults
+            $this->controller = 'Main';
+            $this->method = 'Index';
 
             if(file_exists('../MVC/Controllers/' . $url[0] . '.php')){
                 $this->controller = $url[0];

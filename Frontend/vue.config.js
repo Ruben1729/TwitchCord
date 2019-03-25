@@ -15,14 +15,14 @@ module.exports = {
         title: 'TwitchCord',
         // chunks to include on this page, by default includes
         // extracted common chunks and vendor chunks.
-        chunks: ['chunk-vendors', 'chunk-common']
+        chunks: ['chunk-vendors', 'chunk-common', 'index']
       },
       //User/Signin
       signin: {
         entry: 'src/pages/SignIn/main.js',
         template: 'public/index.html',
         title: 'Sign Up',
-        chunks: ['chunk-vendors', 'chunk-common']
+        chunks: ['chunk-vendors', 'chunk-common', 'signin']
       }
     },
     filenameHashing: false,
