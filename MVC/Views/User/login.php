@@ -1,5 +1,13 @@
 <?php 
+	
+	if(array_key_exists('userError', $data))
+		$uidError = $data['userError'];
 
+	if(array_key_exists('passwordError', $data))
+		$pwdError = $data['passwordError'];
+
+	if(array_key_exists('uid', $data))
+		$username = $data['uid'];
 
 ?>
 <!DOCTYPE html>
@@ -16,17 +24,17 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
-		<main>
+		<main id="main-form">
 			<form id="login-form" action="Login" method="post">
 				<h1>Welcome Back!</h1>
 				<div id="userinput">
 					<div id="input-container">
-						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - $uidError" ?></div>
-						<input <?php if(!empty($uidError)) echo "id=\"inerror\""?> type="text" name="uid">
+						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
+						<input <?php if(!empty($uidError)) echo "id=\"inerror\""?> <?php if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
 					</div>
 					<div id="input-container">
 
-						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - $pwdError"?></div>
+						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - <span id=\"err\">$pwdError</span>"?></div>
 						<input <?php if(!empty($pwdError)) echo "id=\"inerror\"" ?> type="password" name="pwd">
 
 						<a id="forgot-pwd">Forgot your password?</a>
@@ -41,6 +49,17 @@
 			</form>
 			
 		</main>
+
+		<script>
+			window.addEventListener("load", function() {
+
+				var elem = document.querySelector("#main-form");
+				elem.style.top = '50%';
+				elem.style.transition = '0.5s';
+
+			})
+		</script>
+
 	</body>
 	<footer>
 	</footer>

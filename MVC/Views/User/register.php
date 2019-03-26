@@ -15,8 +15,8 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
-		<main>
-			<form action="Register" method="post">
+		<main id="main-form">
+			<form id="register-form" action="Register" method="post">
 				<h1>Create Account</h1>
 				<div id="userinput">
 					<div id="input-container">
@@ -41,6 +41,20 @@
 				<div>Already have an account? <a href="Login">Login</a></div>
 			</form>
 		</main>
+
+		<script>
+
+			window.addEventListener("load", function() {
+
+
+				var elem = document.querySelector("#main-form");
+				elem.style.top = '50%';
+				elem.style.transition = '0.5s';
+
+			})
+
+		</script>
+
 	</body>
 	<footer>
 	</footer>

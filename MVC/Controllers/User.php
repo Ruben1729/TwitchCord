@@ -77,27 +77,26 @@
 			$username = $_POST['uid'];
 			$password = $_POST['pwd'];
 
-			if(empty($username) || empty($password))//strlen() for length
+			$data = [];
+
+			$data['uid'] = $username;
+
+			if(empty($username))
+				$data['userError'] = "This field must not be empty.";
+			else if(!ctype_alnum($username))
+				$data['userError'] = "Username must only contain alphanumeric characters";
+
+			if(empty($password))
+				$data['passwordError'] = "This field must not be empty.";
+
+			if(empty($data))
 			{
-
-				//error its not the correct size
-				echo "I just pooped";
-
-			}
-			else
-			{
-
-				if(!ctype_alnum($username)){
-
-					echo "non alphanumeric";
-
-				}
 
 				$loginUser = $this->model('UserModel')->getUser($username);
 
-				if(!empty($loginUser))
+				if(empty($loginUser))
 				{
-					echo "user doesn't exist";
+					$data['loginError'] = "User doesn't exist.";
 
 				}
 				else
@@ -110,12 +109,18 @@
 						//RETURN TO SAFE PLACE
 
 					}
+					else
+					{
+
+						$data['passwordError'] = "Wrong password.";
+
+					}
 
 				}
 
 			}
 
-			$this->view('User/login');
+			$this->view('User/login', $data);
 
 		}
 

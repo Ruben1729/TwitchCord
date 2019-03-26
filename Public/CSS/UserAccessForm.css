@@ -14,13 +14,10 @@ main{
 
 	text-align:center;
 	width: 100%;
-	margin: auto;
 	position: absolute;
-  	top: 50%;
+  	top: 0%;
   	-ms-transform: translateY(-50%);
   	transform: translateY(-50%);
-
-  	
 
   	font-family: "Raleway", sans-serif;
 
@@ -60,6 +57,12 @@ a:hover{
 button:hover{
 
 	background-color:#91aaa3;
+
+}
+
+#err{
+
+	font-size: 12px;
 
 }
 
@@ -147,6 +150,8 @@ input{
 }
 
 input:focus:not(#inerror){
+
+	transition: 0.05s;
 
 	outline-style: solid;
 	outline-offset: -1px;
