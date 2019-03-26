@@ -1,2 +1,3 @@
 #Ignore transpiled JS files in Public
 Public/Vue/
+node_modules
