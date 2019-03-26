@@ -25,16 +25,13 @@
         // [Endpoint] / [Method] / Params
         public function handleAPI($url){
             $this->controller = 'APIError';
-            $this->method = 'default';
-
-            echo "hhellooo??";
-            print_r($url);
+            $this->method = 'defaultError';
 
             if(isset($url[1]) && file_exists('../API/' . $url[1] . '.php')){
                 $this->controller = $url[1];
                 unset($url[1]);
             }
-
+            
             require_once '../API/' . $this->controller . '.php';
 
             $this->controller = new $this->controller;
