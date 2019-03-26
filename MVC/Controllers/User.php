@@ -18,7 +18,7 @@
 			if(empty($username) || empty($password) || empty($password_repeat) || empty($email))
 			{
 
-				echo 'I just pooped again';
+				echo 'I just pooped myself again';
 
 			}
 			else

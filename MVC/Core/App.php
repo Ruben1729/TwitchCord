@@ -8,6 +8,7 @@
         
         public function __construct()
         {
+
             $url = $this->parseUrl();
             if(isset($url[0]) && $url[0] == "API"){
                 $this->handleAPI($url);
@@ -25,6 +26,9 @@
         public function handleAPI($url){
             $this->controller = 'APIError';
             $this->method = 'default';
+
+            echo "hhellooo??";
+            print_r($url);
 
             if(isset($url[1]) && file_exists('../API/' . $url[1] . '.php')){
                 $this->controller = $url[1];
