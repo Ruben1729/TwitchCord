@@ -1,6 +1,5 @@
 <?php 
 
-	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,34 +20,14 @@
 				<h1>Welcome Back!</h1>
 				<div id="userinput">
 					<div id="input-container">
-						<?php
-
-							if(empty($error)){
-								echo "<label for=\"uid\">Username</label>";
-								echo "<input type=\"text\" name=\"uid\">";
-							}
-							else{
-								echo "<div id=\"error\"><label for=\"uid\">Username</label> - ".$error[0]."</div>"; 
-								echo "<input id=\"inerror\" type=\"text\" name=\"uid\">";
-
-							}
-
-						?>
+						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - $uidError" ?></div>
+						<input <?php if(!empty($uidError)) echo "id=\"inerror\""?> type="text" name="uid">
 					</div>
 					<div id="input-container">
-						<?php
 
-							if(empty($error))
-							{
-								echo "<label for=\"pwd\">Password</label>";
-								echo "<input type=\"password\" name=\"pwd\">";
-							}
-							else{
-								echo "<div id=\"error\"><label for=\"pwd\">Password</label> - ".$error[1]."</div>";
-								echo "<input id=\"inerror\" type=\"password\" name=\"pwd\">";
-							}
+						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - $pwdError"?></div>
+						<input <?php if(!empty($pwdError)) echo "id=\"inerror\"" ?> type="password" name="pwd">
 
-						?>
 						<a id="forgot-pwd">Forgot your password?</a>
 					</div>
 					
