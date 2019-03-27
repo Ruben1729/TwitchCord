@@ -21,10 +21,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="btn btn-light" href="#">Login</a>
+            <a class="btn btn-light" href="User/Login">Login</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-dark" href="#">Register</a>
+            <a class="btn btn-dark" href="User/Register">Register</a>
         </li>
     </ul>
     </div>
