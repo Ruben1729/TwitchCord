@@ -104,8 +104,6 @@
 					if(password_verify($password, $loginUser->password_hash))
 					{
 
-						session_start();
-
 						$_SESSION['uid'] = $loginUser->user_id;
 						$_SESSION['username'] = $loginUser->username;
 

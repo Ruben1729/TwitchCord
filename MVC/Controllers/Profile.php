@@ -1,6 +1,6 @@
 <?php
 	
-	class Profile{
+	class Profile extends Controller{
 		
 		public function Index(){
 
@@ -10,7 +10,7 @@
 
 		public function Settings(){
 
-			$this->view('Profile/Settings');
+			$this->view('Profile/settings');
 
 		}
 

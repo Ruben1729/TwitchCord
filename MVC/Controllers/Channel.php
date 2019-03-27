@@ -14,15 +14,15 @@
 
 		}
 
-		public function RegisterChannel(){
+		public function Create(){
 
-			$this->view('Channel/RegisterChannel');
+			$this->view('Channel/create');
 
 		}
 
-		public function POST_RegisterChannel(){
+		public function POST_Create(){
 
-			$this->view('Channel/RegisterChannel');
+			$this->view('Channel/create');
 
 		}
 
