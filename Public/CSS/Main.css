@@ -1,3 +1,35 @@
-html{
-	background-color:white;
+#stream-carousel{
+	background: #f8f9fa;
+	padding: 30px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+h3{
+	padding-left: 10%;
+	font-size: 3em;
+}
+.stream-window{
+	border: 2px #050505;
+	margin: 20px;
+	background: #545f66;
+	width: 500px;
+	height: 300px;
+	position: relative;
+}
+
+.window-1{
+	left: +100px;
+	z-index: 1;
+}
+
+.window-2{
+	background: white;
+	z-index: 2;
+}
+
+.window-3{
+	z-index: 1;
+	left: -100px;
 }
