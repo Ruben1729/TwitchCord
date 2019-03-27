@@ -22,7 +22,7 @@
 	</div>
 
 	<h3>Top Streams</h3>
-	<script src="/Javascript/Main.js"></script>
+	
     <div id="stream-carousel">
 		<button onclick="carouselDirection(this)" class="btn btn-dark" id="carousel-left"> 
 			<i class="fas fa-arrow-left"></i> 
@@ -54,6 +54,7 @@
 			<i class="fas fa-arrow-right"></i> 
 		</button>
 	</div>
+	<script src="/Javascript/Main.js"></script>
 </body>
 
 </html> 

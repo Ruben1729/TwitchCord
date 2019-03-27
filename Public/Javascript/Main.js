@@ -5,7 +5,7 @@ var highlight_items =
     {'src' : 'https://player.twitch.tv/?collection=abcDeF1ghIJ2kL'}
 ]; 
 
-const middle_highlight = document.querySelector("#highlight-stream");
+const middle_highlight = document.querySelector("#highlight-stream").firstElementChild;
 
 //Cycle logic
 function carouselDirection(element){
