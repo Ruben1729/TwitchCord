@@ -35,6 +35,19 @@
 
 		}
 
+		public function checkEmailUK($email){
+
+			$SQL = SQL::GetConnection();
+			$newUser = $SQL 
+				-> Search()
+				-> Model('UserModel')
+				-> Where("email", $email)
+				-> GetAs('User');
+
+			return $newUser;
+
+		}
+
 		public function getUser($username){
 
 			$SQL = SQL::GetConnection();
