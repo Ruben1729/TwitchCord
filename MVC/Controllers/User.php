@@ -42,11 +42,15 @@
 
 				$newUser = $this->model('UserModel')->getUser($username);
 
+				$emailInUse = $this->model('UserModel')->checkEmailUK($email);
+
 				if(!empty($newUser))
 					$data['userError'] = "Username is already taken.";
+				else if(!empty($emailInUse))
+					$data['emailError'] = "Email is already in use.";
 				else
 				{
-					
+
 					$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
 					$newUser = $this->model('UserModel')->insertUser($username, $email, $hash_pwd);
 
@@ -65,7 +69,6 @@
 		}
 
 		public function Login(){
-			print_r($_SESSION['uid']);
 			$this->view('User/login'); 
 		}
 
@@ -91,6 +94,7 @@
 
 				if(empty($loginUser))
 				{
+
 					$data['loginError'] = "User doesn't exist.";
 
 				}
@@ -104,10 +108,6 @@
 
 						$_SESSION['uid'] = $loginUser->user_id;
 						$_SESSION['username'] = $loginUser->username;
-
-
-						echo $_SESSION['uid'];
-						echo $_SESSION['username'];
 
 						header('Location: /Main/Index');
 

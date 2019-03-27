@@ -10,6 +10,7 @@
 		$username = $data['uid'];
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>

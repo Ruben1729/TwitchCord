@@ -19,6 +19,7 @@
 		$email = $data['email'];
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
