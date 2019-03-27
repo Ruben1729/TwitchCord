@@ -21,6 +21,7 @@ h3{
 
 .window-1{
 	left: +100px;
+	bottom: -5px;
 	z-index: 1;
 }
 
@@ -31,5 +32,6 @@ h3{
 
 .window-3{
 	z-index: 1;
+	bottom: -5px;
 	left: -100px;
 }

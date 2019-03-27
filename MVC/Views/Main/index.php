@@ -1,9 +1,5 @@
 <?php
 
-session_start();
-if(empty($_SESSION))
-	header('Location: /User/Login');
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,35 +22,38 @@ if(empty($_SESSION))
 	</div>
 
 	<h3>Top Streams</h3>
+	<script src="/Javascript/Main.js"></script>
     <div id="stream-carousel">
-        <i class="fas fa-arrow-left"></i>
+		<button onclick="carouselDirection(this)" class="btn btn-dark" id="carousel-left"> 
+			<i class="fas fa-arrow-left"></i> 
+		</button>
 		
 		<div class="stream-window window-1">
+			<div>
+				
+			</div>
 		</div>
         <div class="stream-window window-2">
-			<div id="highlight-1"></div>
+			<div id="highlight-stream">
+				<iframe
+						src="https://player.twitch.tv/?collection=abcDeF1ghIJ2kL"
+						height="300"
+						width="500"
+						frameborder="0"
+						scrolling="no"
+						allowfullscreen="true">
+				</iframe>
+			</div>
         </div>
         <div class="stream-window window-3">
-
+			<div>
+			</div>
 		</div>
-		
-        <i class="fas fa-arrow-right"></i>
-	</div>
-	
-	<script src="https://embed.twitch.tv/embed/v1.js"></script>
-		<script type="text/javascript">
-			let embed = new Twitch.Embed("highlight-1", {
-				width: 500,
-				height: 300,
-				channel: "summit1g",
-				layout: "video",
-			});
 
-			embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-				var player = embed.getPlayer();
-				player.play();
-			});
-		</script>
+		<button onclick="carouselDirection(this)" class="btn btn-dark" id="carousel-right"> 
+			<i class="fas fa-arrow-right"></i> 
+		</button>
+	</div>
 </body>
 
 </html> 
