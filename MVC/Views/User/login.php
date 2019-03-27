@@ -24,13 +24,13 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
-		<main id="main-form">
+		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> id="main-form">
 			<form id="login-form" action="Login" method="post">
 				<h1>Welcome Back!</h1>
 				<div id="userinput">
 					<div id="input-container">
 						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
-						<input <?php if(!empty($uidError)) echo "id=\"inerror\""?> <?php if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
+						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
 					</div>
 					<div id="input-container">
 
@@ -53,9 +53,21 @@
 		<script>
 			window.addEventListener("load", function() {
 
-				var elem = document.querySelector("#main-form");
-				elem.style.top = '50%';
-				elem.style.transition = '0.5s';
+				var reload = <?php 
+				if(!array_key_exists('reload', $data))
+					echo "true";
+				else
+					echo "false";
+				?>;
+
+				if(reload){
+
+					var elem = document.querySelector("#main-form");
+					elem.style.top = '50%';
+					elem.style.transition = '0.5s';
+					elem.style.opacity = '1';
+
+				}
 
 			})
 		</script>

@@ -1,4 +1,22 @@
 <?php
+	
+	if(array_key_exists('userError', $data))
+		$uidError = $data['userError'];
+
+	if(array_key_exists('emailError', $data))
+		$mailError = $data['emailError'];
+
+	if(array_key_exists('passwordError', $data))
+		$pwdError = $data['passwordError'];
+
+	if(array_key_exists('passwordRepeatError', $data))
+		$pwdRepeatError = $data['passwordRepeatError'];
+
+	if(array_key_exists('uid', $data))
+		$username = $data['uid'];
+
+	if(array_key_exists('email', $data))
+		$email = $data['email'];
 
 ?>
 <!DOCTYPE html>
@@ -15,25 +33,25 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
-		<main id="main-form">
+		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?>id="main-form">
 			<form id="register-form" action="Register" method="post">
 				<h1>Create Account</h1>
 				<div id="userinput">
 					<div id="input-container">
-						<label for="uid">Username</label>
-						<input type="text" name="uid">
+						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
+						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?> type="text" name="uid">
 					</div>
 					<div id="input-container">
-						<label for="email">E-mail</label>
-						<input type="text" name="email">
+						<div <?php if(!empty($mailError)) echo "id=\"error\""?> ><label for="email">E-mail</label> <?php if(!empty($mailError)) echo " - <span id=\"err\">$mailError</span>" ?></div>
+						<input <?php if(!empty($mailError)) echo "id=\"inerror\""; if(!empty($email)) echo "value=\"$email\"" ?> type="text" name="email">
 					</div>
 					<div id="input-container">
-						<label for="pwd">Password</label>
-						<input type="password" name="pwd">
+						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError)) echo " - <span id=\"err\">$pwdError</span>" ?></div>
+						<input <?php if(!empty($pwdError)) echo "id=\"inerror\""?> type="password" name="pwd">
 					</div>
 					<div id="input-container">
-						<label for="pwd-repeat">Repeat Password</label>
-						<input type="password" name="pwd-repeat">
+						<div <?php if(!empty($pwdRepeatError)) echo "id=\"error\""?> ><label for="pwd-repeat">Re-enter Password</label> <?php if(!empty($pwdRepeatError)) echo " - <span id=\"err\">$pwdRepeatError</span>" ?></div>
+						<input <?php if(!empty($pwdRepeatError)) echo "id=\"inerror\""?> type="password" name="pwd-repeat">
 					</div>
 				</div>
 
@@ -46,10 +64,23 @@
 
 			window.addEventListener("load", function() {
 
+				var reload = <?php 
+				if(!array_key_exists('reload', $data))
+					echo "true";
+				else
+					echo "false";
+				?>;
 
-				var elem = document.querySelector("#main-form");
-				elem.style.top = '50%';
-				elem.style.transition = '0.5s';
+				if(reload)
+				{
+
+					var elem = document.querySelector("#main-form");
+					elem.style.top = '50%';
+					elem.style.transition = '0.5s';
+					elem.style.opacity = '1';
+
+				}
+				
 
 			})
 

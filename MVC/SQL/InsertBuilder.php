@@ -33,7 +33,6 @@ require_once('Builder.php');
         }
 
         private function BindValues(array $values, PDOStatement &$stmt){
-            print_r($values);
             for($i = 1; $i <= count($values); $i++){
                 $value = $values[$i - 1];
                 $stmt->bindValue($i, $value, $this->GetPDOType($value));

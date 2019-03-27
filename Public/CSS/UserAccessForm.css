@@ -15,11 +15,21 @@ main{
 	text-align:center;
 	width: 100%;
 	position: absolute;
-  	top: 0%;
+  	top: 45%;
+  	
   	-ms-transform: translateY(-50%);
   	transform: translateY(-50%);
 
   	font-family: "Raleway", sans-serif;
+
+  	opacity: 0;
+
+}
+
+.mainError{
+
+	top:50%;
+	opacity: 1;
 
 }
 
