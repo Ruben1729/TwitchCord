@@ -22,6 +22,10 @@
 
 		public function POST_Create(){
 
+			$name = $_POST['name'];
+			$desc = $_POST['desc'];
+			$pic = $_POST['pic']
+
 			$this->view('Channel/create');
 
 		}

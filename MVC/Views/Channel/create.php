@@ -19,15 +19,15 @@
 			<form>
 				<h1>Channel Creation</h1>
 				<div id="input-container">
-					<label for="chanName">Channel Name</label>
-					<input type="text" name="chanName">
+					<label for="name">Channel Name</label>
+					<input type="text" name="name">
 				</div>
 				<div id="input-container">
-					<label for="displayname">Channel Description</label>
-					<textarea class="paragraph-container" type="text" name="chanDesc"></textarea>
+					<label for="desc">Channel Description</label>
+					<textarea class="paragraph-container" type="text" name="desc"></textarea>
 				</div>
 				<div id="input-container">
-					<label for="picture" class="piclabel">Channel Picture</label>
+					<label for="pic" class="piclabel">Channel Picture</label>
 					<input type="file" name="pic" class="picin">
 				</div>
 				<button type="submit" name="create-btn">Create</button>
