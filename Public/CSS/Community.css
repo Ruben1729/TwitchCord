@@ -1,0 +1,119 @@
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+#root{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#container{
+    display: flex;    
+    flex-direction: row;
+    height: 100%;
+}
+
+/* groups */
+
+.group-active{
+    background-color: rgba(10, 10, 10, 60); 
+}
+
+#groups{
+    width: 10em;
+    background-color: black;
+}
+
+#groups > h3{
+    text-align: center;
+    color: white;
+    margin: 5px;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#groups > ul{
+    list-style-type : none;
+    text-align: center;
+    padding: 0px;
+}
+
+#groups > ul > li{
+    color: white;
+    width: 100%;
+    padding: 10px;
+}
+
+#groups > ul > li:hover{
+    border-radius: 10px;
+    background-color: grey;
+}
+
+/* Stream Section */
+
+#stream{
+    background: grey;
+}
+
+.stream-fill{
+    width: 60%;
+}
+
+/* Messages/Input*/
+
+#chat-container{
+    display: flex;
+    flex: 1;
+}
+
+.flex-row{
+    flex-direction: row;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+
+#chat-container > #window{
+    background: rgb(53, 75, 64);
+    flex: 1;
+}
+
+#chat-container > #input{
+    background: white;
+    min-height: 2%;
+    max-height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+/* Chat */
+
+#window > ul {
+    margin: 2%;
+    background: white;
+    border-radius: 10px;
+}
+
+#window > ul > li {
+    list-style-type: none;
+}
+
+#window > ul > li > .message{
+    
+}
+
+#input > textarea{
+    min-height: 30px;
+    max-height: 80px;
+    height: 30px;
+    width: 100%;
+    padding-left: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    resize: none;
+}
+
