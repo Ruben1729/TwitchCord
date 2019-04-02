@@ -5,7 +5,10 @@ Authors:
 * Ruben Sanchez
 
 E-Commerce Project 
-Vanier College 
+Vanier College
+
+# Architecture
+MVC
 
 # Description
 Community platform for streamers
