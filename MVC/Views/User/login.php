@@ -20,24 +20,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-		<link rel="stylesheet" href="/CSS/UserAccessForm.css">
+		<link rel="stylesheet" href="/CSS/Form.css">
+		<link rel="stylesheet" href="/CSS/Background-Styles.css">
+		<link rel="stylesheet" href="/CSS/Login.css">
+		<link rel="stylesheet" href="/CSS/NavBar.css">
 
 		<title>TwitchCord</title>
+		
 	</head>
 	<body>
+		<?php require "../MVC/Views/Shared/navigationbar.php" ?>
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> id="main-form">
 			<form id="login-form" action="Login" method="post">
 				<h1>Welcome Back!</h1>
+
 				<div id="userinput">
+
 					<div id="input-container">
-						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
+						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"SpanError\">$uidError</span>" ?></div>
 						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
 					</div>
+
 					<div id="input-container">
-
-						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - <span id=\"err\">$pwdError</span>"?></div>
+						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - <span id=\"SpanError\">$pwdError</span>"?></div>
 						<input <?php if(!empty($pwdError)) echo "id=\"inerror\"" ?> type="password" name="pwd">
-
 						<a id="forgot-pwd">Forgot your password?</a>
 					</div>
 					

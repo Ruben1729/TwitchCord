@@ -1,0 +1,40 @@
+img:hover:not(#inerror){
+
+	border-color: black;
+
+}
+
+img{
+
+	border-radius:50%;
+	margin:auto;
+	height: 150px;
+    width: 150px;
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: solid #29302e 2px;
+
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+input.visually-hidden:focus + label {
+  outline: thin dotted;
+}
+
+.paragraph-container
+{
+
+	height: 200px;
+	text-align:top;
+	word-wrap: break-word;
+
+}

@@ -22,32 +22,22 @@
 
 		public function POST_Create(){
 
-		    //Stores the filename as it was on the client computer.
-		    print_r($_FILES);
-		    $imagename = $_FILES['fileElem']['name'];
-		    //Stores the filetype e.g image/jpeg
-		    $imagetype = $_FILES['fileElem']['type'];
-		    //Stores any error codes from the upload.
-		    $imageerror = $_FILES['fileElem']['error'];
-		    //Stores the tempname as it is given by the host when uploaded.
-		    $imagetemp = $_FILES['fileElem']['tmp_name'];
+			$result = uploadImg($_FILES);
+			$displayName = $_POST['displayName'];
+			$bio = $_POST['bio'];
 
-		    //The path you wish to upload the image to
-		    $imagePath = dirname(__FILE__);
+			if(!empty($result)){
+				$data['imgError'] = $result;
+			}
 
-		    if(is_uploaded_file($imagetemp)) {
-		        if(move_uploaded_file($imagetemp, $imagePath . $imagename)) {
-		            echo "Sussecfully uploaded your image.";
-		        }
-		        else {
-		            echo "Failed to move your image.";
-		        }
-		    }
-		    else {
-		        echo "Failed to upload your image.";
-		    }
+			if(empty($displayName)){
+				$data['nameError'] = "This field is required";
+			}
 
-			$this->view('Profile/create');
+			$data['displayName'] = $displayName;
+			$data['bio'] = $bio;
+
+			$this->view('Profile/create', $data);
 
 		}
 

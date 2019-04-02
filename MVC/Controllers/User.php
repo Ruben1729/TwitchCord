@@ -15,21 +15,27 @@
 			$password_repeat = $_POST['pwd-repeat'];
 			$email = $_POST['email'];
 
-			if(empty($username))
+			if(empty($username)){
 				$data['userError'] = "This field must not be empty.";
-			else if(!ctype_alnum($username))
+			}
+			else if(!ctype_alnum($username)){
 				$data['userError'] = "Username must only contain alphanumeric characters";
+			}
 
-			if(empty($email))
+			if(empty($email)){
 				$data['emailError'] = "This field must not be empty.";
-			else if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+			}
+			else if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 				$data['emailError'] = "Invalid Email.";
+			}
 
-			if(empty($password))
+			if(empty($password)){
 				$data['passwordError'] = "This field must not be empty.";
+			}
 
-			if(empty($password_repeat))
+			if(empty($password_repeat)){
 				$data['passwordRepeatError'] = "This field must not be empty.";
+			}
 
 			if(!empty($password) && !empty($password_repeat) && $password !== $password_repeat){
 				$data['passwordRepeatError'] = "Passwords must match.";
@@ -37,11 +43,8 @@
 			}
 
 			
-			if(empty($data))
-			{
-
+			if(empty($data)){
 				$newUser = $this->model('UserModel')->getUser($username);
-
 				$emailInUse = $this->model('UserModel')->checkEmailUK($email);
 
 				if(!empty($newUser))
@@ -57,7 +60,6 @@
 					header('Location: Login');
 
 				}
-
 			}
 
 			$data['uid'] = $username;

@@ -29,7 +29,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-		<link rel="stylesheet" href="/CSS/UserAccessForm.css">
+		<link rel="stylesheet" href="/CSS/Form.css">
+		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 
 		<title>TwitchCord</title>
 	</head>
@@ -39,19 +40,19 @@
 				<h1>Create Account</h1>
 				<div id="userinput">
 					<div id="input-container">
-						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
+						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username *</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
 						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?> type="text" name="uid">
 					</div>
 					<div id="input-container">
-						<div <?php if(!empty($mailError)) echo "id=\"error\""?> ><label for="email">E-mail</label> <?php if(!empty($mailError)) echo " - <span id=\"err\">$mailError</span>" ?></div>
+						<div <?php if(!empty($mailError)) echo "id=\"error\""?> ><label for="email">E-mail *</label> <?php if(!empty($mailError)) echo " - <span id=\"err\">$mailError</span>" ?></div>
 						<input <?php if(!empty($mailError)) echo "id=\"inerror\""; if(!empty($email)) echo "value=\"$email\"" ?> type="text" name="email">
 					</div>
 					<div id="input-container">
-						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError)) echo " - <span id=\"err\">$pwdError</span>" ?></div>
+						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password *</label> <?php if(!empty($pwdError)) echo " - <span id=\"err\">$pwdError</span>" ?></div>
 						<input <?php if(!empty($pwdError)) echo "id=\"inerror\""?> type="password" name="pwd">
 					</div>
 					<div id="input-container">
-						<div <?php if(!empty($pwdRepeatError)) echo "id=\"error\""?> ><label for="pwd-repeat">Re-enter Password</label> <?php if(!empty($pwdRepeatError)) echo " - <span id=\"err\">$pwdRepeatError</span>" ?></div>
+						<div <?php if(!empty($pwdRepeatError)) echo "id=\"error\""?> ><label for="pwd-repeat">Re-enter Password *</label> <?php if(!empty($pwdRepeatError)) echo " - <span id=\"err\">$pwdRepeatError</span>" ?></div>
 						<input <?php if(!empty($pwdRepeatError)) echo "id=\"inerror\""?> type="password" name="pwd-repeat">
 					</div>
 				</div>

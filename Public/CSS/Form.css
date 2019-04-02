@@ -1,0 +1,154 @@
+main{
+	text-align:center;
+	width: 100%;
+	position: absolute;
+  	top: 45%;
+  	
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+
+  	opacity: 0;
+}
+
+.mainError{
+	top:50%;
+	opacity: 1;
+}
+
+form{
+	color:#dcdfe0;
+	background-color:#545f66;
+
+	width: 400px;
+	
+	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 40px;
+	padding-left: 30px;
+	padding-right: 30px;
+
+	border-radius:10px;
+
+	box-shadow: 0px 0px 9px 2px #141817;
+}
+
+#userinput{
+	padding-top:20px;
+	padding-bottom:20px;
+}
+
+#input-container{
+	width: 301px;
+	text-align:left;
+	margin: auto;
+}
+
+label{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+input, textarea{
+	display: block;
+	margin: auto;
+	width: 280px;
+	height: 40px;
+
+	font-size:16px;
+
+	color: #dcdfe0;
+	background-color:#434c51;
+
+	/*MARGIN AND PADDINGS */
+
+	padding-left:10px;
+	padding-right: 10px;
+
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	/*BORDER STYLES*/
+
+	border-style: none;
+	border: solid #29302e 1px;
+}
+
+input:focus:not(#inerror){
+	transition: 0.05s;
+
+	outline-style: solid;
+	outline-offset: -1px;
+	outline-width: 2px;
+	outline-color: #a6c3bb;
+}
+
+input:hover:not(#inerror){
+	transition: 0.05s;
+	border-color: black;
+}
+
+textarea:focus:not(#inerror){
+	transition: 0.05s;
+
+	outline-style: solid;
+	outline-offset: -1px;
+	outline-width: 2px;
+	outline-color: #a6c3bb;
+}
+
+textarea:hover:not(#inerror){
+	transition: 0.05s;
+	border-color: black;
+}
+
+a{
+	color:#a6c3bb;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+button{
+	width: 300px;
+	height: 40px;
+
+	font-size: 17px;
+	font-weight:bold;
+
+	background-color:#a6c3bb;
+	color: white;
+
+	margin-bottom:15px;
+	border-style: none;
+	cursor: pointer;
+}
+
+button:hover{
+	background-color:#91aaa3;
+}
+
+#err{
+	font-size: 12px;
+	font-style: italic;
+}
+
+#error{
+	color: #d35246;
+}
+
+#inerror{
+	border-color: #d35246;
+}
+
+#inerror:focus{
+	outline-width: 0;
+}
+
+span:not(#err){	
+	font-size: 10px;
+	font-style: italic;
+	color: #c6c8c9;
+}
