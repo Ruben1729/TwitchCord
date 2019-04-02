@@ -23,27 +23,26 @@
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Login.css">
-		<link rel="stylesheet" href="/CSS/NavBar.css">
 
 		<title>TwitchCord</title>
 		
 	</head>
 	<body>
 		<?php require "../MVC/Views/Shared/navigationbar.php" ?>
-		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> id="main-form">
-			<form id="login-form" action="Login" method="post">
+		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> class="main-form">
+			<form class="login-form" action="Login" method="post">
 				<h1>Welcome Back!</h1>
 
-				<div id="userinput">
+				<div class="userinput">
 
-					<div id="input-container">
-						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span id=\"SpanError\">$uidError</span>" ?></div>
-						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
+					<div class="input-container">
+						<div <?php if(!empty($uidError)) echo "class=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span class=\"spanError\">$uidError</span>" ?></div>
+						<input <?php if(!empty($uidError)) echo "class=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
 					</div>
 
-					<div id="input-container">
-						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - <span id=\"SpanError\">$pwdError</span>"?></div>
-						<input <?php if(!empty($pwdError)) echo "id=\"inerror\"" ?> type="password" name="pwd">
+					<div class="input-container">
+						<div <?php if(!empty($pwdError)) echo "class=\"error\""?> ><label for="pwd">Password</label> <?php if(!empty($pwdError))echo " - <span class=\"spanError\">$pwdError</span>"?></div>
+						<input <?php if(!empty($pwdError)) echo "class=\"inerror\"" ?> type="password" name="pwd">
 						<a id="forgot-pwd">Forgot your password?</a>
 					</div>
 					
@@ -69,7 +68,7 @@
 
 				if(reload){
 
-					var elem = document.querySelector("#main-form");
+					var elem = document.querySelector(".main-form");
 					elem.style.top = '50%';
 					elem.style.transition = '0.5s';
 					elem.style.opacity = '1';

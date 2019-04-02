@@ -1,5 +1,7 @@
 /* https://coolors.co/545f66-829399-d0f4ea-e8fcc2-b1cc74 */
 html, body{
+	margin: 0;
+	padding: 0;
 
 	background-color: #a6c3bb;
 
@@ -9,5 +11,4 @@ html, body{
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
-
 }

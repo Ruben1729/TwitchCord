@@ -35,26 +35,32 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
-		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?>id="main-form">
-			<form id="register-form" action="Register" method="post">
+		<?php require "../MVC/Views/Shared/navigationbar.php" ?>
+		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?>class="main-form">
+			<form class="register-form" action="Register" method="post">
 				<h1>Create Account</h1>
-				<div id="userinput">
-					<div id="input-container">
-						<div <?php if(!empty($uidError)) echo "id=\"error\""?> ><label for="uid">Username *</label> <?php if(!empty($uidError)) echo " - <span id=\"err\">$uidError</span>" ?></div>
-						<input <?php if(!empty($uidError)) echo "id=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?> type="text" name="uid">
+				<div class="userinput">
+
+					<div class="input-container">
+						<div <?php if(!empty($uidError)) echo "class=\"error\""?> ><label for="uid">Username *</label> <?php if(!empty($uidError)) echo " - <span class=\"spanError\">$uidError</span>" ?></div>
+						<input <?php if(!empty($uidError)) echo "class=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?> type="text" name="uid">
 					</div>
-					<div id="input-container">
-						<div <?php if(!empty($mailError)) echo "id=\"error\""?> ><label for="email">E-mail *</label> <?php if(!empty($mailError)) echo " - <span id=\"err\">$mailError</span>" ?></div>
-						<input <?php if(!empty($mailError)) echo "id=\"inerror\""; if(!empty($email)) echo "value=\"$email\"" ?> type="text" name="email">
+
+					<div class="input-container">
+						<div <?php if(!empty($mailError)) echo "class=\"error\""?> ><label for="email">E-mail *</label> <?php if(!empty($mailError)) echo " - <span class=\"spanError\">$mailError</span>" ?></div>
+						<input <?php if(!empty($mailError)) echo "class=\"inerror\""; if(!empty($email)) echo "value=\"$email\"" ?> type="text" name="email">
 					</div>
-					<div id="input-container">
-						<div <?php if(!empty($pwdError)) echo "id=\"error\""?> ><label for="pwd">Password *</label> <?php if(!empty($pwdError)) echo " - <span id=\"err\">$pwdError</span>" ?></div>
-						<input <?php if(!empty($pwdError)) echo "id=\"inerror\""?> type="password" name="pwd">
+
+					<div class="input-container">
+						<div <?php if(!empty($pwdError)) echo "class=\"error\""?> ><label for="pwd">Password *</label> <?php if(!empty($pwdError)) echo " - <span class=\"spanError\">$pwdError</span>" ?></div>
+						<input <?php if(!empty($pwdError)) echo "class=\"inerror\""?> type="password" name="pwd">
 					</div>
-					<div id="input-container">
-						<div <?php if(!empty($pwdRepeatError)) echo "id=\"error\""?> ><label for="pwd-repeat">Re-enter Password *</label> <?php if(!empty($pwdRepeatError)) echo " - <span id=\"err\">$pwdRepeatError</span>" ?></div>
-						<input <?php if(!empty($pwdRepeatError)) echo "id=\"inerror\""?> type="password" name="pwd-repeat">
+
+					<div class="input-container">
+						<div <?php if(!empty($pwdRepeatError)) echo "class=\"error\""?> ><label for="pwd-repeat">Re-enter Password *</label> <?php if(!empty($pwdRepeatError)) echo " - <span class=\"spanError\">$pwdRepeatError</span>" ?></div>
+						<input <?php if(!empty($pwdRepeatError)) echo "class=\"inerror\""?> type="password" name="pwd-repeat">
 					</div>
+
 				</div>
 
 				<button type="submit" name="register-btn">Register</button>
@@ -76,7 +82,7 @@
 				if(reload)
 				{
 
-					var elem = document.querySelector("#main-form");
+					var elem = document.querySelector(".main-form");
 					elem.style.top = '50%';
 					elem.style.transition = '0.5s';
 					elem.style.opacity = '1';

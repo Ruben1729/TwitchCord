@@ -32,12 +32,12 @@ form{
 	box-shadow: 0px 0px 9px 2px #141817;
 }
 
-#userinput{
+.userinput{
 	padding-top:20px;
 	padding-bottom:20px;
 }
 
-#input-container{
+.input-container{
 	width: 301px;
 	text-align:left;
 	margin: auto;
@@ -74,7 +74,7 @@ input, textarea{
 	border: solid #29302e 1px;
 }
 
-input:focus:not(#inerror){
+input:focus:not(.inerror){
 	transition: 0.05s;
 
 	outline-style: solid;
@@ -83,12 +83,12 @@ input:focus:not(#inerror){
 	outline-color: #a6c3bb;
 }
 
-input:hover:not(#inerror){
+input:hover:not(.inerror){
 	transition: 0.05s;
 	border-color: black;
 }
 
-textarea:focus:not(#inerror){
+textarea:focus:not(.inerror){
 	transition: 0.05s;
 
 	outline-style: solid;
@@ -97,7 +97,7 @@ textarea:focus:not(#inerror){
 	outline-color: #a6c3bb;
 }
 
-textarea:hover:not(#inerror){
+textarea:hover:not(.inerror){
 	transition: 0.05s;
 	border-color: black;
 }
@@ -130,25 +130,28 @@ button:hover{
 	background-color:#91aaa3;
 }
 
-#err{
+.err{
 	font-size: 12px;
 	font-style: italic;
 }
 
-#error{
+.error{
 	color: #d35246;
 }
 
-#inerror{
+.inerror{
 	border-color: #d35246;
 }
 
-#inerror:focus{
+.inerror:focus{
 	outline-width: 0;
 }
 
-span:not(#err){	
-	font-size: 10px;
+span{	
+	font-size: 12px;
 	font-style: italic;
+}
+
+span:not(.spanError){
 	color: #c6c8c9;
 }
