@@ -5,18 +5,22 @@
 <div id="navigation">
     <ul>
         <li class="left"><a href="/Main/Index">TwitchCord</a></li>
-        <?php if($uid == null) :?>
-        	<li class="right"><a href="/User/Register">Register</a></li>
+        <?php if($uid != null){?>
+            <li class="right"><a href="/User/Logout">Logout</a></li>
+            <li class="right"><a href="/Profile">Profile</a></li>
+        <?php }else{?>
+            <li class="right"><a href="/User/Register">Register</a></li>
         	<li class="right"><a href="/User/Login">Login</a></li>
-    	<?php endif;?>
+        <?php } ?>
     </ul>
 </div>
 
-<script>
+<!-- I think it looks ugly for the navbar to flash in -->
+<!-- <script>
     window.addEventListener("load", function() {
         var elem = document.querySelector("#navigation");
 
         elem.style.transition = '0.5s';
         elem.style.opacity = '1';
     })
-</script>
+</script> -->

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2019 at 07:41 PM
+-- Generation Time: Apr 03, 2019 at 07:37 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tc`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
@@ -232,42 +232,6 @@ ALTER TABLE `status`
 --
 ALTER TABLE `usermodel`
   MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `channel`
---
-ALTER TABLE `channel`
-  ADD CONSTRAINT `channel_ibfk_1` FOREIGN KEY (`channel_id`) REFERENCES `group_chat` (`channel_id`);
-
---
--- Constraints for table `picture`
---
-ALTER TABLE `picture`
-  ADD CONSTRAINT `picture_ibfk_1` FOREIGN KEY (`picture_id`) REFERENCES `channel` (`picture_id`);
-
---
--- Constraints for table `profile`
---
-ALTER TABLE `profile`
-  ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`picture_id`) REFERENCES `picture` (`picture_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `relationmodel`
---
-ALTER TABLE `relationmodel`
-  ADD CONSTRAINT `relationmodel_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`),
-  ADD CONSTRAINT `relationmodel_ibfk_2` FOREIGN KEY (`user_id_1`) REFERENCES `usermodel` (`user_id`),
-  ADD CONSTRAINT `relationmodel_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`);
-
---
--- Constraints for table `usermodel`
---
-ALTER TABLE `usermodel`
-  ADD CONSTRAINT `usermodel_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `banned` (`user_id`);
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

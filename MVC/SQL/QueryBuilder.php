@@ -82,9 +82,6 @@ require_once('Builder.php');
                 $field2 = strtolower($this->join[$i + 3]);
                 $currentAlias = ++$alias;
 
-                if(!$this->SQL->IsValidColumn($field1) || !$this->SQL->IsValidColumn($field2))
-                    throw new Exception("Can not find column inside database");
-
                 $query .= "$joinType $joinModel $currentAlias ON a.$field1 = $currentAlias.$field2 ";
             }
             return $query;
@@ -96,12 +93,8 @@ require_once('Builder.php');
             for($i= 0; $i < count($array); $i+= 2){
                 //Insert field
                 $field = strtolower($array[$i]);
-                if($this->SQL->IsValidColumn($field)){
-                    $query .= " $field ";
-                }
-                else {
-                    throw new Exception('Field/Table is not in the database');
-                }
+                $query .= " $field ";
+                
                 //insert comparision to EX: WHERE <=> :placeholder
                 $query .= " $operator  $placeholder" . ($i + 1);
                 

@@ -3,12 +3,68 @@ html, body{
 	margin: 0;
 	padding: 0;
 
-	background-color: #a6c3bb;
-
 	font-family: "Raleway", sans-serif;
 
 	-webkit-user-select: none; /* Safari */        
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
+}
+
+button{
+	width: 300px;
+	height: 40px;
+
+	font-size: 17px;
+	font-weight:bold;
+
+	background-color:#a6c3bb;
+	color: white;
+
+	margin-bottom:15px;
+	border-style: none;
+	cursor: pointer;
+}
+
+button:hover{
+	background-color:#91aaa3;
+}
+
+input, textarea{
+	display: block;
+	margin: auto;
+	width: 280px;
+	height: 40px;
+
+	font-size:16px;
+
+	color: #dcdfe0;
+	background-color:#434c51;
+
+	/*MARGIN AND PADDINGS */
+
+	padding-left:10px;
+	padding-right: 10px;
+
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	/*BORDER STYLES*/
+
+	border-style: none;
+	border: solid #29302e 1px;
+}
+
+input:focus:not(.inerror){
+	transition: 0.05s;
+
+	outline-style: solid;
+	outline-offset: -1px;
+	outline-width: 2px;
+	outline-color: #a6c3bb;
+}
+
+input:hover:not(.inerror){
+	transition: 0.05s;
+	border-color: black;
 }

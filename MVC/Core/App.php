@@ -8,42 +8,8 @@
         
         public function __construct()
         {
-
             $url = $this->parseUrl();
-            if(isset($url[0]) && $url[0] == "API"){
-                $this->handleAPI($url);
-                unset($url[0]);
-            }
-            else{
-                $this->handleController($url);
-            }  
-        }
-
-        // handleAPI and handleController are too similar
-        // Can be refactored probably 
-
-        // [Endpoint] / [Method] / Params
-        public function handleAPI($url){
-            $this->controller = 'APIError';
-            $this->method = 'defaultError';
-
-            if(isset($url[1]) && file_exists('../API/' . $url[1] . '.php')){
-                $this->controller = $url[1];
-                unset($url[1]);
-            }
-            
-            require_once '../API/' . $this->controller . '.php';
-
-            $this->controller = new $this->controller;
-
-            if(isset($url[2]) && method_exists($this->controller, $url[2])){
-                $this->method = $url[2];
-                unset($url[2]);
-            }
-                
-            $this->params = $url ? array_values($url) : [];
-
-            call_user_func_array([$this->controller, $this->method], $this->params);
+            $this->handleController($url);   
         }
 
         // [Controller] / [Method] / [Params]
@@ -71,7 +37,6 @@
 
             //if the url is empty, the array values will be null
             $this->params = $url ? array_values($url) : [];
-
             call_user_func_array([$this->controller, $this->method], $this->params);
         }
 

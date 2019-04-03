@@ -40,6 +40,13 @@
 
 		}
 
+		public function Logout(){
+			unset($_SESSION['uid']);
+			unset($_SESSION['username']);
+			//redirect back to homepage when logging out
+			header('Location: /Main/Index');
+		}
+
 		public function POST_Register(){
 
 			$username = $_POST['uid'];

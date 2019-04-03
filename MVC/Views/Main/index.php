@@ -8,24 +8,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TwitchCord</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<title>TwitchCord</title>
+	<link rel="stylesheet" href="/CSS/Background-Styles.css">
     <link rel="stylesheet" href="/CSS/Main.css">
 </head>
 
 <body>
-    <?php require "../MVC/Views/Shared/navbar.php" ?>
+    <?php require "../MVC/Views/Shared/navigationbar.php" ?>
     <div class="jumbotron">
-        <h1 class="display-4">Welcome to TwitchCord</h1>
-        <p class="lead">Like a content creator? join their community!</p>
+        <h1 class="title">Welcome to TwitchCord</h1>
+		<p class="lead">Like a content creator? join their community!</p>
+		
+		<br/>
+
+		<span class="channel-search text-center">Look for a channel</h5>
+		<form action="/Community/ChannelList" method="post">
+			<input type="text">
+		</form>
 	</div>
 
-	<h3>Top Streams</h3>
+	<h2 class="stream-title">Top Streams</h3>
 	
     <div id="stream-carousel">
-		<button onclick="carouselDirection(this)" class="btn btn-dark" id="carousel-left"> 
-			<i class="fas fa-arrow-left"></i> 
+		<button onclick="carouselDirection(this)" class="carousel-btn" id="carousel-left"> 
+			&#129048;
 		</button>
 		
 		<div class="stream-window window-1">
@@ -50,8 +56,8 @@
 			</div>
 		</div>
 
-		<button onclick="carouselDirection(this)" class="btn btn-dark" id="carousel-right"> 
-			<i class="fas fa-arrow-right"></i> 
+		<button onclick="carouselDirection(this)" class="carousel-btn" id="carousel-right"> 
+			&#129050;
 		</button>
 	</div>
 	<script src="/Javascript/Main.js"></script>

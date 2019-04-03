@@ -9,12 +9,12 @@
     <meta charset="UTF-8" />
     <title>Community</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="/CSS/Community.css">
+    <link rel="stylesheet" href="/CSS/Community/Community.css">
 </head>
 
 <body>
     <div id="root">
-        <?php require "../MVC/Views/Shared/navbar.php" ?>
+        <?php require "../MVC/Views/Shared/navigationbar.php" ?>
         <div id="container">
             <div id="groups">
                 <img src="">
