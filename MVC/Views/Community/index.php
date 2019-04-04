@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Community</title>
+    <link rel="stylesheet" href="/CSS/Background-Styles.css">
     <link rel="stylesheet" href="/CSS/Community/Community.css">
     <link rel="stylesheet" href="/CSS/Background-Styles.css">
 </head>

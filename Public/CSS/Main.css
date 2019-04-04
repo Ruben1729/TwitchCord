@@ -7,13 +7,23 @@
 	justify-content: center;
 }
 
-.text-center{
+#no-stream{
+	background: #f8f9fa;
+	padding: 30px;
+	width: 100%;
+	height: 20%;
+}
+
+#banner{
 	text-align: center;
+	width: 100%;
+	font-size: 2em;
 }
 
 .channel-search{
 	font-size: 2em;
 	padding-bottom: 2%;
+	text-align: center;
 }
 
 .stream-window{
