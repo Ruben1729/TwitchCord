@@ -2,7 +2,7 @@
 	opacity:0;
 } */
 
-ul {
+.navbar {
   	list-style-type: none;
 
   	margin: 0;
@@ -28,24 +28,24 @@ ul {
 	float: left;
 }
 
-li{
+.nav-item{
 	padding-top: 13px;
 }
 
-li:hover{
+.nav-item:hover{
 	margin: 0;
 	height: 100%;
 	background-color:#434c51;
 }
 
-li > a{
+.nav-item > a{
 	margin: auto;
 	padding: 10px;
 	color:#f4f5f5;
 	text-decoration: none;
 }
 
-li > a:hover{
+.nav > a:hover{
 	text-decoration: none;
 	cursor: pointer;
 	

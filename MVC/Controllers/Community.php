@@ -3,15 +3,18 @@
     class Community extends Controller
     {
         public function Index(){
-            $this->view('Community/index');
+            //get the channel name searched for, null for top
+            $channel = isset($_POST["channel_name"]) ? $_POST["channel_name"] : 'No Channel';
+            $data["channel_name"] = $channel;
+
+            $this->view('Community/index', $data);
+        }
+
+        public function ChannelList(){
+            $this->view('Community/list');
         }
 
         public function POST_ChannelList(){
-            //get the channel name searched for, null for top
-            $channel = isset($_POST["channel_name"]) ? $_POST["channel_name"] : null;
-            
             $this->view('Community/list');
         }
     }
-
-?>

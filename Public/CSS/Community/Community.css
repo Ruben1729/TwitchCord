@@ -43,11 +43,10 @@ html, body{
 #groups > ul > li{
     color: white;
     width: 100%;
-    padding: 10px;
+    padding: 10% 0%;
 }
 
 #groups > ul > li:hover{
-    border-radius: 10px;
     background-color: grey;
 }
 
@@ -58,7 +57,7 @@ html, body{
 }
 
 .stream-fill{
-    width: 60%;
+    width: 75%;
 }
 
 /* Messages/Input*/
@@ -83,11 +82,30 @@ html, body{
 }
 
 #chat-container > #input{
-    background: white;
+    background: #393e42;
     min-height: 2%;
     max-height: 10%;
     display: flex;
     align-items: center;
+}
+
+
+#input > textarea{
+    width: 100%;
+    margin: 10px;
+    min-height: 30px;
+    max-height: 80px;
+    height: 30px;
+    padding-left: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    resize: none;
+}
+
+#input > button{
+    margin: 10px 10px 10px 0px;
+    width: 4em;
+    height: 2em;
 }
 
 /* Chat */
@@ -102,18 +120,38 @@ html, body{
     list-style-type: none;
 }
 
-#window > ul > li > .message{
-    
+.msg {
+    position: relative;
+    display: flex;
 }
 
-#input > textarea{
-    min-height: 30px;
-    max-height: 80px;
-    height: 30px;
-    width: 100%;
-    padding-left: 10px;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    resize: none;
+.avatar{
+
+}
+
+.avatar > .user {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.msg-img {
+    margin: 10px;
+    height: 40px;
+    width: 40px;
+}
+
+.msg > .msg-content {
+    margin: 10px;
+    width: 80%;
+    display: inline-block;
+}
+
+.msg > .timestamp{
+    padding: 10px;
+    margin: 10px;
+    height: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 

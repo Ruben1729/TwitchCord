@@ -3,14 +3,14 @@
 ?>
 <link rel="stylesheet" href="/CSS/NavBar.css">
 <div id="navigation">
-    <ul>
-        <li class="left"><a href="/Main/Index">TwitchCord</a></li>
+    <ul class="navbar">
+        <li class="nav-item left"><a href="/Main/Index">TwitchCord</a></li>
         <?php if($uid != null){?>
-            <li class="right"><a href="/User/Logout">Logout</a></li>
-            <li class="right"><a href="/Profile">Profile</a></li>
+            <li class="nav-item right"><a href="/User/Logout">Logout</a></li>
+            <li class="nav-item right"><a href="/Profile">Profile</a></li>
         <?php }else{?>
-            <li class="right"><a href="/User/Register">Register</a></li>
-        	<li class="right"><a href="/User/Login">Login</a></li>
+            <li class="nav-item right"><a href="/User/Register">Register</a></li>
+        	<li class="nav-item right"><a href="/User/Login">Login</a></li>
         <?php } ?>
     </ul>
 </div>
