@@ -27,6 +27,7 @@
     </template>
     <script>
         var user = JSON.parse('<?php echo $data['user']?>');
+        var channel = '<?php echo $data["channel_name"]?>';
     </script>
     <script src="/Javascript/Community.js"></script>
 
@@ -49,7 +50,7 @@
                     <ul></ul>
                 </div>
                 <div id="input">
-                    <textarea id="chatbox-input" placeholder="Write your message here" onkeyup="expand_textarea(this)"></textarea>
+                    <textarea id="chatbox-input" placeholder="Write your message here"></textarea>
                     <button type="submit" onclick="sendMsg()">▶</button>
                 </div>
             </div>

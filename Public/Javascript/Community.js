@@ -1,37 +1,40 @@
+'use strict';
+
 /* Globals */
-var input = document.querySelector("#chatbox-input");
-//Record input's max height
-var inputel = document.getElementById("input").firstElementChild;
-var max = window.getComputedStyle(inputel).getPropertyValue("max-height");
-max = parseInt(max);
-
-function expand_textarea(element){
-    element.style.height = "5px";
-    element.style.height = clampMax((element.scrollHeight + 5), max) + "px";
-}
-
-function clampMax(a, max){
-    return a > max ? max : a;
-}
+var groupchats = ['test group']; // get from php 
+var curGroupChat = groupchats[0]; 
+var connection = null;
 
 // Websocket Handling
-
 window.onload = function(){
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
-    let connection = new WebSocket('ws://127.0.0.1:1337');
+    connection = new WebSocket('ws://127.0.0.1:1337');
 
     connection.onopen = function(){
-
+        //send client data
+        connection.send(clientData('connect'));
     }
 
     connection.onerror = function(err){
-
+        //TODO: error message popup
     }
 
     connection.onmessage = function(message){
-
+        let data = JSON.parse(message);
+        renderMsg(data);
     }
+}
+
+function clientData(type){
+    let data = {
+        type: type,
+        img: user.img,
+        username: user.username,
+        channel: channel,
+        groupChat: curGroupChat
+    };
+    return JSON.stringify(data);
 }
 
 function renderMsg(msgData){
@@ -58,14 +61,18 @@ function addToChat(element){
 }
 
 function sendMsg(){
+    var input = document.querySelector("#chatbox-input");
     //Get user's details
-    let data = {};
-    data.imgsrc = "";
-    data.username = user.username; 
-    data.content = input.value;
-    data.timestamp = new Date().toLocaleDateString();
+    let data = {
+        type: 'message',
+        imgsrc: '',
+        username: user.username,
+        content: input.value,
+        timestamp: new Date().toLocaleTimeString()
+    };
     //Clear chatbox
     input.value = '';
-
+    //Send to server
+    connection.send(JSON.stringify(data));
     renderMsg(data);
 }
