@@ -5,10 +5,10 @@
 
 	class UserModel extends Model{
 
-		protected $username;
-		protected $email;
-		protected $user_id;
-		protected $password_hash;
+		public $username;
+		public $email;
+		public $user_id;
+		public $password_hash;
 
 		public function createUser($user_id, $username, $email, $pwd_hash)
 		{
@@ -42,7 +42,7 @@
 				-> Search()
 				-> Model('UserModel')
 				-> Where("email", $email)
-				-> GetAs('User');
+				-> GetAs('UserModel');
 
 			return $newUser;
 
@@ -55,10 +55,22 @@
 				-> Search()
 				-> Model('UserModel')
 				-> Where("username", $username)
-				-> GetAs('User');
+				-> GetAs('UserModel');
 
 			return $newUser;
 
+		}
+
+		public function getProfile($username){
+			$SQL = SQL::GetConnection();
+			$newUser = $SQL 
+				-> Search()
+				-> Model('UserModel')
+				-> JoinUsing('INNER JOIN', 'ProfileModel', 'user_id')
+				-> Where("username", $username)
+				-> GetAsObj();
+
+			return $newUser;
 		}
 
 		public function getUserId(){

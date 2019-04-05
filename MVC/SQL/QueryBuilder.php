@@ -27,10 +27,9 @@ require_once('Builder.php');
             return $this;
         }
 
-        public function JoinUsing($type, $modelID, $field){
-            $modelName = Model::GetModelName($modelID);
+        public function JoinUsing($joinType, $modelName, $field){
             //Duplicate with is to replicate ON functionality since Using is Syntactic sugar
-            array_push($this->join, $type, $modelName, $field, $field);
+            array_push($this->join, $joinType, $modelName, $field, $field);
             return $this;
         }
 
@@ -49,12 +48,13 @@ require_once('Builder.php');
             return $this->Execute()->fetchAll();
         }
 
-        public function GetAs($class){
-            return $this->Execute()->fetchObject($class);
+        public function GetAsObj(){
+            return $this->Execute()->fetchObject($this->selectedModel);
         }
 
         private function Execute(){
             $query = $this->BuildString();
+            print $query;
             $stmt = $this->PDO->prepare($query);
             //Bind values
             $this->BindValues(':where', $this->where, $stmt);
@@ -64,10 +64,10 @@ require_once('Builder.php');
 
         private function BuildString(){
             $query = "SELECT * FROM {$this->selectedModel} ";
-            if(!empty($this->where))
-                $query .= $this->BuildStatement('WHERE', ':where', '<=>', 'AND', $this->where);
             if(!empty($this->join))
                 $query .= $this->BuildJoin();
+            if(!empty($this->where))
+                $query .= $this->BuildStatement('WHERE', ':where', '<=>', 'AND', $this->where);
             return $query;
         }
 
@@ -96,9 +96,9 @@ require_once('Builder.php');
                 $query .= " $field ";
                 
                 //insert comparision to EX: WHERE <=> :placeholder
-                $query .= " $operator  $placeholder" . ($i + 1);
+                $query .= " $operator  $placeholder" . ($i + 1) . ' ';
                 
-                if($i > 0 && isset($joiner))
+                if($i < count($array) - 2)
                     $query .= " $joiner ";
             }
             return $query;
