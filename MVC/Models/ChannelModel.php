@@ -19,7 +19,7 @@
 				-> Search()
 				-> Model('ChannelModel')
 				-> Where("channel_name", $channel_name)
-				-> GetAs('Channel');
+				-> GetAsObj();
 
 			return $newChan;
 

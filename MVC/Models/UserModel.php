@@ -42,7 +42,7 @@
 				-> Search()
 				-> Model('UserModel')
 				-> Where("email", $email)
-				-> GetAs('UserModel');
+				-> GetAsObj();
 
 			return $newUser;
 
@@ -55,7 +55,7 @@
 				-> Search()
 				-> Model('UserModel')
 				-> Where("username", $username)
-				-> GetAs('UserModel');
+				-> GetAsObj();
 
 			return $newUser;
 
