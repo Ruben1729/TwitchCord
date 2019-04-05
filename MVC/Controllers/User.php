@@ -145,8 +145,8 @@
 					if(password_verify($password, $loginUser->password_hash))
 					{
 
-						$_SESSION['uid'] = $loginUser->user_id;
-						$_SESSION['username'] = $loginUser->username;
+						$_SESSION[uid] = $loginUser->user_id;
+						$_SESSION[username] = $loginUser->username;
 
 						header('Location: /Main/Index');
 
