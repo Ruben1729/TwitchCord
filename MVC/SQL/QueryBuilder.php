@@ -54,7 +54,6 @@ require_once('Builder.php');
 
         private function Execute(){
             $query = $this->BuildString();
-            print $query;
             $stmt = $this->PDO->prepare($query);
             //Bind values
             $this->BindValues(':where', $this->where, $stmt);

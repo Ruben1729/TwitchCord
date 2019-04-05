@@ -10,6 +10,26 @@
 </head>
 
 <body>
+    <!-- msg template-->
+    <template>
+        <li>
+            <div class="msg">
+                <div class="avatar">
+                    <img src="" class="msg-img" />
+                    <p class="username"></p>
+                </div>
+                <p class="msg-content">
+
+                </p>
+                <div class="timestamp">12:00 PM</div>
+            </div>
+        </li>
+    </template>
+    <script>
+        var user = JSON.parse('<?php echo $data['user']?>');
+    </script>
+    <script src="/Javascript/Community.js"></script>
+
     <div id="root">
         <?php require "../MVC/Views/Shared/navigationbar.php" ?>
         <div id="container">
@@ -24,36 +44,19 @@
 
             <div id="stream">
             </div>
-
-            
             <div id="chat-container" class="flex-column">
                 <div id="window">
-                    <ul>
-                        <li>
-                            <!-- msg template testing -->
-                            <div class="msg">
-                                <div class="avatar">
-                                    <img class="msg-img"/>
-                                    <p class="user">username</p>
-                                </div>
-                                <p class="msg-content">
-                                
-                                </p>
-                                <div class="timestamp">12:00 PM</div>
-                            </div> 
-                        </li>
-                    </ul>
+                    <ul></ul>
                 </div>
                 <div id="input">
-                  <textarea name="chatbox-input" placeholder="Write your message here" onkeyup="expand_textarea(this)"></textarea>
-                  <button type="submit">▶</button>
+                    <textarea id="chatbox-input" placeholder="Write your message here" onkeyup="expand_textarea(this)"></textarea>
+                    <button type="submit" onclick="sendMsg()">▶</button>
                 </div>
             </div>
 
             <div></div>
         </div>
     </div>
-    <script src="/Javascript/Community.js"> </script>
 </body>
 
-</html> 
+</html>
