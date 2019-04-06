@@ -6,9 +6,10 @@ var groupchats = ['test group']; // get from php
 var curGroupChat = groupchats[0]; 
 var connection = null;
 
-
-// Websocket Handling
-window.onload = () => WS(); 
+window.onload = function(){
+    //Start the websocket connection
+    WS();
+}; 
 
 function WS(){
     window.WebSocket = window.WebSocket || window.MozWebSocket;

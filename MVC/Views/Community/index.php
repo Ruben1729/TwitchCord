@@ -1,6 +1,11 @@
+<?php 
+    // if the user isn't logged in or invalid, redirect to login screen
+    if($data['user'])
+        header('Location: /Home/Index')
+?>
+
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <title>Community</title>
@@ -27,7 +32,7 @@
     </template>
     <script>
         var user = JSON.parse('<?php echo $data['user']?>');
-        var channel = '<?php echo $data["channel_name"]?>';
+        var channel = '<?php echo $data['channel_name']?>';
     </script>
     <script src="/Javascript/Community.js"></script>
 
