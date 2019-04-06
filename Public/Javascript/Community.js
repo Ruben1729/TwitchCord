@@ -1,15 +1,19 @@
 'use strict';
+const serverAddress = 'ws://127.0.0.1:1337'
 
 /* Globals */
 var groupchats = ['test group']; // get from php 
 var curGroupChat = groupchats[0]; 
 var connection = null;
 
+
 // Websocket Handling
-window.onload = function(){
+window.onload = () => WS(); 
+
+function WS(){
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
-    connection = new WebSocket('ws://127.0.0.1:1337');
+    connection = new WebSocket(serverAddress);
 
     connection.onopen = function(){
         //send client data
@@ -18,11 +22,19 @@ window.onload = function(){
 
     connection.onerror = function(err){
         //TODO: error message popup
+
     }
 
     connection.onmessage = function(message){
-        let data = JSON.parse(message);
+        let data = JSON.parse(message.data);
         renderMsg(data);
+    }
+
+    connection.onclose = function(){
+        setTimeout(() => {
+            WS();
+            console.log('Attemping to reconnect to server');
+        }, 2000);
     }
 }
 
@@ -31,6 +43,7 @@ function clientData(type){
         type: type,
         img: user.img,
         username: user.username,
+        user_id: user.user_id,
         channel: channel,
         groupChat: curGroupChat
     };
@@ -49,7 +62,7 @@ function renderMsg(msgData){
     img.src = msgData.imgsrc;
     username.innerHTML = msgData.username;
     content.innerHTML = msgData.content;
-    timestamp.innerHTML = msgData.timestamp;
+    timestamp.innerHTML = new Date(msgData.date).timestamp();
 
     addToChat(clone);
 }
@@ -68,11 +81,18 @@ function sendMsg(){
         imgsrc: '',
         username: user.username,
         content: input.value,
-        timestamp: new Date().toLocaleTimeString()
+        date: new Date().toISOString().slice(0, 19).replace('T', ' ')
     };
     //Clear chatbox
     input.value = '';
     //Send to server
     connection.send(JSON.stringify(data));
     renderMsg(data);
+}
+
+Date.prototype.timestamp = function(){
+    return ((this.getHours() % 11) + 1).toString().padStart(2, '0') 
+    + this.getMinutes().toString().padStart(2, '0')
+    + this.getHours() <= 12 ? 'AM' : 'PM';
+    
 }
