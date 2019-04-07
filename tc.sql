@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2019 at 07:37 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Generation Time: Apr 07, 2019 at 04:05 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -78,21 +80,42 @@ CREATE TABLE `group_chat` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `group_message`
+--
+
+CREATE TABLE `group_message` (
+  `message_id` int(10) NOT NULL,
+  `text` text NOT NULL,
+  `group_chat_id` int(6) NOT NULL,
+  `created_on` date NOT NULL,
+  `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `group_message`
+--
+
+INSERT INTO `group_message` (`message_id`, `text`, `group_chat_id`, `created_on`, `user_id`) VALUES
+(1, 'test', 0, '0000-00-00', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `picture`
 --
 
 CREATE TABLE `picture` (
-  `picture_id` int(1) NOT NULL,
+  `picture_id` int(11) NOT NULL,
   `path` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile`
+-- Table structure for table `profilemodel`
 --
 
-CREATE TABLE `profile` (
+CREATE TABLE `profilemodel` (
   `profile_id` int(11) NOT NULL,
   `user_id` int(5) NOT NULL,
   `display_name` varchar(60) NOT NULL,
@@ -138,6 +161,14 @@ CREATE TABLE `usermodel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `usermodel`
+--
+
+INSERT INTO `usermodel` (`user_id`, `username`, `password_hash`, `email`) VALUES
+(1, 'test', '$2y$10$cSM4/aA902vL3YY0TchzjOa4I8Eevgjplmk2N4cSKZWhTfjsdu4ym', 'test@test.com'),
+(2, 'test2', '$2y$10$lYu/liAJOGjE0qVrVL2xEO1SrfIB/6fcKKBPoGl2vwFS1gPEM8m16', 'gameactin@gmail.com');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -156,6 +187,13 @@ ALTER TABLE `channel`
   ADD UNIQUE KEY `owner_id` (`owner_id`);
 
 --
+-- Indexes for table `follower`
+--
+ALTER TABLE `follower`
+  ADD PRIMARY KEY (`user_id`,`channel_id`),
+  ADD KEY `follower_channel_id_FK` (`channel_id`);
+
+--
 -- Indexes for table `group_chat`
 --
 ALTER TABLE `group_chat`
@@ -164,17 +202,23 @@ ALTER TABLE `group_chat`
   ADD UNIQUE KEY `role_id` (`role_id`);
 
 --
+-- Indexes for table `group_message`
+--
+ALTER TABLE `group_message`
+  ADD PRIMARY KEY (`message_id`);
+
+--
 -- Indexes for table `picture`
 --
 ALTER TABLE `picture`
   ADD PRIMARY KEY (`picture_id`);
 
 --
--- Indexes for table `profile`
+-- Indexes for table `profilemodel`
 --
-ALTER TABLE `profile`
+ALTER TABLE `profilemodel`
   ADD PRIMARY KEY (`profile_id`),
-  ADD UNIQUE KEY `picture_id` (`picture_id`);
+  ADD KEY `Profile_user_id_FK` (`user_id`);
 
 --
 -- Indexes for table `relationmodel`
@@ -182,9 +226,7 @@ ALTER TABLE `profile`
 ALTER TABLE `relationmodel`
   ADD PRIMARY KEY (`user_id`,`user_id_1`),
   ADD UNIQUE KEY `status_id` (`status_id`),
-  ADD UNIQUE KEY `user_id_2` (`user_id`),
-  ADD KEY `user_id` (`user_id`,`user_id_1`),
-  ADD KEY `user_id_1` (`user_id_1`);
+  ADD KEY `Relation_user_id_1_FK` (`user_id_1`);
 
 --
 -- Indexes for table `status`
@@ -207,31 +249,68 @@ ALTER TABLE `usermodel`
 --
 ALTER TABLE `channel`
   MODIFY `channel_id` int(5) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `group_chat`
 --
 ALTER TABLE `group_chat`
   MODIFY `group_chat_id` int(6) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `group_message`
+--
+ALTER TABLE `group_message`
+  MODIFY `message_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `picture`
 --
 ALTER TABLE `picture`
-  MODIFY `picture_id` int(1) NOT NULL AUTO_INCREMENT;
+  MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `profile`
+-- AUTO_INCREMENT for table `profilemodel`
 --
-ALTER TABLE `profile`
+ALTER TABLE `profilemodel`
   MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `status`
 --
 ALTER TABLE `status`
   MODIFY `status_id` int(5) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `usermodel`
 --
 ALTER TABLE `usermodel`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `follower`
+--
+ALTER TABLE `follower`
+  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channel` (`channel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `profilemodel`
+--
+ALTER TABLE `profilemodel`
+  ADD CONSTRAINT `Profile_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`);
+
+--
+-- Constraints for table `relationmodel`
+--
+ALTER TABLE `relationmodel`
+  ADD CONSTRAINT `Relation_user_id_1_FK` FOREIGN KEY (`user_id_1`) REFERENCES `usermodel` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Relation_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`) ON DELETE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
