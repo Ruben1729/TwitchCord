@@ -28,7 +28,11 @@
 		
 	</head>
 	<body>
-		<?php require "../MVC/Views/Shared/navigationbar.php" ?>
+
+		<video playsinline autoplay muted loop id="bgvid">
+		    <source src="/Clips/allclips.mp4" type="video/mp4">
+		</video>
+
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> class="main-form">
 			<form class="login-form" action="Login" method="post">
 				<h1>Welcome Back!</h1>

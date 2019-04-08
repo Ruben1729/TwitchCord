@@ -1,6 +1,6 @@
 <?php 
     // if the user isn't logged in or invalid, redirect to login screen
-    if($data['user'])
+    if(isset($_SESSION['uid']))
         header('Location: /Home/Index')
 ?>
 
@@ -34,8 +34,6 @@
         var user = JSON.parse('<?php echo $data['user']?>');
         var channel = '<?php echo $data['channel_name']?>';
     </script>
-    <script src="/Javascript/Community.js"></script>
-
     <div id="root">
         <?php require "../MVC/Views/Shared/navigationbar.php" ?>
         <div id="container">
@@ -63,6 +61,7 @@
             <div></div>
         </div>
     </div>
+    <script src="/Javascript/Community.js"></script>
 </body>
 
 </html>

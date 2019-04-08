@@ -15,16 +15,19 @@
 		}
 
 		public function Create(){
-
+			if(sizeof($_GET) > 1){
+				print_r($_GET);
+			}
 			$this->view('Channel/create');
-
 		}
 
 		public function POST_Create(){
 
 			$name = $_POST['name'];
 			$desc = $_POST['desc'];
-			$pic = $_POST['pic']
+			$pic = $_POST['pic'];
+
+			print_r($_POST);
 
 			$this->view('Channel/create');
 

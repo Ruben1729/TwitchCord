@@ -2,27 +2,23 @@
 
     class App{
 
-        protected $controller = '';
-        protected $method = '';
+        protected $controller = 'Main';
+        protected $method = 'Index';
         protected $params = [];
         
         public function __construct()
         {
             $url = $this->parseUrl();
-            $this->handleController($url);   
+            $this->handleController($url);
         }
 
         // [Controller] / [Method] / [Params]
         public function handleController($url){
-            //Defaults
-            $this->controller = 'Main';
-            $this->method = 'Index';
-
             if(file_exists('../MVC/Controllers/' . $url[0] . '.php')){
                 $this->controller = $url[0];
                 unset($url[0]);
             }
-
+            
             require_once '../MVC/Controllers/' . $this->controller . '.php';
             
             $this->controller = new $this->controller;

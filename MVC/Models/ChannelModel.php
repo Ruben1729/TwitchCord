@@ -11,18 +11,16 @@
 		private $picture_id;
 		private $owner_id;
 
-		public function getChannel($name)
+		public function getSimilarChannels($name)
 		{
 
 			$SQL = SQL::GetConnection();
 			$newChan = $SQL 
 				-> Search()
 				-> Model('ChannelModel')
-				-> Where("channel_name", $channel_name)
-				-> GetAsObj();
-
+				-> Where("channel_name", $name, 'LIKE')
+				-> Get();
 			return $newChan;
-
 		}
 
 		public function setName($name){

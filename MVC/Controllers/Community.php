@@ -18,8 +18,13 @@
             $this->view('Community/index', $data);
         }
 
-        public function ChannelList(){
-            $this->view('Community/list');
+        public function ChannelList($username){
+            $channels = $this
+            ->model('ChannelModel')
+            ->getSimilarChannels($username);
+            
+            header('Content-Type: application/json');
+            echo json_encode($channels);
         }
 
         public function POST_ChannelList(){
