@@ -13,10 +13,6 @@ require_once('Builder.php');
         private $PDO;
         private $SQL;
 
-        //constants
-        private $FIELD = 0;
-        private $COMPARISION = 1;
-
         public function __construct($PDO, $SQL){
             $this->PDO = $PDO;
             $this->SQL = $SQL;
@@ -39,13 +35,13 @@ require_once('Builder.php');
             return $this;
         }
 
-        public function Where($field, $comparision){
-            array_push($this->where, $field, $comparision);
+        public function Where($field, $comparision, $operator = '<=>'){
+            array_push($this->where, $field, $comparision, $operator);
             return $this;
         }
 
         public function Get(){
-            return $this->Execute()->fetchAll();
+            return $this->Execute()->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function GetAsObj(){
@@ -66,7 +62,7 @@ require_once('Builder.php');
             if(!empty($this->join))
                 $query .= $this->BuildJoin();
             if(!empty($this->where))
-                $query .= $this->BuildStatement('WHERE', ':where', '<=>', 'AND', $this->where);
+                $query .= $this->BuildStatement('WHERE', ':where', 'AND', $this->where);
             return $query;
         }
 
@@ -86,10 +82,11 @@ require_once('Builder.php');
             return $query;
         }
 
-        private function BuildStatement($type, $placeholder, $operator, $joiner, $array){
+        private function BuildStatement($type, $placeholder, $joiner, $array){
             $query = "$type ";
-            //incrementing by 2 because there are two conditions to add into the statement
-            for($i= 0; $i < count($array); $i+= 2){
+            //incrementing by 3 because there are two conditions and operator to add into the statement
+            for($i= 0; $i < count($array); $i+= 3){
+                $operator = $array[$i + 2];
                 //Insert field
                 $field = strtolower($array[$i]);
                 $query .= " $field ";
@@ -97,14 +94,14 @@ require_once('Builder.php');
                 //insert comparision to EX: WHERE <=> :placeholder
                 $query .= " $operator  $placeholder" . ($i + 1) . ' ';
                 
-                if($i < count($array) - 2)
+                if($i < count($array) - 3)
                     $query .= " $joiner ";
             }
             return $query;
         }
 
         private function BindValues($placeholder, $array, &$stmt){
-            for($i= 0; $i < count($this->where) / 2; $i++){
+            for($i= 0; $i < count($this->where); $i+=3){
                 //First variable inside array is the field (WHERE)
                 $stmt->bindValue($placeholder . ($i + 1), $array[$i + 1], $this->GetPDOType($array[$i + 1]));
             }
