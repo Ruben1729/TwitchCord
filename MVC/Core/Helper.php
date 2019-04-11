@@ -1,5 +1,62 @@
 <?php
 
+	function getToken($code){
+		$prefix = "\"access_token\":\"";
+		$suffix = "\",\"expires_in\"";
+
+		$client_id = "bo0nrcahpqfeh6i73cthasv3ysbz1r";
+		$client_secret = "8bm969bpoi4c5lnma2o6ixu8hj9gmw";
+		$redirect_uri = "http://localhost/Channel/Link";
+		$url = "https://id.twitch.tv/oauth2/token";
+		$data = http_build_query(array( 'client_id' => $client_id, 'client_secret'=> $client_secret, 'code' => $code, 'grant_type' => 'authorization_code', 'redirect_uri' => $redirect_uri ));
+
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded",
+		        'method'  => 'POST',
+		        'content' => $data,
+		    ),
+		);
+
+		$context = stream_context_create( $options );
+
+		$result = file_get_contents( $url, false, $context );
+
+		$beginIndex = strpos($result, $prefix)+ strlen($prefix);
+		$endIndex = strpos($result, $suffix) - $beginIndex;
+		$token = substr($result, $beginIndex, $endIndex);
+		//$token = $result['acces_token'];
+		//echo "$token";
+
+		return getDisplayname($token, $client_id);
+	}
+
+	function getDisplayname($token, $client_id){
+		$prefix = "display_name\":\"";
+		$suffix = "\",\"type";
+
+		$url = "https://api.twitch.tv/helix/users";
+
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+							 "client-id: $client_id\r\n" .
+							 "authorization: Bearer $token\r\n",
+		        'method'  => 'GET',
+		    ),
+		);
+
+		$context = stream_context_create( $options );
+		$result = file_get_contents($url, false, $context);
+
+		$beginIndex = strpos($result, $prefix)+ strlen($prefix);
+		$endIndex = strpos($result, $suffix) - $beginIndex;
+
+		$displayname = (substr($result, $beginIndex, $endIndex));
+
+		return $displayname;
+	}
+
 	function uploadImg($file){
 
 		$currentDir = getcwd();
