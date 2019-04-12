@@ -28,6 +28,8 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
+		<div id="options">
+		</div>
 		<main id="main-form">
 			<form enctype="multipart/form-data" action="create" method="post">
 				<h1>Create Your Profile</h1>

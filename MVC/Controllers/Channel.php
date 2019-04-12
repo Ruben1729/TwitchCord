@@ -16,8 +16,12 @@
 
 		public function Link(){
 			$displayname = getToken($_GET['code']);
-			if(!empty($displayname))
-				header("Location: /Channel/Create?displayname=$displayname");
+			if(!empty($displayname)){
+				$newChannel = $this->model('ChannelModel')->insertChannel($displayname, "", null, $_SESSION['uid']);
+				header("Location: /Channel/Create");
+			} else {
+				header("Location: /Channel/Create");
+			}
 			$this->view('Channel/link');
 		}
 

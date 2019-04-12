@@ -1,9 +1,6 @@
 <?php
 
 	function getToken($code){
-		$prefix = "\"access_token\":\"";
-		$suffix = "\",\"expires_in\"";
-
 		$client_id = "bo0nrcahpqfeh6i73cthasv3ysbz1r";
 		$client_secret = "8bm969bpoi4c5lnma2o6ixu8hj9gmw";
 		$redirect_uri = "http://localhost/Channel/Link";
@@ -22,19 +19,13 @@
 
 		$result = file_get_contents( $url, false, $context );
 
-		$beginIndex = strpos($result, $prefix)+ strlen($prefix);
-		$endIndex = strpos($result, $suffix) - $beginIndex;
-		$token = substr($result, $beginIndex, $endIndex);
-		//$token = $result['acces_token'];
-		//echo "$token";
+		$jsonResult = json_decode($result);
+		$token = $jsonResult->access_token;
 
 		return getDisplayname($token, $client_id);
 	}
 
 	function getDisplayname($token, $client_id){
-		$prefix = "display_name\":\"";
-		$suffix = "\",\"type";
-
 		$url = "https://api.twitch.tv/helix/users";
 
 		$options = array(
@@ -49,11 +40,9 @@
 		$context = stream_context_create( $options );
 		$result = file_get_contents($url, false, $context);
 
-		$beginIndex = strpos($result, $prefix)+ strlen($prefix);
-		$endIndex = strpos($result, $suffix) - $beginIndex;
+		$jsonResult = json_decode($result);
 
-		$displayname = (substr($result, $beginIndex, $endIndex));
-
+		$displayname = $jsonResult->{'data'}[0]->display_name;
 		return $displayname;
 	}
 

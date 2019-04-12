@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Profile.css">
-		<link rel="stylesheet" href="/CSS/NavBar.css">
 
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
@@ -19,6 +18,7 @@
 		<title>TwitchCord</title>
 	</head>
 	<body>
+		<?php require "../MVC/Views/Shared/verticalNavigation.php" ?>
 		<main id="main-form">
 			<form enctype="multipart/form-data" action="create" method="post">
 				<h1>Profile Settings</h1>
@@ -27,11 +27,6 @@
 					<label for="pic-id">Upload Picture</label>
 					<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
 					<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
-				</div>
-
-				<div id="input-container">
-					<label for="displayName">Display Name</label><span id="required-indicator"> - Required</span>
-					<input type="text" name="displayName">
 				</div>
 				
 				<div id="input-container">

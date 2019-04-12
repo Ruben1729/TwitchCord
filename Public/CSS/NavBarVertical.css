@@ -1,4 +1,14 @@
+body, html{
+	width: 100%;
+	height: 100%;
+}
+
+#navigation{
+	height: 100%;
+}
+
 .navbar {
+	width: 200px;
   	list-style-type: none;
 
   	margin: 0;
@@ -9,7 +19,7 @@
  	color:#fafbfb;
   	background-color:#545f66;
 
- 	height: 50px;
+ 	height: 100%;
 
 	overflow: hidden;
 
@@ -26,33 +36,32 @@
 	color: black;
 }
 
-.right {
-	float: right;
-}
-
-.left{
-	float: left;
-}
-
 .nav-item{
+	width: 100%;
+	text-align: center;
 	padding-top: 13px;
+	padding-bottom: 13px;
 }
 
 .nav-item:hover{
 	margin: 0;
-	height: 100%;
+	text-align: center;
 	background-color:#434c51;
 }
 
 .nav-item > a{
+	width: 100%;
 	margin: auto;
 	padding: 10px;
 	color:#f4f5f5;
 	text-decoration: none;
 }
 
-.nav > a:hover{
-	text-decoration: none;
-	cursor: pointer;
-	
+.sub{
+	text-align: left;
+	font-size: 18px;
+}
+
+.sub:hover{
+	text-align: left;
 }

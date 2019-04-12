@@ -1,4 +1,11 @@
 <?php
+	
+	$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+	$auth = true;
+	if(empty($userChannel)){
+		$auth = false;
+	}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,31 +19,41 @@
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/NavBar.css">
+		<link rel="stylesheet" href="/CSS/Profile.css">
 
 		<title>TwitchCord</title>
 	</head>
 	<body>
+
+		<video playsinline autoplay muted loop id="bgvid">
+		    <source src="/Clips/allclips.mp4" type="video/mp4">
+		</video>
+
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> class="main-form">
 			<form>
-				<button type="button" class="btn btn-twitch">
-					<a href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=bo0nrcahpqfeh6i73cthasv3ysbz1r&redirect_uri=http://localhost/Channel/Link&scope=user_read">
-					<i class="fa fa-1x fa-twitch"></i> Connect Using Twitch
-					</a>
-				</button>
 				<h1>Channel Creation</h1>
-				<div id="input-container">
-					<label for="name">Channel Name</label>
-					<input type="text" name="name" value="<?php if(sizeof($_GET) > 1)echo $_GET['displayname'];?>">
+
+				<div class="authorized" <?php if($auth == true)echo "id=\"hidden\"";?>>
+					<button type="button" class="btn-twitch">
+						<a id="twitch-link" href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=bo0nrcahpqfeh6i73cthasv3ysbz1r&redirect_uri=http://localhost/Channel/Link&scope=user_read">
+						<img id="twitch-icon" src="/Icons/GlitchIcon_White_24px.png"> Connect Using Twitch
+						</a>
+					</button>
 				</div>
-				<div id="input-container">
-					<label for="desc">Channel Description</label>
-					<textarea class="paragraph-container" type="text" name="desc"></textarea>
+
+				<div class="not-authorized" <?php if($auth == false)echo "id=\"hidden\"";?>>
+					<div id="input-container">
+						<label for="pic-id">Channel Picture</label>
+						<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
+						<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
+					</div>
+					<div id="input-container">
+						<label for="desc">Channel Description</label>
+						<textarea class="paragraph-container" type="text" name="desc"></textarea>
+					</div>
+					<button type="submit" name="create-btn">Create</button>
 				</div>
-				<div id="input-container">
-					<label for="pic" class="piclabel">Channel Picture</label>
-					<input type="file" name="pic" class="picin">
-				</div>
-				<button type="submit" name="create-btn">Create</button>
+
 			</form>
 		</main>
 		<script>

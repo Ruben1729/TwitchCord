@@ -9,12 +9,12 @@ img{
 	border-radius:50%;
 	margin:auto;
 	height: 150px;
-    width: 150px;
-    margin-top: 10px;
-    display: block;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border: solid #3e4442 2px;
+  width: 150px;
+  margin-top: 10px;
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: solid #3e4442 2px;
 
 }
 
@@ -37,4 +37,40 @@ input.visually-hidden:focus + label {
 	text-align:top;
 	word-wrap: break-word;
 
+}
+
+#hidden{
+  display: none;
+}
+
+.btn-twitch{
+  background-color: #6441a5;
+  border:;
+}
+
+.btn-twitch:hover{
+  background-color: #442d6b;
+}
+
+#twitch-link{
+  position: relative;
+  color: #dcdfe0;
+  bottom: 2px;
+}
+
+#twitch-link{
+  text-decoration: none;
+}
+
+#twitch-icon{
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  display: inline;
+  width: 20px;
+  height: 20px;
+  right: 40px;
+  top: 3px;
 }
