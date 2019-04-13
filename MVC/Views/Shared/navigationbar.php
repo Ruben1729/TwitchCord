@@ -8,6 +8,7 @@
         <?php if($uid != null){?>
             <li class="nav-item right"><a href="/User/Logout">Logout</a></li>
             <li class="nav-item right"><a href="/Profile">Profile</a></li>
+            <li class="nav-item right"><a href="/Community/Index">Community</a></li>
         <?php }else{?>
             <li class="nav-item right"><a href="/User/Register">Register</a></li>
         	<li class="nav-item right"><a href="/User/Login">Login</a></li>

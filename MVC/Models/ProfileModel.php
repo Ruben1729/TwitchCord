@@ -1,14 +1,15 @@
 <?php
-	
-	include '../Core/Model.php';
+
+	include_once '../MVC/Core/Model.php';
+	include_once '../MVC/SQL/SQL.php';
 
 	class Profile extends Model{
 
-		private $user_id;
-		private $displayname;
-		private $phone;
-		private $pic_id;
-		private $created_on;
+		public $user_id;
+		public $displayname;
+		public $phone;
+		public $pic_id;
+		public $created_on;
 
 		public static function createProfile($user_id, $displayname, $phone, $pic_id, $created_on)
 		{

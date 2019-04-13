@@ -1,0 +1,44 @@
+html, body{
+    height: 100%;
+    margin: 0;
+    background: #e2f5f0;
+}
+
+#root{
+    height: 100%;
+    width: 100%; 
+}
+
+#container{
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    margin: 0% 5% 1% 5%;
+    background: var(--primary-color);
+}
+
+#list{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+}
+
+#list > h3{
+    margin: auto;
+    margin-right: 0
+}
+
+#list-type{
+    right: 5%;
+    position: relative;
+}
+
+.list-btn{
+    width: 3em;
+    margin: 20px 5px;
+}
+
+.list-input{
+    margin-left: 20px;
+}

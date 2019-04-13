@@ -1,6 +1,10 @@
 /* https://coolors.co/545f66-829399-d0f4ea-e8fcc2-b1cc74 */
 :root{
-
+	--primary-color: #545f66;
+	--secondary-color: #829399;
+	--tertiary-color: #d0f4ea;
+	--accessory-color: #e8fcc2;
+	--alt-accessory-color: #b1cc74;
 }
 
 html, body{

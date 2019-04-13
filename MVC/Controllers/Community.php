@@ -3,19 +3,24 @@
     class Community extends Controller
     {
         public function Index(){
-            //get the channel name searched for, null for top
-            $channel = isset($_POST["channel_name"]) ? $_POST["channel_name"] : 'No Channel'; 
+            $this->view('Community/index');
+        }
+
+        public function Channel($channel){
+            //TODO: Check if channel and user exists 
+            $channel = null;
+            if(isset($_POST["channel_name"])){
+                $channel = $this->model('ChannelModel')->getChannel($_POST['channel_name']);
+            }
             $currentUser = null;
             if(isset($_SESSION[username])){
-                $currentUser = $this->model('UserModel')->getUser($_SESSION[username]);
-                //TEMPORARY: Don't leak information about the user
-                unset($currentUser->email);
-                unset($currentUser->password_hash);
+                $currentUser = $this->model('UserModel')->getUserSafe($_SESSION[username]);
             }
-            $data['channel_name'] = $channel;
-            $data['user'] = json_encode($currentUser);
 
-            $this->view('Community/index', $data);
+            $data['channel'] = $channel;
+            $data['user'] = $currentUser;
+
+            $this->view('Community/channel', $data);
         }
 
         public function ChannelList($username){

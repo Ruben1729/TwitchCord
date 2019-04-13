@@ -14,8 +14,7 @@ var sql = mysql.createConnection({
 sql.connect();
 
 // Global Variables
-// should follow: { username, group_chat, channel }
-var clients = [];
+var channels = { }
 
 var webSocketsServerPort = 1337;
 
@@ -38,7 +37,7 @@ wsServer.on('request', function(request) {
   sLog('OK', `User has connected`);
 
   //Store the index of the client's connection
-  var index = clients.push(connection) - 1;
+  var index = null;
   var user = null;
 
   connection.on('message', function(message) {
@@ -49,7 +48,7 @@ wsServer.on('request', function(request) {
           handleConnect(data);
         break;
         case 'disconnect':
-          handleDisconnect(data);
+          handleDisconnect();
         break;
         case 'message':
           handleMessage(data);
@@ -74,13 +73,35 @@ wsServer.on('request', function(request) {
       groupChat: data.groupChat,
       img: data.img
     };
+    
+    let channel = channels[data.channel];
+    //Check if channel exists, setup object for each group chat if needed
+    if(channel){
+      channel = {
+        groupChats = {}
+      };
+    }
+    let groupChat = channel[data.groupChat];
+    //Check if group chat exists, setup array for users if needed
+    if(groupChat){
+      groupChat = [];
+    }
+    
+    //Store current index (used when sending messages)
+    index = channels[data.channel][data.groupChat]
+    .push(connection) - 1;
   }
   
-  function handleDisconnect(data){
-    //Think about changing it to a dictionary in the future
-    clients = clients.filter(user => user.username === data.username);  
+  function handleDisconnect(){
+    //NOTE: Think about changing it to a dictionary in the future
+    clients = clients[user.channel][user.groupChat]
+              .filter(uIndex => uIndex != index);
   }
   
+  function handleSwitch(){
+
+  }
+
   function handleMessage(data){
     //Log message
     // TODO: finalize the db columns, might need channel id

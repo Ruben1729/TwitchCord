@@ -5,7 +5,10 @@ var highlight_items =
     {'src' : 'https://player.twitch.tv/?collection=abcDeF1ghIJ2kL'}
 ]; 
 
-const middle_highlight = document.querySelector("#highlight-stream").firstElementChild;
+const middle_highlight = document.querySelector("#highlight-stream");
+//No streams are displayed
+if(middle_highlight)
+    middle_highlight = middle_highlight.children[0];
 
 //Cycle logic
 function carouselDirection(element){

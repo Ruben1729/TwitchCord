@@ -1,15 +1,15 @@
 <?php
-	
-	include '../MVC/Core/Model.php';
-	include '../MVC/SQL/SQL.php';
+
+	include_once '../MVC/Core/Model.php';
+	include_once '../MVC/SQL/SQL.php';
 
 	class ChannelModel extends Model{
 
-		private $channel_name;
-		private $description;
-		private $created_on;
-		private $picture_id;
-		private $owner_id;
+		public $channel_name;
+		public $description;
+		public $created_on;
+		public $picture_id;
+		public $owner_id;
 
 		public function getSimilarChannels($name)
 		{
@@ -23,54 +23,26 @@
 			return $newChan;
 		}
 
-		public function setName($name){
-
-			$this->channel_name = $name;
-
+		public function getChannel($name){
+			$SQL = SQL::GetConnection();
+			$channel = $SQL
+				->Search()
+				->Model('ChannelModel')
+				->Where('channel_name', $name, '=')
+				->GetAsObj();
+			return $channel;
 		}
 
-		public function getName(){
-
-			return $this->channel_name;
-
-		}
-
-		public function setDescription($desc)
-		{
-
-			$this->description = $desc;
-
-		}
-
-		public function getDescription(){
-
-			return $this->description;
-
-		}
-
-		public function getCreatedOn(){
-
-			return $this->created_on;
-
-		}
-
-		public function setPicID($id)
-		{
-
-			$this->picture_id = $id;
-
-		}
-
-		public function getPicID(){
-
-			return $this->picture_id;
-
-		}
-
-		public function getOwnerID(){
-
-			return $this->owner_id;
-
+		public function getChannels($user_id){
+			$SQL = SQL::GetConnection();
+			$channel = $SQL
+				->Search()
+				->Model('follower')
+				->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'picture_id', 'owner_id'])
+				->JoinUsing('INNER JOIN', 'UserModel', 'user_id')
+				->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
+				->Where('user_id', $user_id)
+				->GetAll(PDO::FETCH_OBJ);
 		}
 
 	}

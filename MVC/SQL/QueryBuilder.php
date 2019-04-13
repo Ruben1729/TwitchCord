@@ -5,6 +5,7 @@ require_once('Builder.php');
     class QueryBuilder extends Builder {
 
         //SQL items
+        private $fields = ['*'];
         private $selectedModel;
         private $join = []; // JOIN works like this EX: (selected model) a (JOIN TYPE) (Other Model) b ON a.(field) = b.(field) 
         private $where = [];
@@ -20,6 +21,11 @@ require_once('Builder.php');
 
         public function Model($modelName){
             $this->selectedModel = $modelName;
+            return $this;
+        }
+
+        public function Fields(array $items){
+            $this->fields = $items;
             return $this;
         }
 
@@ -40,12 +46,14 @@ require_once('Builder.php');
             return $this;
         }
 
-        public function Get(){
-            return $this->Execute()->fetchAll(PDO::FETCH_ASSOC);
+        public function GetAll($PDO_TYPE = PDO::FETCH_ASSOC){
+            return $this->Execute()->fetchAll($PDO_TYPE);
         }
 
-        public function GetAsObj(){
-            return $this->Execute()->fetchObject($this->selectedModel);
+        public function GetAsObj($model = null){
+            if($model == null)
+                $model = $this->selectedModel;
+            return $this->Execute()->fetchObject($model);
         }
 
         private function Execute(){
@@ -58,7 +66,9 @@ require_once('Builder.php');
         }
 
         private function BuildString(){
-            $query = "SELECT * FROM {$this->selectedModel} ";
+            $query = $this->BuildSelect();
+            //Add table
+            $query .= " FROM {$this->selectedModel} ";
             if(!empty($this->join))
                 $query .= $this->BuildJoin();
             if(!empty($this->where))
@@ -82,6 +92,12 @@ require_once('Builder.php');
             return $query;
         }
 
+        //Fields should never be user-inputed
+        private function BuildSelect(){
+            return 'SELECT ' . implode(',', $this->fields);
+        }
+
+        //Potential to be used by another statement like 'HAVING'
         private function BuildStatement($type, $placeholder, $joiner, $array){
             $query = "$type ";
             //incrementing by 3 because there are two conditions and operator to add into the statement
