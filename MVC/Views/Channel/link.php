@@ -1,0 +1,2 @@
+<!DOCTYPE html>
+<html><a href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=bo0nrcahpqfeh6i73cthasv3ysbz1r&redirect_uri=http://localhost/Channel/Link&scope=user_read">login</a></html>

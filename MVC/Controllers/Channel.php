@@ -1,5 +1,5 @@
 <?php
-
+	
 	class Channel extends Controller{
 
 		public function Dashboard(){
@@ -14,10 +14,18 @@
 
 		}
 
-		public function Create(){
-			if(sizeof($_GET) > 1){
-				print_r($_GET);
+		public function Link(){
+			$displayname = getToken($_GET['code']);
+			if(!empty($displayname)){
+				$newChannel = $this->model('ChannelModel')->insertChannel($displayname, "", null, $_SESSION['uid']);
+				header("Location: /Channel/Create");
+			} else {
+				header("Location: /Channel/Create");
 			}
+			$this->view('Channel/link');
+		}
+
+		public function Create(){
 			$this->view('Channel/create');
 		}
 
@@ -26,8 +34,6 @@
 			$name = $_POST['name'];
 			$desc = $_POST['desc'];
 			$pic = $_POST['pic'];
-
-			print_r($_POST);
 
 			$this->view('Channel/create');
 

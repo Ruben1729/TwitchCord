@@ -10,8 +10,12 @@
 
 		public function Settings(){
 
-			$this->view('Profile/settings');
+			$this->view('Profile/Settings');
 
+		}
+
+		public function POST_Settings(){
+			$this->view('Profile/Settings');
 		}
 
 		public function Create(){

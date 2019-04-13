@@ -1,37 +1,5 @@
 <?php
-/*
-<html>
-	<body>
-		<audio id="sound" controls>
-		</audio>
-		<video id="video" width="400" height="300" controls>
-		</video>
 
-		<script>
-			(function(){
-
-				var video = document.getElementById('sound'),
-					vendorURL = window.URL || window.webkitURL;
-
-				navigator.getMedia = navigator.getUserMedia ||
-									 navigator.webkitGetUserMedia ||
-									 navigator.mozGetUserMedia ||
-									 navigator.msGetUserMedia;
-
-				navigator.getMedia({
-					video: false,
-					audio: true
-				}, function(stream){
-					video.srcObject = stream;
-					video.play();
-				}, function(error){
-					console.log(error)
-				});
-			})();
-		</script>
-	</body>
-</html>
-*/
 	class User extends Controller{
 
 		public function Register(){
