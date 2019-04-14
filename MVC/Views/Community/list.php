@@ -18,13 +18,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <div id="root">
         <div id='channel-list'>
-            <p>Channel's Found</p>
+            <h2>Channel's Found</h2>
+            <p>Search for a channel</p>
             <input id="channel-input" type="input" value="<?=$_POST['channel_name'];?>">
             <button id="channel-search" type="submit">Submit</button>
+
+            <hr class="divider">
+
             <ul>
                 <li>
-                    <img id="img-user"src="">
-                    <span id="user"></span>
+                    <span id="user">
+                        <img id="img-user"src="/Pictures/default.png">
+                        <p>TEST USER</p>
+                    </span>
                     <button id="follow-button">Follow</button>
                 </li>
             </ul>

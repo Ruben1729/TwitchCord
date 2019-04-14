@@ -1,5 +1,5 @@
 <?php 
-    $uid = isset($_SESSION["uid"]) ? $_SESSION["uid"] : null;
+    $uid = isset($_SESSION[uid]) ? $_SESSION[uid] : null;
 ?>
 <link rel="stylesheet" href="/CSS/NavBar.css">
 <div id="navigation">
@@ -9,7 +9,7 @@
             <div class="dropdown right">
                 <div class="dropProfile">
                     <img class="left" src="/Pictures/default.png">
-                    <h3 class="left">USER</h3>
+                    <h3 class="left"><?= $_SESSION[username] ?></h3>
                 </div>
                 <div class="dropdown-content">
                     <a href="/User/Logout">Logout</a>

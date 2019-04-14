@@ -5,6 +5,8 @@
 	--tertiary-color: #d0f4ea;
 	--accessory-color: #e8fcc2;
 	--alt-accessory-color: #b1cc74;
+
+	--card-bg: #f1f1f1;
 }
 
 html, body{
@@ -74,4 +76,8 @@ input:focus:not(.inerror){
 input:hover:not(.inerror){
 	transition: 0.05s;
 	border-color: black;
+}
+
+.divider {
+	width: 40em;
 }
