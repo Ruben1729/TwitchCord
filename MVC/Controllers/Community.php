@@ -26,7 +26,7 @@
         public function ChannelList($username){
             $channels = $this
             ->model('ChannelModel')
-            ->getSimilarChannels($username);
+            ->getChannels($username);
             
             header('Content-Type: application/json');
             echo json_encode($channels);

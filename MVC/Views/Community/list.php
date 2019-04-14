@@ -14,29 +14,31 @@
 </head>
 
 <body>
+    <template>  
+        <li>
+            <span class="user">
+                <img class="img-user" src="">
+                <p class="username"></p>
+            </span>
+            <button class="follow-button">Follow</button>
+        </li>
+    </template>
     <?php require "../MVC/Views/Shared/navigationbar.php" ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <div id="root">
-        <div id='channel-list'>
-            <h2>Channel's Found</h2>
-            <p>Search for a channel</p>
-            <input id="channel-input" type="input" value="<?=$_POST['channel_name'];?>">
-            <button id="channel-search" type="submit">Submit</button>
+        <div id="root">
+            <div id='channel-list'>
+                <h2>Channel's Found</h2>
+                <p>Search for a channel</p>
+                <input id="channel-input" type="input" value="<?= $_POST['channel_name']; ?>">
+                <button id="search-button" type="submit">Submit</button>
 
-            <hr class="divider">
-
-            <ul>
-                <li>
-                    <span id="user">
-                        <img id="img-user"src="/Pictures/default.png">
-                        <p>TEST USER</p>
-                    </span>
-                    <button id="follow-button">Follow</button>
-                </li>
-            </ul>
+                <hr class="divider">
+                <!-- Channel List -->
+                <ul>
+                </ul>
+            </div>
         </div>
-    </div>
-    <script src="/Javascript/Channel_List.js"></script>
+        <script src="/Javascript/Community/Channel_List.js"></script>
 </body>
 
-</html> 
+</html>

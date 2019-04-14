@@ -108,7 +108,7 @@ require_once('Builder.php');
                 $query .= " $field ";
                 
                 //insert comparision to EX: WHERE <=> :placeholder
-                $query .= " $operator  $placeholder" . ($i + 1) . ' ';
+                $query .= " $operator $placeholder" . ($i + 1) . ' ';
                 
                 if($i < count($array) - 3)
                     $query .= " $joiner ";

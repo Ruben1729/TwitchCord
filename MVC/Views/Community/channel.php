@@ -65,7 +65,7 @@
             <div></div>
         </div>
     </div>
-    <script src="/Javascript/Community.js"></script>
+    <script src="/Javascript/Community/Community.js"></script>
 </body>
 
 </html>

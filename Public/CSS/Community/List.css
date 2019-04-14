@@ -4,20 +4,20 @@
     align-items: center;
 }
 
-#img-user {
+.img-user {
     border-radius: 50%;
     height: 64px;
     width: 64px;
 }
 
-#user {
+.img-user, .username { float: left; }
+
+.user {
     display: block;
     margin: 1em;
 }
 
-#user > img, #user > p { float: left; }
-
-#user > p {
+.username {
     margin: 2em;
 }
 
