@@ -80,10 +80,9 @@
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: fixed;
   background-color: var(--card-bg);
   min-width: 7em;
-  max-width: 25vw;
   width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
