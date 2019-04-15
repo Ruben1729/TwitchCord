@@ -34,18 +34,18 @@
 			<form enctype="multipart/form-data" action="create" method="post">
 				<h1>Create Your Profile</h1>
 
-				<div id="input-container">
+				<div class="input-container">
 					<label for="pic-id">Upload Picture</label>
 					<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
 					<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
 				</div>
 
-				<div id="input-container">
+				<div class="input-container">
 					<label for="displayName">Display Name</label><span id="required-indicator"> - Required</span>
 					<input type="text" name="displayName">
 				</div>
 				
-				<div id="input-container">
+				<div class="input-container">
 					<label for="bio">Bio</label>
 					<textarea class="paragraph-container" type="text" name="bio"></textarea>
 				</div>
