@@ -12,10 +12,10 @@
                     <h3 class="left"><?= $_SESSION[username] ?></h3>
                 </div>
                 <div class="dropdown-content">
-                    <a href="/User/Logout">Logout</a>
+                    <a href="/Community/channel">Community</a>
                     <a href="/Profile/Settings">Profile</a>
                     <a href="/Channel/Dashboard">Channel</a>
-                    <a href="/Community/Index">Community</a>
+                    <a href="/User/Logout">Logout</a>
                 </div>
             </div>
         <?php }else{?>
