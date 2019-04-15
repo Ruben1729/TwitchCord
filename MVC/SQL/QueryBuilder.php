@@ -9,6 +9,7 @@ require_once('Builder.php');
         private $selectedModel;
         private $joinUsing = [];
         private $where = [];
+        private $distinct = false;
 
         //Classes
         private $PDO;
@@ -21,6 +22,11 @@ require_once('Builder.php');
 
         public function Model($modelName){
             $this->selectedModel = $modelName;
+            return $this;
+        }
+
+        public function Distinct(){
+            $this->distinct = true;
             return $this;
         }
 
@@ -40,8 +46,8 @@ require_once('Builder.php');
         //     return $this;
         // }
 
-        public function Where($field, $comparision, $operator = '<=>'){
-            array_push($this->where, $field, $comparision, $operator);
+        public function Where($field, $comparision, $operator = '<=>', $joiner = 'AND'){
+            array_push($this->where, $field, $comparision, $operator, $joiner);
             return $this;
         }
 
@@ -71,7 +77,7 @@ require_once('Builder.php');
             if(!empty($this->joinUsing))
                 $query .= $this->BuildJoinUsing();
             if(!empty($this->where))
-                $query .= $this->BuildStatement('WHERE', ':where', 'AND', $this->where);
+                $query .= $this->BuildStatement('WHERE', ':where', $this->where);
             return $query;
         }
 
@@ -83,37 +89,38 @@ require_once('Builder.php');
                 $joinModel = $this->joinUsing[$i + 1];
                 $field = $this->joinUsing[$i + 2];
 
-                $query .= "$joinType $joinModel USING ($field)";
+                $query .= "$joinType $joinModel USING ($field) ";
             }
             return $query;
         }
 
         //Fields should never be user-inputed
         private function BuildSelect(){
-            return 'SELECT ' . implode(',', $this->fields);
+                                //Optional Distinct
+            return 'SELECT ' . ($this->distinct ? 'DISTINCT' : '') . implode(',', $this->fields);
         }
 
         //Potential to be used by another statement like 'HAVING'
-        private function BuildStatement($type, $placeholder, $joiner, $array){
+        private function BuildStatement($type, $placeholder, $array){
             $query = "$type ";
             //incrementing by 3 because there are two conditions and operator to add into the statement
-            for($i= 0; $i < count($array); $i+= 3){
+            for($i= 0; $i < count($array); $i+= 4){
                 $operator = $array[$i + 2];
+                $joiner = $array[$i + 3];
                 //Insert field
                 $field = strtolower($array[$i]);
-                $query .= " $field ";
                 
                 //insert comparision to EX: WHERE <=> :placeholder
-                $query .= " $operator $placeholder" . ($i + 1) . ' ';
+                $query .= "$field $operator $placeholder" . ($i + 1) . ' ';
                 
-                if($i < count($array) - 3)
-                    $query .= " $joiner ";
+                if($i < count($array) - 4)
+                    $query .= "$joiner ";
             }
             return $query;
         }
 
         private function BindValues($placeholder, $array, &$stmt){
-            for($i= 0; $i < count($this->where); $i+=3){
+            for($i= 0; $i < count($this->where); $i+=4){
                 //First variable inside array is the field (WHERE)
                 $stmt->bindValue($placeholder . ($i + 1), $array[$i + 1], $this->GetPDOType($array[$i + 1]));
             }

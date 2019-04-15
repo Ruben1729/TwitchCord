@@ -52,6 +52,12 @@ class SQL{
         $this->pdo = $PDO;
     }
 
+    public function Query($query, $PDOType = PDO::FETCH_ASSOC){ 
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll($PDOType);
+    }
+
     public function Search(){
         return new QueryBuilder($this->pdo, $this);
     }

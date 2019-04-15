@@ -12,6 +12,8 @@
                     return PDO::PARAM_INT;
                 case 'string':
                     return PDO::PARAM_STR;
+                case 'NULL':
+                    return PDO::PARAM_NULL;
                 default:
                     return PDO::PARAM_STR;
             }
