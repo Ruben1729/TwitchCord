@@ -6,21 +6,21 @@
             $this->view('Community/index');
         }
 
-        public function Channel($channel){
-            //TODO: Check if channel and user exists 
-            $channel = null;
-            if(isset($_POST["channel_name"])){
-                $channel = $this->model('ChannelModel')->getChannel($_POST['channel_name']);
-            }
-            $currentUser = null;
+        public function Channel($channelRequested = null){
+            //Get user information
             if(isset($_SESSION[username])){
                 $currentUser = $this->model('UserModel')->getUserSafe($_SESSION[username]);
             }
+            //Get the user's channels
+            $this->view('Community/channel', ['channels' => $channels, 'user' => $currentUser]);
+        }
 
-            $data['channel'] = $channel;
-            $data['user'] = $currentUser;
-
-            $this->view('Community/channel', $data);
+        public function POST_Follow(){
+            $follower_data = $_POST['follower_data'];
+            //Set fields from JSON data and submit current obj to database
+            $this->model('Follower')
+            ->Set(json_decode($follower_data, true))
+            ->Submit();
         }
 
         public function ChannelList($username){

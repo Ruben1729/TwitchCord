@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +11,9 @@
 </head>
 
 <body>
+    <script>
+        var user = <?= json_encode($_SESSION)?>
+    </script>
     <template>  
         <li>
             <span class="user">

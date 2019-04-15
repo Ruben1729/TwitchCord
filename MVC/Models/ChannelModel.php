@@ -25,16 +25,16 @@
 
 		public function getChannels($name)
 		{
-
 			$SQL = SQL::GetConnection();
-			$newChan = $SQL 
+			$channels = $SQL 
 				-> Search()
 				-> Model('ChannelModel')
-				-> Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'owner_id'])
+				-> Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'owner_id', 'user_id'])
 				-> JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+				-> JoinUsing('LEFT JOIN', 'follower', 'channel_id')
 				-> Where("channel_name", $name, 'LIKE')
 				-> GetAll(PDO::FETCH_OBJ);
-			return $newChan;
+			return $channels;
 		}
 
 		public function getChannel($name){
