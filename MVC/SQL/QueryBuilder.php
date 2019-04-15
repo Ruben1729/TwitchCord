@@ -7,7 +7,7 @@ require_once('Builder.php');
         //SQL items
         private $fields = ['*'];
         private $selectedModel;
-        private $join = []; // JOIN works like this EX: (selected model) a (JOIN TYPE) (Other Model) b ON a.(field) = b.(field) 
+        private $joinUsing = [];
         private $where = [];
 
         //Classes
@@ -30,16 +30,15 @@ require_once('Builder.php');
         }
 
         public function JoinUsing($joinType, $modelName, $field){
-            //Duplicate with is to replicate ON functionality since Using is Syntactic sugar
-            array_push($this->join, $joinType, $modelName, $field, $field);
+            array_push($this->joinUsing, $joinType, $modelName, $field);
             return $this;
         }
 
-        public function JoinOn($type, $modelID, $field, $field2){
-            $modelName = Model::GetModelName($modelID);
-            array_push($this->join, $type, $modelName, $field, $field2);
-            return $this;
-        }
+        // public function JoinOn($type, $modelID, $field, $field2){
+        //     $modelName = Model::GetModelName($modelID);
+        //     array_push($this->join, $type, $modelName, $field, $field2);
+        //     return $this;
+        // }
 
         public function Where($field, $comparision, $operator = '<=>'){
             array_push($this->where, $field, $comparision, $operator);
@@ -69,25 +68,22 @@ require_once('Builder.php');
             $query = $this->BuildSelect();
             //Add table
             $query .= " FROM {$this->selectedModel} ";
-            if(!empty($this->join))
-                $query .= $this->BuildJoin();
+            if(!empty($this->joinUsing))
+                $query .= $this->BuildJoinUsing();
             if(!empty($this->where))
                 $query .= $this->BuildStatement('WHERE', ':where', 'AND', $this->where);
             return $query;
         }
 
-        private function BuildJoin(){
-            $query = 'a ';
-            $alias = 'a';
+        private function BuildJoinUsing(){
+            $query = '';
             //incrementing by 4 because there are four fields (join type, joining model, )
-            for ($i=0; $i < count($this->join); $i+= 4) { 
-                $joinType = $this->join[$i];
-                $joinModel = $this->join[$i + 1];
-                $field1 = strtolower($this->join[$i + 2]);
-                $field2 = strtolower($this->join[$i + 3]);
-                $currentAlias = ++$alias;
+            for ($i=0; $i < count($this->joinUsing); $i+= 3) { 
+                $joinType = $this->joinUsing[$i];
+                $joinModel = $this->joinUsing[$i + 1];
+                $field = $this->joinUsing[$i + 2];
 
-                $query .= "$joinType $joinModel $currentAlias ON a.$field1 = $currentAlias.$field2 ";
+                $query .= "$joinType $joinModel USING ($field)";
             }
             return $query;
         }
