@@ -60,12 +60,11 @@
 					$data['emailError'] = "Email is already in use.";
 				else
 				{
-
 					$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
-					$newUser = $this->model('UserModel')->insertUser($username, $email, $hash_pwd);
-
+					$this->model('UserModel')
+						->Set(['username' => $username, 'email' => $email, 'password_hash' => $hash_pwd])
+						->Submit();
 					header('Location: Login');
-
 				}
 			}
 

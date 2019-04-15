@@ -13,4 +13,16 @@ class Model{
     public function getNumOfFields() {
         return count($this->getDBFields());
     }
+
+    public function Set($data){
+        foreach ($data as $key => $value) $this->{$key} = $value;
+        return $this;
+    }
+
+    public function Submit(){
+        $SQL = SQL::GetConnection();
+        $SQL
+        ->Modify()
+        ->Submit($this);
+    }
 }
