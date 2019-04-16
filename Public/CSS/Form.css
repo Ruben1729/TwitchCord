@@ -98,6 +98,8 @@ input, textarea{
 
 	border-style: none;
 	border: solid #29302e 1px;
+
+	resize: none;
 }
 
 input:focus:not(.inerror){

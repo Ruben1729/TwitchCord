@@ -42,12 +42,12 @@
 				</div>
 
 				<div class="not-authorized" <?php if($auth == false)echo "id=\"hidden\"";?>>
-					<div id="input-container">
+					<div class="input-container">
 						<label for="pic-id">Channel Picture</label>
 						<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
 						<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
 					</div>
-					<div id="input-container">
+					<div class="input-container">
 						<label for="desc">Channel Description</label>
 						<textarea class="paragraph-container" type="text" name="desc"></textarea>
 					</div>
