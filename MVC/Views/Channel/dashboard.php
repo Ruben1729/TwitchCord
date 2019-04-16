@@ -1,3 +1,16 @@
+<?php
+	
+	$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+	$auth = true;
+	if(empty($userChannel)){
+		$auth = false;
+	} else {
+		if(array_key_exists('description', $data)){
+		$description = $data['description'];
+		}
+	}
+	
+?>
 <!DOCTYPE html>
 <html>
 	<header>
@@ -25,7 +38,7 @@
 				
 				<div class="right input-container">
 					<label for="bio">Channel Bio</label>
-					<textarea class="paragraph-container" type="text" name="bio"></textarea>
+					<textarea class="paragraph-container" type="text" name="bio"><?php if(isset($description))echo $description ?></textarea>
 				</div>
 
 				<div class="left input-container">

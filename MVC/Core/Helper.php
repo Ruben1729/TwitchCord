@@ -59,27 +59,44 @@
 	    $fileTmpName  = $file['userImg']['tmp_name'];
 	    $fileType = $file['userImg']['type'];
 
-	    $fileExtension = strtolower(end(explode('.',$fileName)));
+	    $fileNameDecons = (explode('.',$fileName));
+	    $fileExtension = strtolower(end($fileNameDecons));
 
-	    $uploadPath = $currentDir . $uploadDirectory . uniqid() . '.' . $fileExtension;
+	    $fileNameEncrypted = uniqid();
+	    $uploadPath = $currentDir . $uploadDirectory . $fileNameEncrypted . '.' . $fileExtension;
+
+	    // Check $_FILES['upfile']['error'] value.
+	    switch ($_FILES['userImg']['error']) {
+	        case UPLOAD_ERR_OK:
+	            break;
+	        case UPLOAD_ERR_NO_FILE:
+	            return ('ERROR: No file sent.');
+	        case UPLOAD_ERR_INI_SIZE:
+	        case UPLOAD_ERR_FORM_SIZE:
+	            return ('ERROR: Exceeded filesize limit.');
+	        default:
+	            return ('ERROR: Unknown errors.');
+	    }
 
 	    if(empty($fileName)){
 	    	return;
 	    }
 
         if (! in_array($fileExtension,$fileExtensions)) {
-            return "This file extension is not allowed. Please upload a JPEG or PNG file";
+            return "ERROR: This file extension is not allowed. Please upload a JPEG or PNG file";
         }
 
         if ($fileSize > 2000000) {
-            return "This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
+            return "ERROR: This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
         }
 
         if (empty($errors)) {
             $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
             if (!$didUpload) {
-                return "Unknown Error occurred. Please contact an admin.";
+                return "ERROR: Unknown Error occurred. Please contact an admin.";
+            }else{
+            	return "$uploadDirectory$fileNameEncrypted.$fileExtension";
             }
 
         }

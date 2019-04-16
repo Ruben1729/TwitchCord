@@ -26,13 +26,10 @@
 
 		public function POST_Create(){
 
-			$result = uploadImg($_FILES);
 			$displayName = $_POST['displayName'];
 			$bio = $_POST['bio'];
 
-			if(!empty($result)){
-				$data['imgError'] = $result;
-			}
+			print_r($_FILE);
 
 			if(empty($displayName)){
 				$data['nameError'] = "This field is required";

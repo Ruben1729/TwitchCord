@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2019 at 04:29 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: Apr 07, 2019 at 04:05 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -38,15 +38,15 @@ CREATE TABLE `banned` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `channelmodel`
+-- Table structure for table `channel`
 --
 
-CREATE TABLE `channelmodel` (
+CREATE TABLE `channel` (
   `channel_id` int(5) NOT NULL,
   `channel_name` varchar(20) NOT NULL,
   `description` varchar(80) NOT NULL,
-  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `picture_id` int(5) DEFAULT NULL,
+  `created_on` date NOT NULL,
+  `picture_id` int(5) NOT NULL,
   `owner_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -118,8 +118,9 @@ CREATE TABLE `picture` (
 CREATE TABLE `profilemodel` (
   `profile_id` int(11) NOT NULL,
   `user_id` int(5) NOT NULL,
+  `display_name` varchar(60) NOT NULL,
   `bio` varchar(80) NOT NULL,
-  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_on` date NOT NULL,
   `picture_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -165,8 +166,7 @@ CREATE TABLE `usermodel` (
 
 INSERT INTO `usermodel` (`user_id`, `username`, `password_hash`, `email`) VALUES
 (1, 'test', '$2y$10$cSM4/aA902vL3YY0TchzjOa4I8Eevgjplmk2N4cSKZWhTfjsdu4ym', 'test@test.com'),
-(2, 'test2', '$2y$10$lYu/liAJOGjE0qVrVL2xEO1SrfIB/6fcKKBPoGl2vwFS1gPEM8m16', 'gameactin@gmail.com'),
-(3, 'Root', '$2y$10$jatArJSnx26KTFWhFccyauzkIpTTqNBz4yePLTq4NmviaIjjIgZoy', 'root@tor.com');
+(2, 'test2', '$2y$10$lYu/liAJOGjE0qVrVL2xEO1SrfIB/6fcKKBPoGl2vwFS1gPEM8m16', 'gameactin@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -179,12 +179,12 @@ ALTER TABLE `banned`
   ADD PRIMARY KEY (`user_id`,`channel_id`);
 
 --
--- Indexes for table `channelmodel`
+-- Indexes for table `channel`
 --
-ALTER TABLE `channelmodel`
+ALTER TABLE `channel`
   ADD PRIMARY KEY (`channel_id`),
-  ADD UNIQUE KEY `owner_id` (`owner_id`),
-  ADD UNIQUE KEY `picture_id` (`picture_id`);
+  ADD UNIQUE KEY `picture_id` (`picture_id`),
+  ADD UNIQUE KEY `owner_id` (`owner_id`);
 
 --
 -- Indexes for table `follower`
@@ -245,9 +245,9 @@ ALTER TABLE `usermodel`
 --
 
 --
--- AUTO_INCREMENT for table `channelmodel`
+-- AUTO_INCREMENT for table `channel`
 --
-ALTER TABLE `channelmodel`
+ALTER TABLE `channel`
   MODIFY `channel_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
@@ -284,7 +284,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `usermodel`
 --
 ALTER TABLE `usermodel`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -294,7 +294,7 @@ ALTER TABLE `usermodel`
 -- Constraints for table `follower`
 --
 ALTER TABLE `follower`
-  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channelmodel` (`channel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channel` (`channel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

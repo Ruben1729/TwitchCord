@@ -17,7 +17,7 @@
 			$newChannel = $SQL 
 				-> Search()
 				-> Model('ChannelModel')
-				-> Where("owner_id", $uid)
+				-> Where('owner_id', $uid)
 				-> GetAsObj();
 
 			return $newChannel;

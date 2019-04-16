@@ -21,6 +21,10 @@
 		<link rel="stylesheet" href="/CSS/NavBar.css">
 		<link rel="stylesheet" href="/CSS/Profile.css">
 
+		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+		<script src="/Javascript/Animations.js"></script>
+
 		<title>TwitchCord</title>
 	</head>
 	<body>
@@ -30,7 +34,7 @@
 		</video>
 
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> class="main-form">
-			<form>
+			<form enctype="multipart/form-data" action="create" method="post">
 				<h1>Channel Creation</h1>
 
 				<div class="authorized" <?php if($auth == true)echo "id=\"hidden\"";?>>
@@ -57,6 +61,24 @@
 			</form>
 		</main>
 		<script>
+			var elem = document.getElementById("pic-id");
+			var fileIn = document.getElementById("file");
+
+			elem.addEventListener("click", function(){
+				fileIn.click();
+			});
+
+			function readURL(input) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+
+		            reader.onload = function (e) {
+		                $('#pic-id').attr('src', e.target.result)
+		            };
+
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
 			window.addEventListener("load", function() {
 
 				var reload = <?php 
