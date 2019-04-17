@@ -58,7 +58,7 @@ class ChannelModel extends Model
 	}
 
 
-	public function getChannelByUID($uid)
+	public function getChannelById($uid)
 	{
 		$SQL = SQL::GetConnection();
 		$newChannel = $SQL
