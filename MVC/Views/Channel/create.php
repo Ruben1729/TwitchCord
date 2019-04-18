@@ -1,11 +1,5 @@
 <?php
-	
-	$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
-	$auth = true;
-	if(empty($userChannel)){
-		$auth = false;
-	}
-
+	$auth = $data['auth'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,11 +32,9 @@
 				<h1>Channel Creation</h1>
 
 				<div class="authorized" <?php if($auth == true)echo "id=\"hidden\"";?>>
-					<button type="button" class="btn-twitch">
-						<a id="twitch-link" href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=bo0nrcahpqfeh6i73cthasv3ysbz1r&redirect_uri=http://localhost/Channel/Link&scope=user_read">
+					<a id="twitch-link" href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=bo0nrcahpqfeh6i73cthasv3ysbz1r&redirect_uri=http://localhost/Channel/Link&scope=user_read"><button type="button" class="btn-twitch">
 						<img id="twitch-icon" src="/Icons/GlitchIcon_White_24px.png"> Connect Using Twitch
-						</a>
-					</button>
+					</button></a>
 				</div>
 
 				<div class="not-authorized" <?php if($auth == false)echo "id=\"hidden\"";?>>
@@ -79,6 +71,7 @@
 		            reader.readAsDataURL(input.files[0]);
 		        }
 		    }
+		    
 			window.addEventListener("load", function() {
 
 				var reload = <?php 

@@ -1,4 +1,5 @@
 <?php
+	include 'Verify.php';
 
     class Controller{
         public function model($model){

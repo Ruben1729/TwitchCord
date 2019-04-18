@@ -1,17 +1,57 @@
 <?php
-	
 	class Channel extends Controller{
-		public function Dashboard(){
-			$data = [];
-			$newChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
-			if(!empty($newChannel))
-				$data['description'] = $newChannel->description;
 
+		public function Dashboard(){
+			verifyLoggedIn();
+
+			$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+			if(empty($userChannel)){
+				$data['auth'] = false;
+			}
+			else{
+				$data['auth'] = true;
+				$data['description'] = $userChannel->description;
+				$id = $userChannel->picture_id;
+				$pictureModel = $this->model('PictureModel')->getPicture($id);
+				$data['path'] = $pictureModel->path;
+			}
 			$this->view('Channel/Dashboard', $data);
 		}
 
 		public function POST_Dashboard(){
-			$this->view('Channel/Dashboard');
+			verifyLoggedIn();
+
+			$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+
+			if(empty($userChannel)){
+				$data['auth'] = false;
+			}
+			else{
+				$data['auth'] = true;
+
+				$userChannel->description = $_POST['desc'];
+
+				$result = uploadImg($_FILES);
+
+				if(strpos($result, 'ERROR') === 0){
+					$data['picture_error'] = $result;
+				} else {
+
+				 	$newPic = $this->model('PictureModel')
+				 	 			   ->Set(['picture_id' => null, 'path' => $result, 'owner_id' => $_SESSION['uid']])
+				 	 			   ->Submit();
+
+				 	$channelPic = $this->model('PictureModel')->getPictureByPath($result);
+				 	$userChannel->picture_id = $channelPic->picture_id;
+				}
+				$userChannel->Submit();
+				$id = $userChannel->picture_id;
+				$pictureModel = $this->model('PictureModel')->getPicture($id);
+				$data['path'] = $pictureModel->path;
+				$data['description'] = $_POST['desc'];
+			}
+
+			$this->view('Channel/Dashboard', $data);
 		}
 
 		public function Link(){
@@ -28,12 +68,21 @@
 		}
 
 		public function Create(){
-			$this->view('Channel/create');
+			verifyLoggedIn();
+
+			$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+			if(empty($userChannel))
+				$data['auth'] = false;
+			else
+				$data['auth'] = true;
+
+			$this->view('Channel/create', $data);
 		}
 
 		public function POST_Create(){
-			$desc = $_POST['desc'];
+			verifyLoggedIn();
 
+			$desc = $_POST['desc'];
 			$result = uploadImg($_FILES);
 
 			$newChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
@@ -43,7 +92,7 @@
 				echo $result;
 			} else {
 				$newPic = $this->model('PictureModel')
-				 			   ->Set(['picture_id' => null, 'path' => $result])
+				 			   ->Set(['picture_id' => null, 'path' => $result, 'owner_id' => $_SESSION['uid']])
 				 			   ->Submit();
 
 				$channelPic = $this->model('PictureModel')->getPictureByPath($result);

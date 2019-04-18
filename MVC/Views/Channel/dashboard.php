@@ -1,15 +1,11 @@
 <?php
-	
-	$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
-	$auth = true;
-	if(empty($userChannel)){
-		$auth = false;
-	} else {
-		if(array_key_exists('description', $data)){
+	$auth = $data['auth'];
+	$description;
+	$path;
+	if(count($data) > 1){
 		$description = $data['description'];
-		}
+		$path = $data['path'];
 	}
-	
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,36 +14,33 @@
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Profile.css">
 
-		<link rel="stylesheet" href="/CSS/Dashboard.css">
-
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 		<script src="/Javascript/Animations.js"></script>
 	</header>
 	<body>
 		<?php require "../MVC/Views/Shared/verticalNavigation.php" ?>
-		<main id="main-form">
-			<form enctype="multipart/form-data" action="create" method="post">
+		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> id="main-form">
+			<form enctype="multipart/form-data" action="dashboard" method="post">
 				<h1>Channel Dashboard</h1>
 
-				<div class="right input-container">
-					<label for="pic-id">Upload Picture</label>
-					<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
-					<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
-				</div>
-				
-				<div class="right input-container">
-					<label for="bio">Channel Bio</label>
-					<textarea class="paragraph-container" type="text" name="bio"><?php if(isset($description))echo $description ?></textarea>
+				<div class="not-authorized" <?php if($auth == true)echo "id=\"hidden\"";?>>
+					<a href="/Channel/Create"><button type="button">Create A Channel</button></a>
 				</div>
 
-				<div class="left input-container">
-					<label>Followers</label>
-					<div class="display-followers">
+				<div class="authorized" <?php if($auth == false)echo "id=\"hidden\"";?>>
+					<div class="input-container">
+						<label for="pic-id">Channel Picture</label>
+						<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
+						<img id="pic-id" src="<?php if($path !== null) echo "$path"; else echo "/Pictures/default.png"; ?>" alt="Profile Pic">
 					</div>
+					<div class="input-container">
+						<label for="desc">Channel Description</label>
+						<textarea class="paragraph-container" type="text" name="desc"><?php if(isset($description)) echo "$description"; ?></textarea>
+					</div>
+					<button type="submit" name="save-btn">Save Changes</button>
 				</div>
-				
-				<button type="submit" name="save-btn">Save Changes</button>
+
 			</form>
 		</main>
 		<script>
@@ -89,5 +82,13 @@
 
 			})
 		</script>
+		<style>
+			a{
+				color: white;
+			}
+			a:hover{
+				text-decoration: none;
+			}
+		</style>
 	</body>
 </html>
