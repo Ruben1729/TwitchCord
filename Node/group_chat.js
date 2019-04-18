@@ -32,7 +32,7 @@ io.on('connection', socket => {
 
   socket.on('join group-chat', group_chat => {
     Log(OK, `User joined: ${group_chat}`);
-    socket.join('room');
+    socket.join(group_chat);
   });
 
 });

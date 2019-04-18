@@ -35,10 +35,13 @@ class ChannelModel extends Model
 				->Where('user_id', $user_id)
 				->GetAll(PDO::FETCH_KEY_PAIR);
 
-			// Check if key exists
-			foreach ($channels as $channel) {
-				if ($followed[$channel->channel_id]) {
-					$channel->isFollowed = true;
+			//Stop if not followed anyone yet
+			if ($followed) {
+				// Check if key exists
+				foreach ($channels as $channel) {
+					if ($followed[$channel->channel_id]) {
+						$channel->isFollowed = true;
+					}
 				}
 			}
 		}

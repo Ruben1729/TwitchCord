@@ -27,10 +27,9 @@ class Community extends Controller
         $info->user = $this->model('UserModel')->getProfile($_SESSION[username]);
         //Get the channels for the current user
         $info->channels = $this->model('ChannelModel')->getUsersChannels($info->user->user_id);
-        // //get the group_chat information for the first channel
-        // $first_channel = isset($info->channels[0]->channel_id) ? $info->channels[0]->channel_id : null;
-        // if ($first_channel != null)
-        //     $info->group_chat = $this->model('GroupChat')->getGroupChats();
+        //get the group_chat information for the first channel
+        $first_channel = isset($info->channels[0]->channel_id) ? $info->channels[0]->channel_id : null;
+        $info->group_chats = $this->model('GroupChat')->getGroupChats($first_channel);
 
         echo json_encode($info);
     }

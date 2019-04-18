@@ -4,6 +4,7 @@ import "./chat_window.js";
 export default Vue.component('chat', {
     props: {
         channel: Object,
+        group_chat: Object,
         user: Object,
     },
     sockets: {
@@ -34,7 +35,7 @@ export default Vue.component('chat', {
     },
     computed: {
         current_group_chat: function () {
-            return `{${this.channel.channel_name}}-[test]`;
+            return `{${this.group_chat.channel_id}}-[${this.group_chat.group_chat_id}]`;
         }
     },
     watch: {

@@ -11,11 +11,15 @@ var app = new Vue({
     el: '#root > #app',
     data: function () {
         return {
+            user: {},
+            //Socket.IO
             isConnected: true,
             connection: null,
+            //Channel
             channels: [],
-            user: {},
+            group_chats: [],
             channel_index: 0,
+            group_chat_index: 0,
             css: {
                 root: {
                     width: '100%',
@@ -32,10 +36,10 @@ var app = new Vue({
     },
     computed: {
         current_channel: function () {
-            if (this.channels && this.channels.length <= 0)
-                return null
-            else
-                return this.channels[this.channel_index];
+            return this.channels[this.channel_index];
+        },
+        current_group_chat: function () {
+            return this.group_chats[this.group_chat_index];
         }
     },
     methods: {
@@ -49,6 +53,7 @@ var app = new Vue({
                     let data = response.data;
                     vm.channels = data.channels;
                     vm.user = data.user;
+                    vm.group_chats = data.group_chats;
                 })
                 .catch(function (response) {
                     console.log('Invalid Request: ' + response.data.error);
@@ -65,10 +70,13 @@ var app = new Vue({
             <groupchat-bar></groupchat-bar>
             <chat v-on:connection-state="updateConnection"
                   v-bind:channel="current_channel"
+                  v-bind:group_chat="current_group_chat"
                   v-bind:user="user">
             </chat>
         </div>
-        <div v-else>NOT CONNECTED</div>
+        <div v-else-if="!isConnected">
+            NOT CONNECTED
+        </div>
     </div>
     `,
 });
