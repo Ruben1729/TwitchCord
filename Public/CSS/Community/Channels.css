@@ -10,5 +10,41 @@ html, body{
     flex-flow: column;
 }
 
+.group-item {
+    list-style-type: none;
+    font-size: 150%;
+    text-align: center;
+    padding: 15% 0;
+    width: 100%;
+}
+
+.group-item:hover{
+    background: #75777a;
+}
+
+.channel{
+    border-radius: 50%;
+}
+
+.channel:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(255, 255, 255);
+}
+
+.img{
+    padding: 15% 0;
+}
+
+.noImg{
+    margin: 40% 0;
+    background: rgb(105, 182, 196);
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    font-size: 1vw;
+    color: white;
+}
+
 
 

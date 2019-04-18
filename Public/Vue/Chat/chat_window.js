@@ -6,6 +6,9 @@ export default Vue.component('chat-window', {
   methods: {
     resolvePath: function (imgsrc) {
       return imgsrc ? imgsrc : '/Pictures/default.png'
+    },
+    getTime: function (time) {
+      return moment(time).format("hh:mm:ss A");
     }
   },
   data: function () {
@@ -25,6 +28,11 @@ export default Vue.component('chat-window', {
           width: '40px',
           borderRadius: '50%',
         },
+        avatar: {
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+        },
         timestamp: {
           padding: '10px',
           margin: '10px',
@@ -38,8 +46,15 @@ export default Vue.component('chat-window', {
           flex: '1',
           background: '#829399',
         },
+        ul: {
+          margin: '2%',
+          background: 'white',
+          borderRadius: '10px',
+          maxHeight: '92%',
+          overflow: 'auto',
+        },
         msgContent: {
-          margin: '10px',
+          padding: '2%',
           width: '80%',
           height: '50%',
         },
@@ -48,15 +63,15 @@ export default Vue.component('chat-window', {
   },
   template: `
   <div :style="css.window">
-    <ul>
+    <ul :style="css.ul">
       <li :style="css.messages" v-for="message in messages">
         <div :style="css.msg">
-          <div>
-              <img v-bind:src="resolvePath(message.path)" :style="css.msgImg" />
+          <div :style="css.avatar">
+              <img :src="resolvePath(message.path)" :style="css.msgImg" />
               <p>{{message.user.username}}</p>
           </div>
           <p :style="css.msgContent">{{message.content}}</p>
-          <div :style="css.timestamp">{{message.timestamp}}</div>
+          <div :style="css.timestamp">{{getTime(message.timestamp)}}</div>
         </div>
       </li>
     </ul>

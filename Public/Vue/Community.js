@@ -17,9 +17,9 @@ var app = new Vue({
             connection: null,
             //Channel
             channels: [],
-            group_chats: [],
-            channel_index: 0,
-            group_chat_index: 0,
+            groups: [],
+            current_channel: {},
+            current_group: {},
             css: {
                 root: {
                     width: '100%',
@@ -34,12 +34,20 @@ var app = new Vue({
             },
         }
     },
-    computed: {
-        current_channel: function () {
-            return this.channels[this.channel_index];
+    computed: {},
+    watch: {
+        channels: function (val) {
+            this.channels = val;
+            this.current_channel = this.channels[0];
         },
-        current_group_chat: function () {
-            return this.group_chats[this.group_chat_index];
+        groups: function (val) {
+            this.groups = val;
+            this.current_group = this.groups[0];
+        },
+        current_channel: function (val) {
+            this.current_channel = val;
+            //reset group chat
+            this.current_group = this.groups[0];
         }
     },
     methods: {
@@ -53,24 +61,37 @@ var app = new Vue({
                     let data = response.data;
                     vm.channels = data.channels;
                     vm.user = data.user;
-                    vm.group_chats = data.group_chats;
+                    vm.groups = data.group_chats;
                 })
                 .catch(function (response) {
                     console.log('Invalid Request: ' + response.data.error);
                 })
         },
+        channelChange(channel) {
+            console.log(channel);
+        },
+        groupChatChange(group) {
+            console.log(group);
+            this.current_group = group;
+        },
     },
-    mounted: function () {
+    created: function () {
         this.getInfo();
     },
     template: `
     <div :style="css.root">
         <div v-if="isConnected" :style="css.app">
-            <channel-bar></channel-bar>
-            <groupchat-bar></groupchat-bar>
+            <channel-bar 
+            v-bind:channels="channels"
+            v-on:channel-change="channelChange"></channel-bar>
+
+            <groupchat-bar 
+            v-bind:groups="groups"
+            v-on:group-chat-change="groupChatChange"></groupchat-bar>
+
             <chat v-on:connection-state="updateConnection"
                   v-bind:channel="current_channel"
-                  v-bind:group_chat="current_group_chat"
+                  v-bind:group="current_group"
                   v-bind:user="user">
             </chat>
         </div>

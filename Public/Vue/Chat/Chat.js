@@ -4,7 +4,7 @@ import "./chat_window.js";
 export default Vue.component('chat', {
     props: {
         channel: Object,
-        group_chat: Object,
+        group: Object,
         user: Object,
     },
     sockets: {
@@ -20,7 +20,6 @@ export default Vue.component('chat', {
     },
     data: function () {
         return {
-            group_chat_index: 0,
             messages: [],
             css: {
                 chat_container: {
@@ -34,8 +33,8 @@ export default Vue.component('chat', {
         }
     },
     computed: {
-        current_group_chat: function () {
-            return `{${this.group_chat.channel_id}}-[${this.group_chat.group_chat_id}]`;
+        current_group: function () {
+            return `{${this.group.channel_id}}-[${this.group.group_id}]`;
         }
     },
     watch: {
@@ -43,16 +42,16 @@ export default Vue.component('chat', {
             //Set new value
             this.channel = val;
             //Join the new room
-            this.$socket.emit('join group-chat', this.current_group_chat);
-            //Reset group_chat index
-            this.group_chat_index = 0;
+            this.$socket.emit('join group-chat', this.current_group);
+            //Reset group index
+            this.group_index = 0;
         }
     },
     methods: {
         sendMessage: function (data) {
             //Fill in remaining fields
             data.user = this.user;
-            data.group_chat = this.current_group_chat;
+            data.group = this.current_group;
             //Send message as JSON
             this.$socket.emit('group-chat message', data);
             //Insert message into local messages
