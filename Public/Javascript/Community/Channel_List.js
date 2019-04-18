@@ -34,6 +34,10 @@ function followEvent(){
     disableFollowButton(this);
 }
 
+function followNotLogged(){
+    window.location.href = "/User/Register";
+}
+
 function appendChannels(){
     //Gather all the channels and append to the list (ul)
     getChannelData()
@@ -43,12 +47,12 @@ function appendChannels(){
             list.append(renderChannel(element));
         });
         //Setup event listeners
-        $(list).find(".follow-button").on("click", followEvent);
+        $(list).find(".follow-button").on("click", user.uid ? followEvent : followNotLogged);
     })
 }
 
 function getChannelData(){
-    let json = $.getJSON("/Community/ChannelList/" + input.value)
+    let json = $.getJSON("/Community/ChannelList/", {channel_name: input.value})
     .fail(function(data){
         console.log('Error fetching channels');
         console.log('Response: ' + data.responseText);
@@ -68,7 +72,7 @@ function renderChannel(data){
     user_img.src = data.imgsrc || defaultPicturePath;
     username.innerHTML = data.channel_name;
     //If the user_id is returned with the data, assume that they've already followed them
-    if(data.user_id){
+    if(data.isFollowed){
         disableFollowButton(button);
     }
     console.log(data);
