@@ -31,6 +31,7 @@
 
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<title>TwitchCord</title>
 	</head>
@@ -42,6 +43,7 @@
 
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?>class="main-form">
 			<form class="register-form" action="Register" method="post">
+				<a id="homePage" href="/Main/Index"><i class="fa fa-home"></i></a>
 				<h1>Create Account</h1>
 				<div class="userinput">
 
