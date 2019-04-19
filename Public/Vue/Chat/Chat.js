@@ -16,7 +16,10 @@ export default Vue.component('chat', {
         },
         message_recieved: function (msg) {
             this.messages.push(msg);
-        }
+        },
+        message_history: function (msg) {
+
+        },
     },
     data: function () {
         return {
@@ -34,17 +37,23 @@ export default Vue.component('chat', {
     },
     computed: {
         current_group: function () {
-            return `{${this.group.channel_id}}-[${this.group.group_id}]`;
+            if (this.group)
+                return `{${this.group.channel_id}}-[${this.group.group_id}]`;
+            else
+                return null;
         }
     },
     watch: {
         channel: function (val) {
+            if (val === undefined)
+                return;
+
             //Set new value
             this.channel = val;
             //Join the new room
-            this.$socket.emit('join group-chat', this.current_group);
-            //Reset group index
-            this.group_index = 0;
+            this.$socket.emit('join_group-chat', this.current_group);
+            //reset current group chat
+            this.current_group = this.channel[0];
         }
     },
     methods: {
@@ -53,7 +62,7 @@ export default Vue.component('chat', {
             data.user = this.user;
             data.group = this.current_group;
             //Send message as JSON
-            this.$socket.emit('group-chat message', data);
+            this.$socket.emit('group-chat_message', data);
             //Insert message into local messages
             this.messages.push(data);
         },

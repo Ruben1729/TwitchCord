@@ -29,7 +29,7 @@ class Community extends Controller
         $info->channels = $this->model('ChannelModel')->getUsersChannels($info->user->user_id);
         //get the group_chat information for the first channel
         $first_channel = isset($info->channels[0]->channel_id) ? $info->channels[0]->channel_id : null;
-        $info->group_chats = $this->model('GroupChat')->getGroupChats($first_channel);
+        $info->group_chats = $this->model('Group_Chat')->getGroupChats($first_channel);
 
         echo json_encode($info);
     }

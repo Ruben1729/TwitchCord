@@ -44,7 +44,7 @@ class UserModel extends Model
 			->Fields(['user_id', 'username', 'bio', 'created_on', 'path'])
 			->Model('UserModel')
 			->JoinUsing('LEFT JOIN', 'ProfileModel', 'user_id')
-			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
 			->Where("username", $username)
 			->Get();
 		return $newUser;

@@ -21,8 +21,8 @@ class ChannelModel extends Model
 		$channels = $SQL
 			->Search()
 			->Model('ChannelModel')
-			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'owner_id'])
-			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
+			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
 			->Where("channel_name", "%$name%", 'LIKE')
 			->GetAll(PDO::FETCH_OBJ);
 
@@ -79,9 +79,9 @@ class ChannelModel extends Model
 		$channel = $SQL
 			->Search()
 			->Model('follower')
-			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'owner_id'])
+			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
 			->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
-			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
 			->Where('user_id', $user_id)
 			->GetAll(PDO::FETCH_OBJ);
 		return $channel;
