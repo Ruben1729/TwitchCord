@@ -9,6 +9,9 @@
 	if(array_key_exists('uid', $data))
 		$username = $data['uid'];
 
+	if(array_key_exists('loginError', $data))
+		$loginError = $data['loginError'];
+
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +26,7 @@
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Login.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<title>TwitchCord</title>
 		
@@ -35,13 +39,15 @@
 
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> class="main-form">
 			<form class="login-form" action="Login" method="post">
+				<a id="homePage" href="/Main/Index"><i class="fa fa-home"></i></a>
 				<h1>Welcome Back!</h1>
-
 				<div class="userinput">
 
 					<div class="input-container">
-						<div <?php if(!empty($uidError)) echo "class=\"error\""?> ><label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span class=\"spanError\">$uidError</span>" ?></div>
-						<input <?php if(!empty($uidError)) echo "class=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
+						<div <?php if(!empty($uidError) || !empty($loginError)) echo "class=\"error\""?> >
+							<label for="uid">Username</label> <?php if(!empty($uidError)) echo " - <span class=\"spanError\">$uidError</span>"; else if(!empty($loginError)) echo " - <span class=\"spanError\">$loginError</span>"; ?>
+						</div>
+						<input <?php if(!empty($uidError) || !empty($loginError)) echo "class=\"inerror\""; if(!empty($username)) echo "value=\"$username\"" ?>  type="text" name="uid">
 					</div>
 
 					<div class="input-container">
