@@ -1,0 +1,37 @@
+html, body{
+	overflow: hidden;
+}
+
+#main-form{
+	width: 70%;
+	margin-left: 360px;
+}
+
+.list{
+	width: 350px;
+	height: 485px;
+	margin: auto;
+
+	color: #dcdfe0;
+	background-color:#434c51;
+
+	border-style: none;
+	border: solid #29302e 1px;
+}
+
+.list:hover{
+	border-style: none;
+	border: solid #29302e 1px;
+}
+
+.right-container{
+	position: relative;
+	bottom: 320px;
+	left: 300px;
+}
+
+.left-container{
+	position: relative;
+	top: 288px;
+	right: 300px;
+}

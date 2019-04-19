@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Profile.css">
+		<link rel="stylesheet" href="/CSS/Dashboard.css">
 
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
@@ -21,7 +22,12 @@
 	<body>
 		<?php require "../MVC/Views/Shared/verticalNavigation.php" ?>
 		<main <?php if(array_key_exists('reload', $data)) echo "class=\"mainError\""?> id="main-form">
-			<form enctype="multipart/form-data" action="dashboard" method="post">
+			<?php if ($auth == true)
+			echo "<form class=\"left-container\">
+					 <h1>Follower List</h1>
+					 <textarea class=\"list\" readonly disabled></textarea>
+				  </form>"?>
+			<form <?php if($auth == true) echo"class=\"right-container\""?> enctype="multipart/form-data" action="dashboard" method="post">
 				<h1>Channel Dashboard</h1>
 
 				<div class="not-authorized" <?php if($auth == true)echo "id=\"hidden\"";?>>

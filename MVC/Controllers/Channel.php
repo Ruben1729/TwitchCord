@@ -7,8 +7,7 @@
 			$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
 			if(empty($userChannel)){
 				$data['auth'] = false;
-			}
-			else{
+			} else {
 				$data['auth'] = true;
 				$data['description'] = $userChannel->description;
 				$id = $userChannel->picture_id;
@@ -25,8 +24,7 @@
 
 			if(empty($userChannel)){
 				$data['auth'] = false;
-			}
-			else{
+			} else {
 				$data['auth'] = true;
 
 				$userChannel->description = $_POST['desc'];
