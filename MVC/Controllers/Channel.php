@@ -11,8 +11,14 @@
 				$data['auth'] = true;
 				$data['description'] = $userChannel->description;
 				$id = $userChannel->picture_id;
+
 				$pictureModel = $this->model('PictureModel')->getPicture($id);
-				$data['path'] = $pictureModel->path;
+				if(isset($pictureModel)){
+					$data['path'] = $pictureModel->path;
+				} else {
+					$data['path'] = "/Pictures/default.png";
+				}
+				
 			}
 			$this->view('Channel/Dashboard', $data);
 		}
