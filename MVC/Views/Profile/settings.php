@@ -76,6 +76,14 @@
 
 			})
 		</script>
+		<style>
+			a{
+				color: white;
+			}
+			a:hover{
+				text-decoration: none;
+			}
+		</style>
 	</body>
 	<footer>
 	</footer>
