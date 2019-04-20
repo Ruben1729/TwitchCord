@@ -18,8 +18,8 @@ var app = new Vue({
             //Channel
             channels: [],
             groups: [],
-            current_channel: {},
-            current_group: {},
+            current_channel: null,
+            current_group: null,
             css: {
                 root: {
                     width: '100%',

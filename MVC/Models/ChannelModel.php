@@ -24,6 +24,7 @@ class ChannelModel extends Model
 			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
 			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
 			->Where("channel_name", "%$name%", 'LIKE')
+			->Where('ChannelModel.owner_id', $user_id, '!=')
 			->GetAll(PDO::FETCH_OBJ);
 
 		//Add property if channel is followed, assuming logged in

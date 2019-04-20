@@ -12,7 +12,7 @@ function Log(level, msg) {
 }
 
 //MySQL
-var sql = mysql.createConnection({
+var sql = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
@@ -21,38 +21,38 @@ var sql = mysql.createConnection({
 
 function errorLog(error, results, fields) {
   if (error)
-    sLog(ERROR, `Error inserting chat log \n${error}`);
+    Log(ERROR, `Error inserting chat log \n${error}`);
 }
-
-sql.connect();
 
 //Websocket
 io.on('connection', socket => {
-  Log(OK, 'client has connected')
+  Log(OK, 'client has connected ID: ' + socket.id)
 
   socket.on('retrieve_messages', group => {
-    let queryString = `
-    SELECT text, group_chat_id, created_on, username, path FROM group_message
-    INNER JOIN usermodel USING (user_id)
-    LEFT JOIN picturemodel USING (picture_id)
-    WHERE group_chat_id = ?`
-    sql.query(queryString, group.group_chat_id,
-      (error, results, fields) => {
-        if (error)
-          sLog(ERROR, `Error inserting chat log \n${error}`);
-        socket.to(socket.id).emit('message_history', resutls);
+    sql.getConnection((err, connection) => {
+      let ioSocket = socket;
+      connection.query(SQLMSGHistory, group.group_chat_id, (error, results, fields) => {
+        //Send message history to the client who asked
+        console.log('Sending history to: ' + ioSocket.id);
+        ioSocket.emit('message_history', results);
       });
+      connection.release();
+    });
   });
 
+
+  //Sending back 
   socket.on('group-chat_message', msg => {
-    //Store message on server
-    let queryString = `
-    INSERT INTO group_message 
-    (text, group_chat_id, created_on, user_id)
-    VALUES (?, ?, ?, ?)`
-    sql.query(queryString, [msg.content, msg.group_chat_id, data.timestamp, msg.user.user_id], errorLog);
-    //Send message to all those who are connected to the group_chat
-    socket.to(msg.group_chat).emit('message_recieved', msg)
+    sql.getConnection((err, connection) => {
+      //Store message on server
+      let queryString = `
+      INSERT INTO group_message 
+      (text, group_chat_id, created_on, user_id)
+      VALUES (?, ?, ?, ?)`
+      sql.query(queryString, [msg.text, msg.group_chat_id, msg.timestamp, msg.user_id], errorLog);
+      connection.release();
+    });
+    socket.to(msg.group_chat).emit('message_recieved', msg);
   });
 
   socket.on('join_group-chat', group_chat => {
@@ -63,3 +63,11 @@ io.on('connection', socket => {
 });
 server.listen(3000);
 
+const SQLMSGHistory = `
+SELECT text, group_chat_id, username, path, 
+group_message.created_on as 'timestamp'
+FROM group_message
+INNER JOIN usermodel USING (user_id)
+LEFT JOIN profilemodel USING (user_id)
+LEFT JOIN picturemodel USING (picture_id)
+WHERE group_chat_id = ?`;
