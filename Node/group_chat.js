@@ -25,6 +25,16 @@ function errorLog(error, results, fields) {
 }
 
 //Websocket
+var socketIDMapping = {};
+
+function setMapping(user, id) {
+  socketIDMapping[id] = user;
+}
+
+function removeMapping(id) {
+  delete socketIDMapping[id];
+}
+
 io.on('connection', socket => {
   Log(OK, 'client has connected ID: ' + socket.id)
 
@@ -43,22 +53,31 @@ io.on('connection', socket => {
 
   //Sending back 
   socket.on('group-chat_message', msg => {
-    sql.getConnection((err, connection) => {
-      //Store message on server
-      let queryString = `
-      INSERT INTO group_message 
-      (text, group_chat_id, created_on, user_id)
-      VALUES (?, ?, ?, ?)`
-      sql.query(queryString, [msg.text, msg.group_chat_id, msg.timestamp, msg.user_id], errorLog);
-      connection.release();
-    });
+    if (msg.isGroupChat) {
+      sql.getConnection((err, connection) => {
+        //Store message on server
+        let queryString = `
+        INSERT INTO group_message 
+        (text, group_chat_id, created_on, user_id)
+        VALUES (?, ?, ?, ?)`
+        sql.query(queryString, [msg.text, msg.group_chat_id, msg.timestamp, msg.user_id], errorLog);
+        connection.release();
+      });
+    }
     socket.to(msg.group_chat).emit('message_recieved', msg);
   });
 
-  socket.on('join_group-chat', group_chat => {
-    Log(OK, `User joined: ${group_chat}`);
-    socket.join(group_chat);
+  socket.on('join_group-chat', data => {
+    Log(OK, `Client ID: ${data.user.user_id}: Joining ${data.group_chat}`);
+    socket.join(data.group_chat);
+    setMapping(socket.id, data.user);
   });
+
+  socket.on('leave_group-chat', data => {
+    Log(OK, `Client ID: ${data.user.user_id}: Leaving ${data.group_chat}`);
+    socket.leave(data.group_chat);
+    removeMapping(socket.id);
+  })
 
 });
 server.listen(3000);

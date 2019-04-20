@@ -4,7 +4,7 @@ export default Vue.component('chat-input', {
             css: {
                 input: {
                     minHeight: '1em',
-                    maxHeight: '2em',
+                    maxHeight: '6em',
                     width: '100%',
                     padding: '2% 0',
                     display: 'flex',

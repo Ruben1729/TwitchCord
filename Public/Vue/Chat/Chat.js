@@ -6,13 +6,14 @@ export default Vue.component('chat', {
         channel: Object,
         group: Object,
         user: Object,
+        isStreamOpen: Boolean,
     },
     sockets: {
         connect: function () {
             this.$emit('connection-state', true);
             //Don't send join request if group hasn't been set
             if (this.group_identifier) {
-                this.joinGroup();
+                this.joinNewGroup();
                 this.getMessageHistory();
             }
         },
@@ -24,7 +25,6 @@ export default Vue.component('chat', {
         },
         message_history: function (messages) {
             console.log('History Recieved');
-            console.log(messages);
             this.messages = messages;
         },
     },
@@ -44,7 +44,9 @@ export default Vue.component('chat', {
     },
     computed: {
         group_identifier: function () {
-            if (this.group)
+            if (this.isStreamOpen)
+                return this.channel.channel_name;
+            else if (this.group)
                 return `{${this.group.channel_id}}-[${this.group.group_chat_id}]`;
             else
                 return null;
@@ -54,19 +56,33 @@ export default Vue.component('chat', {
         channel: function (val) {
             if (val === undefined)
                 return;
-            this.joinGroup();
+            this.joinNewGroup();
             this.getMessageHistory();
         },
         group: function (val) {
             if (val === undefined)
                 return;
             this.messages = [];
-            this.joinGroup();
+            this.joinNewGroup();
             this.getMessageHistory();
+        },
+        isStreamOpen: function (state) {
+            this.messages = [];
+            //Join stream's livechat
+            if (state) {
+                this.$socket.emit('join_group-chat', {
+                    group_chat: this.channel.channel_name,
+                    user: this.user,
+                });
+            } else {
+                this.joinNewGroup();
+                this.getMessageHistory();
+            }
         }
     },
     methods: {
         sendMessage: function (data) {
+            data.isGroupChat = !this.isStreamOpen;
             //Fill in remaining fields
             data.username = this.user.username;
             data.user_id = this.user.user_id;
@@ -77,9 +93,18 @@ export default Vue.component('chat', {
             //Insert message into local messages
             this.messages.push(data);
         },
-        joinGroup: function () {
+        joinNewGroup: function () {
             //Join the new room
-            this.$socket.emit('join_group-chat', this.group_identifier);
+            this.$socket.emit('join_group-chat', {
+                group_chat: this.group_identifier,
+                user: this.user,
+            });
+        },
+        leaveCurrentGroup() {
+            this.$socket.emit('leave_group-chat', {
+                group_chat: this.group_identifier,
+                user: this.user,
+            });
         },
         getMessageHistory: function () {
             this.$socket.emit('retrieve_messages', this.group);
