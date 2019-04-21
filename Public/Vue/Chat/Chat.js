@@ -53,14 +53,14 @@ export default Vue.component('chat', {
         }
     },
     watch: {
+        //!val == early return to stop join a null room
         channel: function (val) {
-            if (val === undefined)
+            console.log(val);
+            if (!val)
                 return;
-            this.joinNewGroup();
-            this.getMessageHistory();
         },
         group: function (val) {
-            if (val === undefined)
+            if (!val)
                 return;
             this.messages = [];
             this.joinNewGroup();
@@ -94,20 +94,25 @@ export default Vue.component('chat', {
             this.messages.push(data);
         },
         joinNewGroup: function () {
+            console.log('joinning');
             //Join the new room
             this.$socket.emit('join_group-chat', {
                 group_chat: this.group_identifier,
-                user: this.user,
+                data: {
+                    user: this.user,
+                    channel_id: this.channel.channel_id,
+                },
             });
         },
         leaveCurrentGroup() {
             this.$socket.emit('leave_group-chat', {
                 group_chat: this.group_identifier,
-                user: this.user,
             });
         },
         getMessageHistory: function () {
-            this.$socket.emit('retrieve_messages', this.group);
+            if (this.group) {
+                this.$socket.emit('retrieve_messages', this.group);
+            }
         }
     },
     template: `

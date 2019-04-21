@@ -1,7 +1,8 @@
 import "./Chat/Chat.js";
 import "./Channels_Bar.js";
 import "./GroupChat_Bar.js";
-import "./Stream.js"
+import "./Stream.js";
+import "./Users.js";
 
 Vue.use(new VueSocketIO({
     debug: true,
@@ -19,7 +20,7 @@ var app = new Vue({
             connection: null,
             //Channel
             channels: [],
-            groups: [],
+            channel_groups: [],
             current_channel: null,
             current_group: null,
             //Stream
@@ -44,14 +45,22 @@ var app = new Vue({
             this.channels = val;
             this.current_channel = this.channels[0];
         },
-        groups: function (val) {
-            this.groups = val;
-            this.current_group = this.groups[0];
+        channel_groups: function (val) {
+            this.channel_groups = val;
+            this.current_group = this.channel_groups[0];
         },
         current_channel: function (val) {
             this.current_channel = val;
-            //reset group chat
-            this.current_group = this.groups[0];
+            console.log('switching channel');
+            //Fetch new groups
+            let vm = this;
+            axios.get('/Community/GetGroupChats/' + val.channel_id)
+                .then(function (response) {
+                    vm.channel_groups = response.data;
+                })
+                .catch(function (response) {
+                    console.log('Invalid Request: ' + response.data.error);
+                })
         }
     },
     methods: {
@@ -70,16 +79,25 @@ var app = new Vue({
                     let data = response.data;
                     vm.channels = data.channels;
                     vm.user = data.user;
-                    vm.groups = data.group_chats;
                 })
                 .catch(function (response) {
                     console.log('Invalid Request: ' + response.data.error);
                 })
         },
         channelChange(channel) {
+            //prevent channel from changing to itself
+            if (this.current_channel === channel)
+                return;
+
+            this.$refs.chat.leaveCurrentGroup();
             this.current_channel = channel;
+            this.isStreamOpen = false;
         },
         groupChatChange(group) {
+            //prevent group from changing to itself
+            if (this.current_group === group)
+                return;
+
             this.$refs.chat.leaveCurrentGroup();
             this.current_group = group;
             this.isStreamOpen = false;
@@ -97,7 +115,7 @@ var app = new Vue({
             </channel-bar>
 
             <groupchat-bar 
-                v-bind:groups="groups"
+                v-bind:groups="channel_groups"
                 v-on:stream-state="toggleStreamState"
                 v-on:group-chat-change="groupChatChange">
             </groupchat-bar>
@@ -114,6 +132,10 @@ var app = new Vue({
                 v-bind:group="current_group"
                 v-bind:user="user">
             </chat>
+
+            <users
+                v-bind:channel="current_channel">
+            </users>
         </div>
         <div v-else-if="!isConnected">
             NOT CONNECTED

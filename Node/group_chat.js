@@ -27,13 +27,15 @@ function errorLog(error, results, fields) {
 //Websocket
 var socketIDMapping = {};
 
-function setMapping(user, id) {
+function setMapping(id, user) {
   socketIDMapping[id] = user;
 }
 
 function removeMapping(id) {
   delete socketIDMapping[id];
 }
+
+var channel_users = {};
 
 io.on('connection', socket => {
   Log(OK, 'client has connected ID: ' + socket.id)
@@ -50,6 +52,16 @@ io.on('connection', socket => {
     });
   });
 
+  socket.on('get_online', channel_id => {
+    let active_users = {};
+    for (var item in socketIDMapping) {
+      let data = socketIDMapping[item];
+      if (data.channel_id == channel_id) {
+        active_users[data.user.user_id] = true;
+      }
+    }
+    socket.emit('online_users', active_users);
+  });
 
   //Sending back 
   socket.on('group-chat_message', msg => {
@@ -67,15 +79,15 @@ io.on('connection', socket => {
     socket.to(msg.group_chat).emit('message_recieved', msg);
   });
 
-  socket.on('join_group-chat', data => {
-    Log(OK, `Client ID: ${data.user.user_id}: Joining ${data.group_chat}`);
-    socket.join(data.group_chat);
-    setMapping(socket.id, data.user);
+  socket.on('join_group-chat', request => {
+    Log(OK, `Client ID: ${socket.id}: Joining ${request.group_chat}`);
+    socket.join(request.group_chat);
+    setMapping(socket.id, request.data);
   });
 
-  socket.on('leave_group-chat', data => {
-    Log(OK, `Client ID: ${data.user.user_id}: Leaving ${data.group_chat}`);
-    socket.leave(data.group_chat);
+  socket.on('leave_group-chat', request => {
+    Log(OK, `Client ID: ${socket.id}: Leaving ${request.group_chat}`);
+    socket.leave(request.group_chat);
     removeMapping(socket.id);
   })
 
