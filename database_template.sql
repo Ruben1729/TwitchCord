@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2019 at 01:53 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: Apr 21, 2019 at 07:32 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -42,20 +42,13 @@ CREATE TABLE `banned` (
 --
 
 CREATE TABLE `channelmodel` (
-  `channel_id` int(5) NOT NULL,
+  `channel_id` int(6) NOT NULL,
   `channel_name` varchar(20) NOT NULL,
   `description` varchar(80) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `picture_id` int(5) DEFAULT NULL,
   `owner_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `channelmodel`
---
-
-INSERT INTO `channelmodel` (`channel_id`, `channel_name`, `description`, `created_on`, `picture_id`, `owner_id`) VALUES
-(1, 'soroban1729', 'Hello, my name is MOTHER RUSSIANOoooda', '2019-04-18 03:06:55', 14, 3);
 
 -- --------------------------------------------------------
 
@@ -66,10 +59,9 @@ INSERT INTO `channelmodel` (`channel_id`, `channel_name`, `description`, `create
 CREATE TABLE `follower` (
   `user_id` int(5) NOT NULL,
   `channel_id` int(6) NOT NULL,
-  `followed_on` date NOT NULL,
+  `followed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `notification` int(1) NOT NULL,
-  `role_id` int(5) NOT NULL DEFAULT '1',
-  `permission_binary` int(10) NOT NULL DEFAULT '112'
+  `role_id` int(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -95,16 +87,9 @@ CREATE TABLE `group_message` (
   `message_id` int(10) NOT NULL,
   `text` text NOT NULL,
   `group_chat_id` int(6) NOT NULL,
-  `created_on` date NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `group_message`
---
-
-INSERT INTO `group_message` (`message_id`, `text`, `group_chat_id`, `created_on`, `user_id`) VALUES
-(1, 'test', 0, '0000-00-00', 1);
 
 -- --------------------------------------------------------
 
@@ -117,13 +102,6 @@ CREATE TABLE `picturemodel` (
   `path` varchar(300) NOT NULL,
   `owner_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `picturemodel`
---
-
-INSERT INTO `picturemodel` (`picture_id`, `path`, `owner_id`) VALUES
-(14, '\\Pictures\\5cb7e9dbf14dd.jpg', 3);
 
 -- --------------------------------------------------------
 
@@ -160,17 +138,9 @@ CREATE TABLE `relationmodel` (
 CREATE TABLE `roles` (
   `role_id` int(10) NOT NULL,
   `permission_binary` int(10) NOT NULL,
-  `name` varchar(20) NOT NULL
+  `name` varchar(20) NOT NULL,
+  `channel_id` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `roles`
---
-
-INSERT INTO `roles` (`role_id`, `permission_binary`, `name`) VALUES
-(1, 112, 'Regular'),
-(2, 126, 'Moderator'),
-(3, 127, 'Owner');
 
 -- --------------------------------------------------------
 
@@ -195,15 +165,6 @@ CREATE TABLE `usermodel` (
   `password_hash` varchar(80) NOT NULL,
   `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `usermodel`
---
-
-INSERT INTO `usermodel` (`user_id`, `username`, `password_hash`, `email`) VALUES
-(1, 'test', '$2y$10$cSM4/aA902vL3YY0TchzjOa4I8Eevgjplmk2N4cSKZWhTfjsdu4ym', 'test@test.com'),
-(2, 'test2', '$2y$10$lYu/liAJOGjE0qVrVL2xEO1SrfIB/6fcKKBPoGl2vwFS1gPEM8m16', 'gameactin@gmail.com'),
-(3, 'Root', '$2y$10$jatArJSnx26KTFWhFccyauzkIpTTqNBz4yePLTq4NmviaIjjIgZoy', 'root@tor.com');
 
 --
 -- Indexes for dumped tables
@@ -235,9 +196,7 @@ ALTER TABLE `follower`
 -- Indexes for table `group_chat`
 --
 ALTER TABLE `group_chat`
-  ADD PRIMARY KEY (`group_chat_id`),
-  ADD UNIQUE KEY `channel_id` (`channel_id`),
-  ADD UNIQUE KEY `role_id` (`role_id`);
+  ADD PRIMARY KEY (`group_chat_id`);
 
 --
 -- Indexes for table `group_message`
@@ -293,7 +252,7 @@ ALTER TABLE `usermodel`
 -- AUTO_INCREMENT for table `channelmodel`
 --
 ALTER TABLE `channelmodel`
-  MODIFY `channel_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `channel_id` int(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `group_chat`
@@ -305,13 +264,13 @@ ALTER TABLE `group_chat`
 -- AUTO_INCREMENT for table `group_message`
 --
 ALTER TABLE `group_message`
-  MODIFY `message_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `message_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `picturemodel`
 --
 ALTER TABLE `picturemodel`
-  MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `profilemodel`
@@ -329,7 +288,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `usermodel`
 --
 ALTER TABLE `usermodel`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -339,9 +298,9 @@ ALTER TABLE `usermodel`
 -- Constraints for table `follower`
 --
 ALTER TABLE `follower`
-  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channelmodel` (`channel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `follower_role_id_FK` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channelmodel` (`channel_id`),
+  ADD CONSTRAINT `follower_role_id_FK` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
+  ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`);
 
 --
 -- Constraints for table `picturemodel`
