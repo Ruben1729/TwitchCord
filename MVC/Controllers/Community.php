@@ -23,10 +23,18 @@ class Community extends Controller
 
         //Setup generic object to hold information
         $info = new stdClass();
-        //Retrieve information
+        //Retrieve user's information
         $info->user = $this->model('UserModel')->getProfile($_SESSION[username]);
         //Get the channels for the current user
-        $info->channels = $this->model('ChannelModel')->getUsersChannels($info->user->user_id);
+        $SQL = SQL::GetConnection();
+        $info->channels = $SQL
+            ->Search()
+            ->Model('follower')
+            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
+            ->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
+            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->Where('user_id', $info->user->user_id)
+            ->GetAll(PDO::FETCH_OBJ);
 
         echo json_encode($info);
     }
@@ -53,11 +61,6 @@ class Community extends Controller
         $groups = $this->model('Group_Chat')->getGroupChats($channel_id);
         header('Content-Type: application/json');
         echo json_encode($groups);
-    }
-
-    public function GetUsers($group_id)
-    {
-        $users = $this->model('Group_Chat');
     }
 
     public function POST_Follow()

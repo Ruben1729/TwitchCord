@@ -35,7 +35,7 @@ class UserModel extends Model
 		return $newUser;
 	}
 
-	//Includes username, user_id, and picture path
+	//Includes UserModel + Profile + Picture's Path
 	public function getProfile($username)
 	{
 		$SQL = SQL::GetConnection();

@@ -1,14 +1,9 @@
 <?php
 
-    class Main extends Controller
+class Main extends Controller
+{
+    public function Index()
     {
-        public function Index(){
-            $data = [];
-            $top_streamers = null;
-            $data["top_streamers"] = $top_streamers;
-            $this->view('Main/index', $data);
-        }
-
+        $this->view('Main/index');
     }
-
-?>
+}

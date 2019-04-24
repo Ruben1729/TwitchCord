@@ -1,5 +1,5 @@
 <?php
-	$top_streamers = $data['top_streamers'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,11 +24,11 @@
 
         <span class="channel-search">Look for a channel</h5>
             <form action="/Community/ChannelList" method="post">
-			<input type="text" name="channel_name">
-			<button type="submit">GO</button>
+                <input type="text" name="channel_name">
+                <button type="submit">GO</button>
             </form>
     </div>
     <script src="/Javascript/Main.js"></script>
 </body>
 
-</html> 
+</html>
