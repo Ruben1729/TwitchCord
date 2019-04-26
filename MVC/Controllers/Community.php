@@ -31,8 +31,8 @@ class Community extends Controller
             ->Search()
             ->Model('follower')
             ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
-            ->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
-            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->JoinUsing('INNER JOIN', 'channel', 'channel_id')
+            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
             ->Where('user_id', $info->user->user_id)
             ->GetAll(PDO::FETCH_OBJ);
 
@@ -47,8 +47,8 @@ class Community extends Controller
             ->Fields(['user_id', 'username', 'path', '0 as "isActive"'])
             ->Model('UserModel')
             ->JoinUsing('INNER JOIN', 'follower', 'user_id')
-            ->JoinUsing('LEFT JOIN', 'profilemodel', 'user_id')
-            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->JoinUsing('LEFT JOIN', 'profile', 'user_id')
+            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
             ->Where('channel_id', $channel_id)
             ->GetAll();
 
@@ -82,9 +82,9 @@ class Community extends Controller
             ->Search()
             ->Model('ChannelModel')
             ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
-            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
             ->Where("channel_name", "%$channel_name%", 'LIKE')
-            ->Where('ChannelModel.owner_id', $user_id, '!=')
+            ->Where('channel.owner_id', $user_id, '!=')
             ->GetAll(PDO::FETCH_OBJ);
 
         //Add property if channel is followed, assuming logged in

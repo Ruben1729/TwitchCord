@@ -2,8 +2,13 @@
 include_once '../MVC/Core/Model.php';
 include_once '../MVC/SQL/SQL.php';
 
-class UserModel extends Model
+class UserModel extends Model implements iSQLQueryable
 {
+
+	public static function DBName()
+	{
+		return 'User';
+	}
 
 	public $username;
 	public $email;
@@ -43,8 +48,8 @@ class UserModel extends Model
 			->Search()
 			->Fields(['user_id', 'username', 'bio', 'created_on', 'path'])
 			->Model('UserModel')
-			->JoinUsing('LEFT JOIN', 'ProfileModel', 'user_id')
-			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+			->JoinUsing('LEFT JOIN', 'Profile', 'user_id')
+			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
 			->Where("username", $username)
 			->Get();
 		return $newUser;

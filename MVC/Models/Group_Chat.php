@@ -3,8 +3,13 @@
 include_once '../MVC/Core/Model.php';
 include_once '../MVC/SQL/SQL.php';
 
-class Group_Chat extends Model
+class Group_Chat extends Model implements iSQLQueryable
 {
+    public static function DBName()
+    {
+        return 'group_chat';
+    }
+
     public $group_chat_id;
     public $name;
     public $channel_id;

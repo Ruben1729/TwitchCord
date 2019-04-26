@@ -3,8 +3,12 @@
 include_once '../MVC/Core/Model.php';
 include_once '../MVC/SQL/SQL.php';
 
-class ChannelModel extends Model
+class ChannelModel extends Model implements iSQLQueryable
 {
+	public static function DBName()
+	{
+		return 'Channel';
+	}
 
 	public $channel_id;
 	public $channel_name;

@@ -40,6 +40,11 @@ var channel_users = {};
 io.on('connection', socket => {
   Log(OK, 'client has connected ID: ' + socket.id)
 
+  socket.on('disconnect', () => {
+    Log(OK, 'client has disconnected ID: ' + socket.id);
+    removeMapping(socket.id);
+  });
+
   socket.on('retrieve_messages', group => {
     sql.getConnection((err, connection) => {
       let ioSocket = socket;
@@ -98,7 +103,7 @@ const SQLMSGHistory = `
 SELECT text, group_chat_id, username, path, 
 group_message.created_on as 'timestamp'
 FROM group_message
-INNER JOIN usermodel USING (user_id)
-LEFT JOIN profilemodel USING (user_id)
-LEFT JOIN picturemodel USING (picture_id)
+INNER JOIN user USING (user_id)
+LEFT JOIN profile USING (user_id)
+LEFT JOIN picture USING (picture_id)
 WHERE group_chat_id = ?`;
