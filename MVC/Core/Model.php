@@ -1,28 +1,34 @@
 <?php
 
-class Model{
+interface iSQLQueryable
+{
+    public static function DBName();
+}
 
-    public function getDBName() {
-        return get_class($this);
-    }
-
-    public function getDBFields() {
+class Model
+{
+    public function getDBFields()
+    {
+        //Hoping that the object contains the same properties as the columns in the database
         return get_object_vars($this);
     }
 
-    public function getNumOfFields() {
+    public function getNumOfFields()
+    {
         return count($this->getDBFields());
     }
 
-    public function Set($data){
+    public function Set($data)
+    {
         foreach ($data as $key => $value) $this->{$key} = $value;
         return $this;
     }
 
-    public function Submit(){
+    public function Submit()
+    {
         $SQL = SQL::GetConnection();
         $SQL
-        ->Modify()
-        ->Submit($this);
+            ->Modify()
+            ->Submit($this);
     }
 }
