@@ -1,3 +1,11 @@
+<?php
+	$bio;
+	$path;
+	if(count($data) > 1){
+		$bio = $data['bio'];
+		$path = $data['path'];
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -25,18 +33,18 @@
 				<h1>Friend List</h1>
 				<textarea class="list" readonly disabled></textarea>
 			</form>
-			<form class="right-container" enctype="multipart/form-data" action="create" method="post">
+			<form class="right-container" enctype="multipart/form-data" action="settings" method="post">
 				<h1>Profile Settings</h1>
 
 				<div class="input-container">
 					<label for="pic-id">Upload Picture</label>
 					<input type="file" id="file" name="userImg" onchange="readURL(this);" class="visually-hidden">
-					<img id="pic-id" src="/Pictures/default.png" alt="Profile Pic">
+					<img id="pic-id" src="<?php if($path !== null) echo "$path"; else echo "/Pictures/default.png"; ?>" alt="Profile Pic">
 				</div>
 				
 				<div class="input-container">
 					<label for="bio">Bio</label>
-					<textarea class="paragraph-container" type="text" name="bio"></textarea>
+					<textarea class="paragraph-container" type="text" name="bio"><?php if(isset($bio)) echo "$bio"; ?></textarea>
 				</div>
 				
 				<button type="submit" name="save-btn">Save Changes</button>

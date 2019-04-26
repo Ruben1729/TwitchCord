@@ -28,6 +28,10 @@
 			<button type="submit">GO</button>
             </form>
     </div>
+    <div>
+        <h1>Friend List</h1>
+        
+    </div>
     <script src="/Javascript/Main.js"></script>
 </body>
 

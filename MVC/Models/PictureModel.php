@@ -8,6 +8,17 @@
 		public $path;
 		public $picture_id;
 
+		public function getAllPictures($owner){
+			$SQL = SQL::GetConnection();
+			$allPics = $SQL 
+				-> Search()
+				-> Model('PictureModel')
+				-> Where('owner_id', $owner)
+				-> GetAll();
+
+			return $allPics;
+		}
+
 		public function getPicture($id){
 			$SQL = SQL::GetConnection();
 			$picture = $SQL 

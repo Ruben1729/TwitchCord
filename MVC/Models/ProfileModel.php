@@ -3,77 +3,31 @@
 	include_once '../MVC/Core/Model.php';
 	include_once '../MVC/SQL/SQL.php';
 
-	class Profile extends Model{
+	class ProfileModel extends Model{
 
 		public $user_id;
-		public $displayname;
-		public $phone;
-		public $pic_id;
+		public $bio;
 		public $created_on;
+		public $picture_id;
 
-		public static function createProfile($user_id, $displayname, $phone, $pic_id, $created_on)
-		{
+		public function createProfile($user_id, $bio, $created_on, $pic){
 			$obj = new Profile();
 			$obj->user_id = $user_id;
-			$obj->displayname = $displayname;
-			$obj->phone = $phone;
-			$obj->pic_id = $pic_id;
+			$obj->bio = $bio;
 			$obj->created_on = $created_on;
+			$obj->pic_id = $pic;
 			return $obj;
 		}
 
-		/* getters and setters */
+		public function getProfile($uid){
+			$SQL = SQL::GetConnection();
+			$newProfile = $SQL
+				->Search()
+				->Model('ProfileModel')
+				->Where('user_id', $uid)
+				->GetAsObj();
 
-		public function getUserId(){
-
-			return $this->user_id;
-
-		}
-
-		public function getDisplayName(){
-
-			return $this->displayname;
-
-		}
-
-		public function getPhone(){
-
-			return $this->phone;
-
-		}
-
-		public function getPicId(){
-
-			return $this->pic_id;
-
-		}
-
-		public function getCreatedOn(){
-
-			return $this->created_on;
-
-		}
-
-		public function setPicId($pic_id){
-
-			$this->pic_id = $pic_id;
-			//update db too
-
-		}
-
-		public function setPhone($phone){
-
-			$this->phone = $phone;
-			//update db too
-
-		}
-
-		public function setDisplayName($displayname)
-		{
-
-			$this->displayname = $displayname;
-			//update db too
-
+			return $newProfile;
 		}
 
 	}

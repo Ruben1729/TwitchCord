@@ -13,7 +13,7 @@
 				$id = $userChannel->picture_id;
 
 				$pictureModel = $this->model('PictureModel')->getPicture($id);
-				if(isset($pictureModel)){
+				if($pictureModel){
 					$data['path'] = $pictureModel->path;
 				} else {
 					$data['path'] = "/Pictures/default.png";

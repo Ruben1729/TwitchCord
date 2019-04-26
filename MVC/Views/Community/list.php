@@ -39,6 +39,14 @@
             </div>
         </div>
         <script src="/Javascript/Community/Channel_List.js"></script>
+        <style>
+            body{
+                background-color: #849c95;
+            }
+            button{
+                border: solid 1px #53615d;
+            }
+        </style>
 </body>
 
 </html>

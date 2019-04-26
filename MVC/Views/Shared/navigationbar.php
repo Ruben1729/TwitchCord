@@ -15,6 +15,7 @@
                     <a href="/Community/channel">Community</a>
                     <a href="/Profile/Settings">Profile</a>
                     <a href="/Channel/Dashboard">Channel</a>
+                    <a href="/Picture/Gallery">Gallery</a>
                     <a href="/User/Logout">Logout</a>
                 </div>
             </div>
