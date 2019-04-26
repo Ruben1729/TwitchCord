@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2019 at 07:32 AM
+-- Generation Time: Apr 27, 2019 at 01:19 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.4
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
+CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `test`;
 
 -- --------------------------------------------------------
 
@@ -38,10 +40,10 @@ CREATE TABLE `banned` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `channelmodel`
+-- Table structure for table `channel`
 --
 
-CREATE TABLE `channelmodel` (
+CREATE TABLE `channel` (
   `channel_id` int(6) NOT NULL,
   `channel_name` varchar(20) NOT NULL,
   `description` varchar(80) NOT NULL,
@@ -74,7 +76,8 @@ CREATE TABLE `group_chat` (
   `group_chat_id` int(6) NOT NULL,
   `name` varchar(50) NOT NULL,
   `channel_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL
+  `role_id` int(11) NOT NULL,
+  `chat_type` enum('TEXT','VOICE') NOT NULL DEFAULT 'TEXT'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -94,10 +97,10 @@ CREATE TABLE `group_message` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `picturemodel`
+-- Table structure for table `picture`
 --
 
-CREATE TABLE `picturemodel` (
+CREATE TABLE `picture` (
   `picture_id` int(11) NOT NULL,
   `path` varchar(300) NOT NULL,
   `owner_id` int(10) NOT NULL
@@ -106,10 +109,10 @@ CREATE TABLE `picturemodel` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profilemodel`
+-- Table structure for table `profile`
 --
 
-CREATE TABLE `profilemodel` (
+CREATE TABLE `profile` (
   `profile_id` int(11) NOT NULL,
   `user_id` int(5) NOT NULL,
   `bio` varchar(80) NOT NULL,
@@ -120,10 +123,10 @@ CREATE TABLE `profilemodel` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `relationmodel`
+-- Table structure for table `relation`
 --
 
-CREATE TABLE `relationmodel` (
+CREATE TABLE `relation` (
   `user_id` int(11) NOT NULL,
   `user_id_1` int(11) NOT NULL,
   `status_id` int(11) NOT NULL
@@ -156,10 +159,10 @@ CREATE TABLE `status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usermodel`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `usermodel` (
+CREATE TABLE `user` (
   `user_id` int(5) NOT NULL,
   `username` varchar(80) NOT NULL,
   `password_hash` varchar(80) NOT NULL,
@@ -177,9 +180,9 @@ ALTER TABLE `banned`
   ADD PRIMARY KEY (`user_id`,`channel_id`);
 
 --
--- Indexes for table `channelmodel`
+-- Indexes for table `channel`
 --
-ALTER TABLE `channelmodel`
+ALTER TABLE `channel`
   ADD PRIMARY KEY (`channel_id`),
   ADD UNIQUE KEY `owner_id` (`owner_id`),
   ADD UNIQUE KEY `picture_id` (`picture_id`);
@@ -205,23 +208,23 @@ ALTER TABLE `group_message`
   ADD PRIMARY KEY (`message_id`);
 
 --
--- Indexes for table `picturemodel`
+-- Indexes for table `picture`
 --
-ALTER TABLE `picturemodel`
+ALTER TABLE `picture`
   ADD PRIMARY KEY (`picture_id`),
   ADD KEY `picturemodel_usermodel_FK` (`owner_id`);
 
 --
--- Indexes for table `profilemodel`
+-- Indexes for table `profile`
 --
-ALTER TABLE `profilemodel`
+ALTER TABLE `profile`
   ADD PRIMARY KEY (`profile_id`),
   ADD KEY `Profile_user_id_FK` (`user_id`);
 
 --
--- Indexes for table `relationmodel`
+-- Indexes for table `relation`
 --
-ALTER TABLE `relationmodel`
+ALTER TABLE `relation`
   ADD PRIMARY KEY (`user_id`,`user_id_1`),
   ADD UNIQUE KEY `status_id` (`status_id`),
   ADD KEY `Relation_user_id_1_FK` (`user_id_1`);
@@ -239,9 +242,9 @@ ALTER TABLE `status`
   ADD PRIMARY KEY (`status_id`);
 
 --
--- Indexes for table `usermodel`
+-- Indexes for table `user`
 --
-ALTER TABLE `usermodel`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
 
 --
@@ -249,9 +252,9 @@ ALTER TABLE `usermodel`
 --
 
 --
--- AUTO_INCREMENT for table `channelmodel`
+-- AUTO_INCREMENT for table `channel`
 --
-ALTER TABLE `channelmodel`
+ALTER TABLE `channel`
   MODIFY `channel_id` int(6) NOT NULL AUTO_INCREMENT;
 
 --
@@ -267,15 +270,15 @@ ALTER TABLE `group_message`
   MODIFY `message_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `picturemodel`
+-- AUTO_INCREMENT for table `picture`
 --
-ALTER TABLE `picturemodel`
+ALTER TABLE `picture`
   MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `profilemodel`
+-- AUTO_INCREMENT for table `profile`
 --
-ALTER TABLE `profilemodel`
+ALTER TABLE `profile`
   MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -285,9 +288,9 @@ ALTER TABLE `status`
   MODIFY `status_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `usermodel`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `usermodel`
+ALTER TABLE `user`
   MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
@@ -298,28 +301,28 @@ ALTER TABLE `usermodel`
 -- Constraints for table `follower`
 --
 ALTER TABLE `follower`
-  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channelmodel` (`channel_id`),
+  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channel` (`channel_id`),
   ADD CONSTRAINT `follower_role_id_FK` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`);
+  ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table `picturemodel`
+-- Constraints for table `picture`
 --
-ALTER TABLE `picturemodel`
-  ADD CONSTRAINT `picturemodel_usermodel_FK` FOREIGN KEY (`owner_id`) REFERENCES `usermodel` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `picture`
+  ADD CONSTRAINT `picturemodel_usermodel_FK` FOREIGN KEY (`owner_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `profilemodel`
+-- Constraints for table `profile`
 --
-ALTER TABLE `profilemodel`
-  ADD CONSTRAINT `Profile_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`);
+ALTER TABLE `profile`
+  ADD CONSTRAINT `Profile_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table `relationmodel`
+-- Constraints for table `relation`
 --
-ALTER TABLE `relationmodel`
-  ADD CONSTRAINT `Relation_user_id_1_FK` FOREIGN KEY (`user_id_1`) REFERENCES `usermodel` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `Relation_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `usermodel` (`user_id`) ON DELETE CASCADE;
+ALTER TABLE `relation`
+  ADD CONSTRAINT `Relation_user_id_1_FK` FOREIGN KEY (`user_id_1`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Relation_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
