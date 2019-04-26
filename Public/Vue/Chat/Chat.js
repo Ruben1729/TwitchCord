@@ -6,10 +6,16 @@ export default Vue.component('chat', {
         channel: Object,
         group: Object,
         user: Object,
+        isStreamOpen: Boolean,
     },
     sockets: {
         connect: function () {
             this.$emit('connection-state', true);
+            //Don't send join request if group hasn't been set
+            if (this.group_identifier) {
+                this.joinNewGroup();
+                this.getMessageHistory();
+            }
         },
         connect_error: function () {
             this.$emit('connection-state', false);
@@ -17,8 +23,9 @@ export default Vue.component('chat', {
         message_recieved: function (msg) {
             this.messages.push(msg);
         },
-        message_history: function (msg) {
-
+        message_history: function (messages) {
+            console.log('History Recieved');
+            this.messages = messages;
         },
     },
     data: function () {
@@ -36,40 +43,83 @@ export default Vue.component('chat', {
         }
     },
     computed: {
-        current_group: function () {
-            if (this.group)
-                return `{${this.group.channel_id}}-[${this.group.group_id}]`;
+        group_identifier: function () {
+            if (this.isStreamOpen)
+                return this.channel.channel_name;
+            else if (this.group)
+                return `{${this.group.channel_id}}-[${this.group.group_chat_id}]`;
             else
                 return null;
         }
     },
     watch: {
+        //!val == early return to stop join a null room
         channel: function (val) {
-            if (val === undefined)
+            console.log(val);
+            if (!val)
                 return;
-
-            //Set new value
-            this.channel = val;
-            //Join the new room
-            this.$socket.emit('join_group-chat', this.current_group);
-            //reset current group chat
-            this.current_group = this.channel[0];
+        },
+        group: function (val) {
+            if (!val)
+                return;
+            this.messages = [];
+            this.joinNewGroup();
+            this.getMessageHistory();
+        },
+        isStreamOpen: function (state) {
+            this.messages = [];
+            //Join stream's livechat
+            if (state) {
+                this.$socket.emit('join_group-chat', {
+                    group_chat: this.channel.channel_name,
+                    user: this.user,
+                });
+            } else {
+                this.joinNewGroup();
+                this.getMessageHistory();
+            }
         }
     },
     methods: {
         sendMessage: function (data) {
+            data.isGroupChat = !this.isStreamOpen;
             //Fill in remaining fields
-            data.user = this.user;
-            data.group = this.current_group;
+            data.username = this.user.username;
+            data.user_id = this.user.user_id;
+            data.group_chat_id = this.group.group_chat_id;
+            data.group_chat = this.group_identifier;
             //Send message as JSON
             this.$socket.emit('group-chat_message', data);
             //Insert message into local messages
             this.messages.push(data);
         },
+        joinNewGroup: function () {
+            console.log('joinning');
+            //Join the new room
+            this.$socket.emit('join_group-chat', {
+                group_chat: this.group_identifier,
+                data: {
+                    user: this.user,
+                    channel_id: this.channel.channel_id,
+                },
+            });
+        },
+        leaveCurrentGroup() {
+            this.$socket.emit('leave_group-chat', {
+                group_chat: this.group_identifier,
+            });
+        },
+        getMessageHistory: function () {
+            if (this.group) {
+                this.$socket.emit('retrieve_messages', this.group);
+            }
+        }
     },
     template: `
     <div :style="css.chat_container">
-        <chat-window v-bind:messages="messages"></chat-window>
+        <chat-window 
+            ref="chat_window" 
+            v-bind:messages="messages"></chat-window>
         <chat-input v-on:send-message="sendMessage"></chat-input>
     </div>
     `,

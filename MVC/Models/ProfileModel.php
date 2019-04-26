@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 	include_once '../MVC/Core/Model.php';
 	include_once '../MVC/SQL/SQL.php';
 
@@ -31,3 +32,15 @@
 		}
 
 	}
+=======
+include_once '../MVC/Core/Model.php';
+include_once '../MVC/SQL/SQL.php';
+
+class Profile extends Model
+{
+	public $profile_id;
+	public $user_id;
+	public $pic_id;
+	public $created_on;
+}
+>>>>>>> cf5a05323cc7cbd6f19559c9e0dff5b0889302ed

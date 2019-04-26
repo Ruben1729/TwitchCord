@@ -26,9 +26,10 @@ export default Vue.component('groupchat-bar', {
     methods: {},
     template: `
     <div :style="css.bar">
-        <button :style="css.streamButton">Stream</button>
+        <button 
+        :style="css.streamButton"
+        @click="$emit('stream-state')">Stream</button>
         <ul :style="css.ul">
-        <span>text channels</span>
             <li 
             class="group-item"
             v-for="group in groups" :key="group.group_chat_id"

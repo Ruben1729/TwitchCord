@@ -13,42 +13,6 @@ class ChannelModel extends Model
 	public $picture_id;
 	public $owner_id;
 
-	public function SearchChannels($name)
-	{
-		$user_id = isset($_SESSION[uid]) ? $_SESSION[uid] : -1;
-
-		$SQL = SQL::GetConnection();
-		$channels = $SQL
-			->Search()
-			->Model('ChannelModel')
-			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
-			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
-			->Where("channel_name", "%$name%", 'LIKE')
-			->GetAll(PDO::FETCH_OBJ);
-
-		//Add property if channel is followed, assuming logged in
-		if ($user_id != -1) {
-			$followed = $SQL
-				->Search()
-				->Model('Follower')
-				->Fields(['channel_id', '1'])
-				->Where('user_id', $user_id)
-				->GetAll(PDO::FETCH_KEY_PAIR);
-
-			//Stop if not followed anyone yet
-			if ($followed) {
-				// Check if key exists
-				foreach ($channels as $channel) {
-					if ($followed[$channel->channel_id]) {
-						$channel->isFollowed = true;
-					}
-				}
-			}
-		}
-
-		return $channels;
-	}
-
 	public function getChannelByName($name)
 	{
 		$SQL = SQL::GetConnection();
@@ -71,19 +35,5 @@ class ChannelModel extends Model
 			->GetAsObj();
 
 		return $newChannel;
-	}
-
-	public function getUsersChannels($user_id)
-	{
-		$SQL = SQL::GetConnection();
-		$channel = $SQL
-			->Search()
-			->Model('follower')
-			->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
-			->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
-			->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
-			->Where('user_id', $user_id)
-			->GetAll(PDO::FETCH_OBJ);
-		return $channel;
 	}
 }

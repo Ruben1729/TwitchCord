@@ -9,4 +9,4 @@
     require_once 'Core/App.php';
     require_once 'Core/Controller.php';
     require_once 'Core/Helper.php';
-?>
+    include_once 'SQL/SQL.php';

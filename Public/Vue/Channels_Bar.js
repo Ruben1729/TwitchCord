@@ -33,7 +33,10 @@ export default Vue.component('channel-bar', {
     template: `
     <div :style="css.bar">
         <ul :style="css.ul">
-            <li style="list-style-type: none;" v-for="channel in channels">
+            <li 
+            @click="$emit('channel-change', channel)"
+            style="list-style-type: none;" 
+            v-for="channel in channels">
                 <template v-if="channel.path">
                     <img class="channel img" :src="channel.path">
                 </template>

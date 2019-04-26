@@ -23,15 +23,44 @@ class Community extends Controller
 
         //Setup generic object to hold information
         $info = new stdClass();
-        //Retrieve information
+        //Retrieve user's information
         $info->user = $this->model('UserModel')->getProfile($_SESSION[username]);
         //Get the channels for the current user
-        $info->channels = $this->model('ChannelModel')->getUsersChannels($info->user->user_id);
-        //get the group_chat information for the first channel
-        $first_channel = isset($info->channels[0]->channel_id) ? $info->channels[0]->channel_id : null;
-        $info->group_chats = $this->model('Group_Chat')->getGroupChats($first_channel);
+        $SQL = SQL::GetConnection();
+        $info->channels = $SQL
+            ->Search()
+            ->Model('follower')
+            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
+            ->JoinUsing('INNER JOIN', 'ChannelModel', 'channel_id')
+            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->Where('user_id', $info->user->user_id)
+            ->GetAll(PDO::FETCH_OBJ);
 
         echo json_encode($info);
+    }
+
+    public function GetUsersFromChannel($channel_id)
+    {
+        $SQL = SQL::GetConnection();
+        $users = $SQL
+            ->Search()
+            ->Fields(['user_id', 'username', 'path', '0 as "isActive"'])
+            ->Model('UserModel')
+            ->JoinUsing('INNER JOIN', 'follower', 'user_id')
+            ->JoinUsing('LEFT JOIN', 'profilemodel', 'user_id')
+            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->Where('channel_id', $channel_id)
+            ->GetAll();
+
+        header('Content-Type: application/json');
+        echo json_encode($users);
+    }
+
+    public function GetGroupChats($channel_id)
+    {
+        $groups = $this->model('Group_Chat')->getGroupChats($channel_id);
+        header('Content-Type: application/json');
+        echo json_encode($groups);
     }
 
     public function POST_Follow()
@@ -46,10 +75,37 @@ class Community extends Controller
     public function ChannelList()
     {
         $channel_name = $_GET['channel_name'];
-        $channel_name =
-            $channels = $this
-            ->model('ChannelModel')
-            ->SearchChannels($channel_name);
+        $user_id = isset($_SESSION[uid]) ? $_SESSION[uid] : -1;
+
+        $SQL = SQL::GetConnection();
+        $channels = $SQL
+            ->Search()
+            ->Model('ChannelModel')
+            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
+            ->JoinUsing('LEFT JOIN', 'picturemodel', 'picture_id')
+            ->Where("channel_name", "%$channel_name%", 'LIKE')
+            ->Where('ChannelModel.owner_id', $user_id, '!=')
+            ->GetAll(PDO::FETCH_OBJ);
+
+        //Add property if channel is followed, assuming logged in
+        if ($user_id != -1) {
+            $followed = $SQL
+                ->Search()
+                ->Model('Follower')
+                ->Fields(['channel_id', '1'])
+                ->Where('user_id', $user_id)
+                ->GetAll(PDO::FETCH_KEY_PAIR);
+
+            //Stop if no one has been followed
+            if ($followed) {
+                // Check if key exists
+                foreach ($channels as $channel) {
+                    if ($followed[$channel->channel_id]) {
+                        $channel->isFollowed = true;
+                    }
+                }
+            }
+        }
 
         header('Content-Type: application/json');
         echo json_encode($channels);

@@ -8,8 +8,11 @@ export default Vue.component('chat-window', {
       return imgsrc ? imgsrc : '/Pictures/default.png'
     },
     getTime: function (time) {
-      return moment(time).format("hh:mm:ss A");
-    }
+      return moment(time).format('hh:mm A')
+    },
+  },
+  updated: function () {
+    this.$refs.ul_message.scrollTop = this.$refs.ul_message.scrollHeight;
   },
   data: function () {
     return {
@@ -43,15 +46,16 @@ export default Vue.component('chat-window', {
         },
         window: {
           width: '100%',
-          flex: '1',
+          height: '85%',
           background: '#829399',
         },
         ul: {
           margin: '2%',
           background: 'white',
           borderRadius: '10px',
-          maxHeight: '92%',
+          maxHeight: '90%',
           overflow: 'auto',
+          scrollbarWidth: 'thin',
         },
         msgContent: {
           padding: '2%',
@@ -63,14 +67,14 @@ export default Vue.component('chat-window', {
   },
   template: `
   <div :style="css.window">
-    <ul :style="css.ul">
+    <ul ref="ul_message" :style="css.ul">
       <li :style="css.messages" v-for="message in messages">
         <div :style="css.msg">
           <div :style="css.avatar">
               <img :src="resolvePath(message.path)" :style="css.msgImg" />
-              <p>{{message.user.username}}</p>
+              <p>{{message.username}}</p>
           </div>
-          <p :style="css.msgContent">{{message.content}}</p>
+          <p :style="css.msgContent">{{message.text}}</p>
           <div :style="css.timestamp">{{getTime(message.timestamp)}}</div>
         </div>
       </li>

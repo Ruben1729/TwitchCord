@@ -3,8 +3,8 @@ export default Vue.component('chat-input', {
         return {
             css: {
                 input: {
-                    minHeight: '2%',
-                    maxHeight: '5%',
+                    minHeight: '1em',
+                    maxHeight: '6em',
                     width: '100%',
                     padding: '2% 0',
                     display: 'flex',
@@ -35,8 +35,8 @@ export default Vue.component('chat-input', {
                 return;
 
             this.$emit('send-message', {
-                content: msg,
-                timestamp: moment().format('YYYY-MM-DD HH:MM:SS')
+                text: msg,
+                timestamp: moment().format('YYYY-MM-DD hh:mm:ss')
             });
             //Clear old message
             this.$refs.input_textarea.value = '';
