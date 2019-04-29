@@ -4,12 +4,7 @@ export default Vue.component('stream', {
     },
     data: function () {
         return {
-            css: {
-                stream: {
-                    width: '65%',
-                    background: 'rgb(130, 147, 153)',
-                }
-            },
+
         }
     },
     computed: {
@@ -19,7 +14,7 @@ export default Vue.component('stream', {
     },
     methods: {},
     template: `
-    <div :style="css.stream">
+    <div id="stream">
         <iframe
             style="width: 100%; height: 85%; margin: 2% 0;"
             v-bind:src="streamURL"

@@ -18,6 +18,7 @@ if (!isset($_SESSION['uid']))
 <body>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
     <script src="/Dependencies/vue-socketio.js"></script>
     <script src="/Dependencies/Vue.js"></script>
     <div id="root">

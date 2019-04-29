@@ -12,19 +12,16 @@ class Community extends Controller
         $this->view('Community/channel');
     }
 
-    //Bad name, but get User, channel and group chats
-    public function GetInformation()
+    public function GetUserChannels()
     {
         header('Content-Type: application/json');
-        if (!isset($_SESSION[username])) {
+        if (!isset($_SESSION[uid])) {
             echo json_encode('{error: "No user is logged in"}');
             return;
         }
 
         //Setup generic object to hold information
         $info = new stdClass();
-        //Retrieve user's information
-        $info->user = $this->model('UserModel')->getProfile($_SESSION[username]);
         //Get the channels for the current user
         $SQL = SQL::GetConnection();
         $info->channels = $SQL
@@ -33,9 +30,19 @@ class Community extends Controller
             ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
             ->JoinUsing('INNER JOIN', 'channel', 'channel_id')
             ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-            ->Where('user_id', $info->user->user_id)
+            ->Where('user_id', $_SESSION[uid])
             ->GetAll(PDO::FETCH_OBJ);
 
+        echo json_encode($info);
+    }
+
+    public function GetGroupChats($channel_id)
+    {
+        //Setup generic object to hold information
+        $info = new stdClass();
+
+        $info->groups = $this->model('Group_Chat')->getGroupChats($channel_id);
+        header('Content-Type: application/json');
         echo json_encode($info);
     }
 
@@ -52,15 +59,7 @@ class Community extends Controller
             ->Where('channel_id', $channel_id)
             ->GetAll();
 
-        header('Content-Type: application/json');
-        echo json_encode($users);
-    }
-
-    public function GetGroupChats($channel_id)
-    {
-        $groups = $this->model('Group_Chat')->getGroupChats($channel_id);
-        header('Content-Type: application/json');
-        echo json_encode($groups);
+        $this->send($users);
     }
 
     public function POST_Follow()

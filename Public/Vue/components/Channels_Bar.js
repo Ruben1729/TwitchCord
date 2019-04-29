@@ -1,7 +1,8 @@
-
 export default Vue.component('channel-bar', {
-    props: {
-        channels: Array,
+    data: function () {
+        return {
+            channels: [],
+        }
     },
     methods: {
         OnlyCaptials(string) {
@@ -11,31 +12,26 @@ export default Vue.component('channel-bar', {
                     letters += character;
             });
             return letters;
-        }
+        },
+        fetchChannels() {
+            axios.get('/Community/GetUserChannels')
+                .then(response => {
+                    this.channels = response.data.channels;
+                    this.$emit('channel-change', this.channels[0]);
+                })
+                .catch(response => {
+                    console.log('Invalid Request: ' + response.data.error);
+                })
+        },
     },
-    data: function () {
-        return {
-            css: {
-                bar: {
-                    width: '6em',
-                    background: '#272829',
-                },
-                ul: {
-                    margin: '0',
-                    padding: '0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                },
-            }
-        }
+    created() {
+        this.fetchChannels();
     },
     template: `
-    <div :style="css.bar">
-        <ul :style="css.ul">
+    <div id="channel-bar">
+        <ul>
             <li 
             @click="$emit('channel-change', channel)"
-            style="list-style-type: none;" 
             v-for="channel in channels">
                 <template v-if="channel.path">
                     <img class="channel img" :src="channel.path">

@@ -16,15 +16,17 @@ $result =
 // See the output of the query
 var_dump($result);*/
 
-class SQL{
+class SQL
+{
 
     private $pdo;
     private $allowedTables = [];
     private $allowedColumns = ['*' => true];
 
     //Static class for connection setup
-    public static function GetConnection($file = '../MVC/config.ini'){
-        try{
+    public static function GetConnection($file = '../MVC/config.ini')
+    {
+        try {
             $settings = parse_ini_file($file);
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -43,27 +45,30 @@ class SQL{
             $obj = new SQL($pdo);
 
             return $obj;
-        }catch(PDOException $e){
-            throw new PDOException($e -> getMessage(), (int)$e -> getCode());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
 
-    private function __construct($PDO){
+    private function __construct($PDO)
+    {
         $this->pdo = $PDO;
     }
 
-    public function Query($query, $PDOType = PDO::FETCH_ASSOC){ 
+    public function Query($query, $values = null, $PDOType = PDO::FETCH_ASSOC)
+    {
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
+        $stmt->execute($values);
         return $stmt->fetchAll($PDOType);
     }
 
-    public function Search(){
+    public function Search()
+    {
         return new QueryBuilder($this->pdo, $this);
     }
 
-    public function Modify(){
+    public function Modify()
+    {
         return new InsertBuilder($this->pdo);
     }
 }
-
