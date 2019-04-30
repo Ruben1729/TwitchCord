@@ -1,19 +1,22 @@
 <?php
+include_once '../MVC/Core/Model.php';
+include_once '../MVC/SQL/SQL.php';
 
-class Main extends Controller
+class RelationModel extends Model implements iSQLQueryable
 {
-    public function Index(){
-      $data['friend_list'] = null;
 
-      if(ISSET($_SESSION['uid']))
-        $data['friend_list'] = $this->model('RelationModel')->getAllFriends($_SESSION['uid']);
+	public static function DBName()
+	{
+		return 'Relation';
+	}
 
-      $this->view('Main/index', $data);
-    }
+	public $user_id;
+	public $user_id_1;
+	public $status_id;
 
-    public function Test()
-    {
-        $SQL = SQL::GetConnection();
+	public function getAllFriends($id){
+
+		$SQL = SQL::GetConnection();
         $result = $SQL->Query(
             "SELECT user_id, username, path
             FROM 
@@ -31,8 +34,8 @@ class Main extends Controller
             INNER JOIN user USING (user_id)
             LEFT JOIN profile USING (user_id)
             LEFT JOIN picture USING (picture_id)",
-            [1, 1]
+            [$id, $id]
         );
-        var_dump($result);
-    }
+        return $result;
+	}
 }
