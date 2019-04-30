@@ -39,19 +39,4 @@ class UserModel extends Model implements iSQLQueryable
 			->GetAsObj();
 		return $newUser;
 	}
-
-	//Includes UserModel + Profile + Picture's Path
-	public function getProfile($username)
-	{
-		$SQL = SQL::GetConnection();
-		$newUser = $SQL
-			->Search()
-			->Fields(['user_id', 'username', 'bio', 'created_on', 'path'])
-			->Model('UserModel')
-			->JoinUsing('LEFT JOIN', 'Profile', 'user_id')
-			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-			->Where("username", $username)
-			->Get();
-		return $newUser;
-	}
 }

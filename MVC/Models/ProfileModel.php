@@ -14,6 +14,7 @@ class ProfileModel extends Model implements iSQLQueryable
 	public $bio;
 	public $created_on;
 	public $picture_id;
+
 	public function createProfile($user_id, $bio, $created_on, $pic)
 	{
 		$obj = new Profile();

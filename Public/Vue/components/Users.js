@@ -1,42 +1,31 @@
 export default Vue.component('users', {
     props: {
-        channel: Object,
+        channel_name: String,
+        channel_id: Number,
     },
     data: function () {
         return {
             users: [],
-            css: {
-
-            },
         }
+    },
+    watch: {
+        channel_name: function () {
+            //Plz don't hurt me UwU
+            setTimeout(() => {
+                this.getUsers();
+                this.$socket.emit('get_online', this.channel_name);
+            }, 200)
+        },
     },
     methods: {
         getUsers: function () {
-            if (this.channel) {
-                let vm = this;
-                axios.get('/Community/GetUsersFromChannel/' + this.channel.channel_id)
-                    .then(function (response) {
-                        vm.users = response.data;
-                    })
-                    .catch(function (response) {
-
+            if (this.channel_name) {
+                axios.get('/Community/GetUsersFromChannel/' + this.channel_id)
+                    .then(response => {
+                        this.users = response.data;
                     });
             }
         },
-        getActiveId: function () {
-
-        }
-    },
-    mounted: function () {
-
-    },
-    watch: {
-        channel: function () {
-            this.getUsers();
-        },
-        users: function () {
-            this.$socket.emit('get_online', this.channel.channel_id);
-        }
     },
     sockets: {
         online_users: function (online) {
@@ -45,10 +34,13 @@ export default Vue.component('users', {
                     element.isActive = true;
                 }
             });
-        }
+        },
+        user_status_change(info) {
+            this.users.forEach
+        },
     },
     template: `
-    <div :style="css.bar">
+    <div id="users-bar">
         <ul>
             <li v-for="user in users">
                 <template v-if="user.isActive">

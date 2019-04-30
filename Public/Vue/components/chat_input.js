@@ -1,31 +1,7 @@
 export default Vue.component('chat-input', {
     data: function () {
         return {
-            css: {
-                input: {
-                    minHeight: '1em',
-                    maxHeight: '6em',
-                    width: '100%',
-                    padding: '2% 0',
-                    display: 'flex',
-                    alignItems: 'center',
-                },
-                input_textarea: {
-                    margin: '1% 0% 1% 1%',
-                    padding: '0',
-                    float: 'left',
-                    resize: 'none',
-                    width: '100%',
-                    height: '100%',
-                },
-                input_button: {
-                    margin: '0',
-                    marginRight: '1%',
-                    height: '100%',
-                    width: '50px',
-                    float: 'left',
-                },
-            },
+
         }
     },
     methods: {
@@ -51,13 +27,11 @@ export default Vue.component('chat-input', {
         },
     },
     template: `
-    <div :style="css.input">
+    <div id="chat-input">
       <textarea ref="input_textarea"
-                :style="css.input_textarea"
                 v-on:keydown="chatCommands">
       </textarea>
-      <button :style="css.input_button"
-              v-on:click="prepareMessage">
+      <button v-on:click="prepareMessage">
               ▶</button>
     </div>
     `,
