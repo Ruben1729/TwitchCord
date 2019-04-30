@@ -34,11 +34,12 @@
 
 			$userProfile = $this->model('ProfileModel')->getProfile($_SESSION['uid']);
 			$result = uploadImg($_FILES);
+
 			$bio = empty($_POST['bio']) ? "" : $_POST['bio'];
 
-			if(strpos($result, 'ERROR') === 0){
+			if (strpos($result, 'ERROR') === 0) {
 				$data['picture_error'] = $result;
-				$pic = NULL;
+				$pic = $this->model('PictureModel')->createEmptyPic();
 			} else {
 			 	$newPic = $this->model('PictureModel')
 			 	 			   ->Set(['picture_id' => NULL, 'path' => $result, 'owner_id' => $_SESSION['uid']])
@@ -47,25 +48,21 @@
 			 	$pic = $this->model('PictureModel')->getPictureByPath($result);
 			}
 
-			if(empty($userProfile)){
-
+			if (empty($userProfile)) {
 				$this->model('ProfileModel')
 					 ->Set(['user_id' => $_SESSION['uid'], 'bio' => $bio, 'created_on' => NULL,'picture_id' => $pic->picture_id])
 					 ->Submit();
-			}
-			else{
-
+			} else {
 				$userProfile->bio = $bio;
-				if(strpos($result, 'ERROR') !== 0)
+				if (strpos($result, 'ERROR') !== 0)
 					$userProfile->picture_id = $pic->picture_id;
 				$userProfile->Submit();
-
 			}
 			
 
 			$id = $userProfile->picture_id;
 			$pictureModel = $this->model('PictureModel')->getPicture($id);
-			$data['path'] = $pictureModel->path;
+			$data['path'] = empty($pictureModel) ? null : $pictureModel->path;
 			$data['bio'] = $userProfile->bio;
 
 			$this->view('Profile/Settings', $data);

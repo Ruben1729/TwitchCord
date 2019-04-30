@@ -49,4 +49,12 @@ class PictureModel extends Model implements iSQLQueryable
 
 		return $picture;
 	}
+
+	public function createEmptyPic(){
+		$picture = new PictureModel();
+		$picture->picture_id = null;
+		$picture->path = null;
+		
+		return $picture;
+	}
 }
