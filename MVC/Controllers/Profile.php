@@ -1,7 +1,7 @@
 <?php
 	
 	class Profile extends Controller{
-		
+
 		public function Index(){
 			$this->view('Profile/index');
 		}
