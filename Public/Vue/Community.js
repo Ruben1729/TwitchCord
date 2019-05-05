@@ -1,8 +1,9 @@
-import "./components/Channels_Bar.js"
-import "./components/GroupChat_Bar.js"
-import "./components/Chat.js"
-import "./components/Users.js"
-import "./components/Stream.js"
+import "./components/Channels_Bar.js";
+import "./components/GroupChat_Bar.js";
+import "./components/Chat.js";
+import "./components/Users.js";
+import "./components/Stream.js";
+import "./components/VoiceController.js";
 
 Vue.use(new VueSocketIO({
     debug: true,
@@ -16,8 +17,10 @@ var app = new Vue({
         return {
             isConnected: false,
             inStream: false,
+            user: null,
             current_channel: null,
             current_group: null,
+            current_voice: null,
         }
     },
     computed: {
@@ -51,16 +54,37 @@ var app = new Vue({
             this.isConnected = false;
         },
     },
+    created() {
+        axios.get('/User/GetCurrentUser/' + this.channel_id)
+            .then(response => {
+                this.user = response.data;
+                this.$socket.emit('register_user', this.user);
+            })
+            .catch(response => {
+                console.log('Invalid Request: ' + response.data.error);
+            })
+    },
     template: `
         <div id="app">
             <div v-show="isConnected" id="main-container">
                 <channel-bar
-                    @channel-change="handleChannelSwitch($event)"/>
+                    @channel-change="handleChannelSwitch($event)">
+                </channel-bar>
                 
-                <groupchat-bar
-                    @group-change="current_group = $event"
-                    @stream-state="inStream = $event"
-                    :channel_id="channel_id"/>
+                <div style="display: flex;">
+                    <groupchat-bar
+                        @group-change="current_group = $event"
+                        @voice-change="current_voice = $event"
+                        @stream-state="inStream = $event"
+                        :channel_id="channel_id">
+                    </groupchat-bar>
+
+                    <voice-controller
+                        :voice="current_voice"
+                        :user="user"
+                        @leaving-voice="current_voice = null">
+                    </voice-controller>
+                </div>
 
                 <stream v-if="inStream"
                     v-bind:channel="current_channel">
@@ -69,12 +93,15 @@ var app = new Vue({
                 <chat
                     :channel="current_channel"
                     :group="current_group"
+                    :user="user"
                     @stream-state="inStream = $event"
-                    :inStream="inStream"/>
+                    :inStream="inStream">
+                </chat>
 
                 <users 
                     :channel_name="channel_name"
-                    :channel_id="channel_id"/>
+                    :channel_id="channel_id">
+                </users>
                 
             </div>
             <div v-show="!isConnected">

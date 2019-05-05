@@ -41,6 +41,7 @@ io.on('connection', socket => {
     socket.on('register_user', user => {
         Log(OK, 'Registering User ' + user.username);
         SocketToUser[socket.id] = user;
+        console.log(SocketToUser);
     });
 
     socket.on('retrieve_messages', group => {
@@ -55,19 +56,27 @@ io.on('connection', socket => {
         });
     });
 
-    socket.on('get_online', channel => {
+    function getUsers(room) {
         let rooms = io.sockets.adapter.rooms;
-        let _channel = rooms[channel];
+        let _channel = rooms[room];
         if (_channel) {
             let online = {};
-            Object.keys(_channel.sockets).forEach(key => {
-                if (SocketToUser[key]) {
-                    let user_id = SocketToUser[key].user_id;
-                    online[user_id] = true;
-                }
-            });
-            socket.emit('online_users', online);
+            for (let key in _channel.sockets) {
+                let user = SocketToUser[key];
+                online[user.user_id] = {
+                    user_id: user.user_id,
+                    username: user.username,
+                    socket_id: key,
+                };
+            }
+            return online;
         }
+    }
+
+    socket.on('get_online', channel => {
+        let users = getUsers(channel);
+        Log(OK, 'Sending online user list');
+        socket.emit('online_users', users);
     });
 
     //Sending back 
@@ -112,6 +121,55 @@ io.on('connection', socket => {
         Log(OK, `Client ID: ${socket.id}: Leaving Channel ${channel}`);
         socket.leave(channel);
     });
+
+    //Voice Chat Signalling
+    socket.on('join_voice', voice => {
+        //Send the users who are in the chat
+        let room = voice.group_chat;
+
+        Log(OK, `Client ID: ${socket.id}: Joining voice ${room}`);
+
+        //Send back the user's in the room.
+        let users = getUsers(room);
+        socket.emit('recieve_peers', users);
+
+        //Finally join the voice_chat room
+        socket.join(room);
+    });
+
+    socket.on('leave_voice', voice => {
+        Log(OK, `Client ID: ${socket.id}: Leaving Voice ${voice}`);
+        socket.leave(voice);
+    });
+
+    socket.on('new_ICE_candidate', config => {
+        Log(OK, `Client ID: ${socket.id}: Sending ICE Candidate`);
+        socket.to(config.socket_id).emit('new_ICE_candidate', {
+            user_id: config.user_id,
+            candidate: config.candidate,
+        });
+    });
+
+    socket.on('voice_chat_offer', config => {
+        Log(OK, `Client ID: ${socket.id}: Sending Voice chat offer`);
+        console.log(config);
+        socket.to(config.socket_id).emit('voice_chat_offer', {
+            user_id: config.user_id,
+            my_socket_id: config.my_socket_id,
+            socket_id: config.socket_id,
+            sdp: config.sdp,
+        })
+    });
+
+    socket.on('voice_chat_answer', config => {
+        Log(OK, `Client ID: ${socket.id}: Sending Voice chat answer`);
+        socket.to(config.socket_id).emit('voice_chat_answer', {
+            sdp: config.sdp,
+            user_id: config.user_id,
+            socket_id: config.socket_id,
+        });
+    });
+
 });
 server.listen(3000);
 

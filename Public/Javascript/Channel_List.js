@@ -14,6 +14,10 @@ $(document).ready(function () {
     });
 });
 
+function watchEvent() {
+
+}
+
 function followEvent() {
     //Get index
     let index = $(this).index() - 1;
@@ -48,6 +52,7 @@ function appendChannels() {
             });
             //Setup event listeners
             $(list).find(".follow-button").on("click", user.uid ? followEvent : followNotLogged);
+            $(list).find(".watch-button").on("click")
         })
 }
 

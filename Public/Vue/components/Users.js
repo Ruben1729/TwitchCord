@@ -10,7 +10,6 @@ export default Vue.component('users', {
     },
     watch: {
         channel_name: function () {
-            //Plz don't hurt me UwU
             setTimeout(() => {
                 this.getUsers();
                 this.$socket.emit('get_online', this.channel_name);
@@ -26,21 +25,25 @@ export default Vue.component('users', {
                     });
             }
         },
+        openMenu(e) {
+            console.log('test');
+            e.preventDefault();
+        },
     },
     sockets: {
         online_users: function (online) {
-            this.users.forEach(element => {
+            for (let element in online) {
                 if (online[element.user_id]) {
                     element.isActive = true;
                 }
-            });
+            };
         },
         user_status_change(info) {
             this.users.forEach
         },
     },
     template: `
-    <div id="users-bar">
+    <div id="users-bar" :contextmenu="openMenu">
         <ul>
             <li v-for="user in users">
                 <template v-if="user.isActive">
