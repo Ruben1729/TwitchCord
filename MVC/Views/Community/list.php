@@ -12,9 +12,9 @@
 
 <body>
     <script>
-        var user = <?= json_encode($_SESSION)?>
+        var user = <?= json_encode($_SESSION) ?>
     </script>
-    <template>  
+    <template>
         <li>
             <span class="user">
                 <img class="img-user" src="">
@@ -25,28 +25,29 @@
     </template>
     <?php require "../MVC/Views/Shared/navigationbar.php" ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <div id="root">
-            <div id='channel-list'>
-                <h2>Channel's Found</h2>
-                <p>Search for a channel</p>
-                <input id="channel-input" type="input" value="<?= $_POST['channel_name']; ?>">
-                <button id="search-button" type="submit">Submit</button>
+    <div id="root">
+        <div id='channel-list'>
+            <h2>Channel's Found</h2>
+            <p>Search for a channel</p>
+            <input id="channel-input" type="input" value="<?= $_POST['channel_name']; ?>">
+            <button id="search-button" type="submit">Submit</button>
 
-                <hr class="divider">
-                <!-- Channel List -->
-                <ul>
-                </ul>
-            </div>
+            <hr class="divider">
+            <!-- Channel List -->
+            <ul>
+            </ul>
         </div>
-        <script src="/Javascript/Community/Channel_List.js"></script>
-        <style>
-            body{
-                background-color: #849c95;
-            }
-            button{
-                border: solid 1px #53615d;
-            }
-        </style>
+    </div>
+    <script src="/Javascript/Channel_List.js"></script>
+    <style>
+        body {
+            background-color: #849c95;
+        }
+
+        button {
+            border: solid 1px #53615d;
+        }
+    </style>
 </body>
 
 </html>
