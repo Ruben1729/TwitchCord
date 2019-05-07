@@ -18,6 +18,10 @@ class Channel extends Controller
 			$followers = $this->model('Follower')->getAllFollowers($userChannel->channel_id);
 			$data['followers'] = $followers;
 
+			//Get all the group chats of a channel
+			$groups = $this->model('Group_Chat')->getGroupChats($userChannel->channel_id);
+			$data['groups'] = $groups;
+
 			$pictureModel = $this->model('PictureModel')->getPicture($id);
 			if ($pictureModel) {
 				$data['path'] = $pictureModel->path;
@@ -95,6 +99,21 @@ class Channel extends Controller
 			header("Location: /Channel/Create");
 		}
 		$this->view('Channel/link');
+	}
+
+	public function POST_add_group()
+	{
+		$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+
+		//Submit the new group_chat to the DB
+		$group_name = $_POST['group-name'];
+		$type = $_POST['type'];
+		$this->model('Group_Chat')
+			->Set(['name' => $group_name, 'chat_type' => $type, 'channel_id' => $userChannel->channel_id])
+			->Submit();
+
+		//Redirect to channel dashboard
+		header('location: /Channel/Dashboard');
 	}
 
 	public function Create()
