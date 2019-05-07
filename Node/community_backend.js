@@ -98,6 +98,50 @@ io.on('connection', socket => {
         socket.to(msg.group_chat).emit('message_recieved', msg);
     });
 
+    function findSocket(user_id) {
+        for (const key in SocketToUser) {
+            if (SocketToUser.hasOwnProperty(key)) {
+                const user = SocketToUser[key];
+                if (user.user_id == user_id) {
+                    return key;
+                }
+            }
+        }
+    }
+
+    function yeet_user(query, config) {
+        sql.getConnection((err, connection) => {
+            if (err) console.log(err);
+            sql.query(query, [config.user_id, config.channel_id], (error, results, fields) => {
+                if (error) Log(ERROR, 'Error occured \n' + error)
+            });
+            connection.release();
+        });
+        //Find the user's socket
+        let _socket = findSocket(config.user_id);
+        if (_socket) {
+            socket.to(_socket).emit('user_channel_out', config.channel_name);
+        }
+    }
+
+    socket.on('kick-user', config => {
+        yeet_user('DELETE FROM follower WHERE user_id = ? AND channel_id = ?', config);
+    });
+
+    socket.on('ban-user', config => {
+        yeet_user(`DELETE FROM follower WHERE user_id = ? AND channel_id = ?`, config);
+        //Ban the user from joining again
+        sql.getConnection((err, connection) => {
+            if (err) console.log(err);
+            sql.query('INSERT INTO banned (user_id, channel_id) VALUES (?, ?)',
+                [config.user_id, config.channel_id],
+                (error, results, fields) => {
+                    if (error) Log(ERROR, 'Error occured \n' + error);
+                });
+            connection.release();
+        });
+    });
+
     socket.on('live-chat_message', msg => {
         socket.to(msg.group_chat).emit('message_recieved', msg);
     });

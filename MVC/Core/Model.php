@@ -27,7 +27,7 @@ class Model
     public function Submit()
     {
         $SQL = SQL::GetConnection();
-        $SQL
+        return $SQL
             ->Modify()
             ->Submit($this);
     }

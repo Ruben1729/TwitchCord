@@ -14,6 +14,10 @@ class Channel extends Controller
 			$data['description'] = $userChannel->description;
 			$id = $userChannel->picture_id;
 
+			//Get followers
+			$followers = $this->model('Follower')->getAllFollowers($userChannel->channel_id);
+			$data['followers'] = $followers;
+
 			$pictureModel = $this->model('PictureModel')->getPicture($id);
 			if ($pictureModel) {
 				$data['path'] = $pictureModel->path;
@@ -23,7 +27,7 @@ class Channel extends Controller
 				$id = $userChannel->picture_id;
 
 				$pictureModel = $this->model('PictureModel')->getPicture($id);
-				if($pictureModel){
+				if ($pictureModel) {
 					$data['path'] = $pictureModel->path;
 				} else {
 					$data['path'] = "/Pictures/default.png";
@@ -59,6 +63,7 @@ class Channel extends Controller
 				$channelPic = $this->model('PictureModel')->getPictureByPath($result);
 				$userChannel->picture_id = $channelPic->picture_id;
 			}
+
 			$userChannel->Submit();
 			$id = $userChannel->picture_id;
 			$pictureModel = $this->model('PictureModel')->getPicture($id);
@@ -73,9 +78,18 @@ class Channel extends Controller
 	{
 		$displayname = getToken($_GET['code']);
 		if (!empty($displayname)) {
-			$this->model('ChannelModel')
-				->Set(['channel_id' => null, 'channel_name' => $displayname, 'description' => "", 'created_on' => null, 'picture_id' => null, 'owner_id' => $_SESSION['uid']])
+			$owner_permission = 1 << 3;
+			$channel_id =
+				$this->model('ChannelModel')
+				->Set(['channel_name' => $displayname, 'description' => "", 'owner_id' => $_SESSION['uid']])
 				->Submit();
+			echo $channel_id;
+			//Set yourself as a follower, for displaying purposes
+			$SQL = SQL::GetConnection();
+			$SQL->Query(
+				'INSERT INTO follower (user_id, channel_id, permission_binary) VALUES (?, ?, ?)',
+				[$_SESSION[uid], $channel_id, $owner_permission]
+			);
 			header("Location: /Channel/Create");
 		} else {
 			header("Location: /Channel/Create");

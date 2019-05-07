@@ -19,7 +19,7 @@ export default Vue.component('users', {
         },
     },
     methods: {
-        getUsers: async function () {
+        getUsers: function () {
             if (this.channel_name) {
                 axios.get('/Community/GetUsersFromChannel/' + this.channel_id)
                     .then(response => {
@@ -37,10 +37,19 @@ export default Vue.component('users', {
         },
         kick(target, data) {
             console.log('kicking user');
+            $socket.emit('kick-user', {
+                user_id: data.user_id,
+                channel_id: this.channel_id,
+                channel_name: this.channel_name,
+            });
         },
         ban(target, data) {
             console.log('banning user');
-            console.log(data);
+            $socket.emit('ban-user', {
+                user_id: data.user_id,
+                channel_id: this.channel_id,
+                channel_name: this.channel_name,
+            });
         },
     },
     sockets: {
@@ -61,7 +70,7 @@ export default Vue.component('users', {
     <div id="users-bar">
         <ul>
             <li v-for="user in users" @contextmenu.prevent="$refs.menu.open($event, user)" 
-                :class="['user', user.isActive ? 'active' : '']">
+                :class="['user', user.isActive ? 'active' : '' ]">
                 {{user.username}}
             </li>
         </ul>

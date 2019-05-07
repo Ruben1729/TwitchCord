@@ -7,6 +7,19 @@ html, body{
 	margin-left: 360px;
 }
 
+.follower{
+	display: flex;
+	flex-direction: row;
+}
+
+.follower > p {
+	padding: 0% 5%;
+}
+
+.follower > button{
+	width: 3em;
+}
+
 .list{
 	width: 350px;
 	height: 485px;

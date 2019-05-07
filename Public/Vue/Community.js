@@ -45,6 +45,12 @@ var app = new Vue({
             this.current_channel = channel;
             this.$socket.emit('join_channel', channel.channel_name);
         },
+        handleBan(channels) {
+            if (this.channel_name == channels.old) {
+                alert("You've been removed from the channel");
+                this.current_channel = channels.new;
+            }
+        },
     },
     sockets: {
         connect() {
@@ -69,6 +75,7 @@ var app = new Vue({
             <div v-show="isConnected" id="main-container">
                 <channel-bar
                     @channel-change="handleChannelSwitch($event)">
+                    @user_yeeted="handleBan"
                 </channel-bar>
                 
                 <div style="display: flex;">
