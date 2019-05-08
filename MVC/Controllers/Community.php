@@ -20,11 +20,9 @@ class Community extends Controller
             return;
         }
 
-        //Setup generic object to hold information
-        $info = new stdClass();
         //Get the channels for the current user
         $SQL = SQL::GetConnection();
-        $info->channels = $SQL
+        $channels = $SQL
             ->Search()
             ->Model('follower')
             ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
@@ -33,7 +31,7 @@ class Community extends Controller
             ->Where('user_id', $_SESSION[uid])
             ->GetAll(PDO::FETCH_OBJ);
 
-        echo json_encode($info);
+        echo json_encode($channels);
     }
 
     public function GetGroupChats($channel_id)
@@ -71,43 +69,39 @@ class Community extends Controller
             ->Submit();
     }
 
+    public function POST_Unfollow()
+    {
+        $info = json_decode($_POST['info']);
+        $SQL = SQL::GetConnection();
+        $SQL->Query(
+            'DELETE FROM follower WHERE user_id = :user_id AND channel_id = :channel_id',
+            [':user_id' => $info->user_id, ':channel_id' => $info->channel_id]
+        );
+    }
+
     public function ChannelList()
     {
         $channel_name = $_GET['channel_name'];
         $user_id = isset($_SESSION[uid]) ? $_SESSION[uid] : -1;
 
         $SQL = SQL::GetConnection();
-        $channels = $SQL
-            ->Search()
-            ->Model('ChannelModel')
-            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
-            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-            ->Where("channel_name", "%$channel_name%", 'LIKE')
-            ->Where('channel.owner_id', $user_id, '!=')
-            ->GetAll(PDO::FETCH_OBJ);
-
-        //Add property if channel is followed, assuming logged in
-        if ($user_id != -1) {
-            $followed = $SQL
-                ->Search()
-                ->Model('Follower')
-                ->Fields(['channel_id', '1'])
-                ->Where('user_id', $user_id)
-                ->GetAll(PDO::FETCH_KEY_PAIR);
-
-            //Stop if no one has been followed
-            if ($followed) {
-                // Check if key exists
-                foreach ($channels as $channel) {
-                    if ($followed[$channel->channel_id]) {
-                        $channel->isFollowed = true;
-                    }
-                }
-            }
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode($channels);
+        $query = "SELECT channel_id, channel_name, description, created_on, path, (SELECT (CASE
+                                                                                                WHEN a.channel_id = b.channel_id THEN 1
+                                                                                                ELSE 0
+                                                                                            END)
+                                                                                    FROM follower a
+                                                                                    WHERE user_id = ?) as \"isFollowed\"
+                FROM channel b
+           LEFT JOIN picture USING (picture_id)
+           LEFT JOIN banned USING (channel_id)
+               WHERE channel_name LIKE ?
+                 AND b.owner_id != ?
+                 AND banned_on IS NULL";
+        $PDO = $SQL->PDO();
+        $stmt = $PDO->prepare($query);
+        $stmt->execute([$user_id, "%$channel_name%", $user_id]);
+        $channels = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $this->send($channels);
     }
 
     public function POST_ChannelList()

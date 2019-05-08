@@ -62,6 +62,11 @@ class SQL
         return $stmt->fetchAll($PDOType);
     }
 
+    public function PDO()
+    {
+        return $this->pdo;
+    }
+
     public function Search()
     {
         return new QueryBuilder($this->pdo, $this);

@@ -26,6 +26,12 @@ export default Vue.component('groupchat-bar', {
                     console.log('Invalid Request: ' + response.data.error);
                 })
         },
+        GroupTypeEmit(group) {
+            if (group.chat_type == 'TEXT')
+                this.$emit('group-change', group);
+            else
+                this.$emit('voice-change', group);
+        },
     },
     template: `
     <div id="group-bar">
@@ -36,10 +42,12 @@ export default Vue.component('groupchat-bar', {
         <ul>
             <li class="group-item"
             v-for="group in groups" :key="group.group_chat_id"
-            @click="$emit('group-change', group)">
+            @click="GroupTypeEmit(group)">
                 {{group.name}}
             </li>
         </ul>
+
+
     </div>
     `,
 });

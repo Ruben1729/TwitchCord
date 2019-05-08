@@ -27,6 +27,12 @@ export default Vue.component('channel-bar', {
     created() {
         this.fetchChannels();
     },
+    sockets: {
+        user_channel_out(channel_name) {
+            this.channels = this.channels.filter(x => x.channel_name == channel_name);
+            this.$emit('user_yeeted', { old: channel_name, new: this.channels[0] });
+        },
+    },
     template: `
     <div id="channel-bar">
         <ul>

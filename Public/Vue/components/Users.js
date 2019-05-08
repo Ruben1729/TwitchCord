@@ -1,19 +1,20 @@
 export default Vue.component('users', {
+    components: {
+        VueContext
+    },
     props: {
         channel_name: String,
         channel_id: Number,
     },
     data: function () {
         return {
-            users: [],
+            users: {},
         }
     },
     watch: {
         channel_name: function () {
-            //Plz don't hurt me UwU
             setTimeout(() => {
                 this.getUsers();
-                this.$socket.emit('get_online', this.channel_name);
             }, 200)
         },
     },
@@ -22,18 +23,44 @@ export default Vue.component('users', {
             if (this.channel_name) {
                 axios.get('/Community/GetUsersFromChannel/' + this.channel_id)
                     .then(response => {
-                        this.users = response.data;
+                        let data = response.data;
+                        let _users = {};
+                        for (let i = 0; i < data.length; i++) {
+                            _users[data[i].user_id] = data[i];
+                        }
+                        this.users = _users;
+                    })
+                    .then(() => {
+                        this.$socket.emit('get_online', this.channel_name);
                     });
             }
+        },
+        kick(target, data) {
+            console.log('kicking user');
+            $socket.emit('kick-user', {
+                user_id: data.user_id,
+                channel_id: this.channel_id,
+                channel_name: this.channel_name,
+            });
+        },
+        ban(target, data) {
+            console.log('banning user');
+            $socket.emit('ban-user', {
+                user_id: data.user_id,
+                channel_id: this.channel_id,
+                channel_name: this.channel_name,
+            });
         },
     },
     sockets: {
         online_users: function (online) {
-            this.users.forEach(element => {
-                if (online[element.user_id]) {
-                    element.isActive = true;
+            for (let id in online) {
+                console.log(id);
+                console.log(this.users[id]);
+                if (this.users[id]) {
+                    this.users[id].isActive = true;
                 }
-            });
+            };
         },
         user_status_change(info) {
             this.users.forEach
@@ -42,15 +69,18 @@ export default Vue.component('users', {
     template: `
     <div id="users-bar">
         <ul>
-            <li v-for="user in users">
-                <template v-if="user.isActive">
-                    Active: {{user.username}}
-                </template>
-                <template v-else>
-                    {{user.username}}
-                </template>
+            <li v-for="user in users" @contextmenu.prevent="$refs.menu.open($event, user)" 
+                :class="['user', user.isActive ? 'active' : '' ]">
+                {{user.username}}
             </li>
         </ul>
+
+        <vue-context ref="menu">
+            <ul slot-scope="child">
+                <li @click="kick($event.target, child.data)">Kick</li>
+                <li @click="ban($event.target, child.data)">Ban</li>
+            </ul>
+        </vue-context>
     </div>
     `,
 });

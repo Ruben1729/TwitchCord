@@ -15,6 +15,7 @@ $(document).ready(function () {
 });
 
 function followEvent() {
+    console.log("Followed");
     //Get index
     let index = $(this).index() - 1;
     let channel = channels[index];
@@ -24,18 +25,33 @@ function followEvent() {
         'followed_on': new Date().toISOString().slice(0, 19).replace('T', ' '),
         'notification': 1,
         'role_id': 1,
-    }
+    };
     $.ajax({
         type: "POST",
         dataType: "json",
         url: "/Community/Follow",
         data: { follower_data: JSON.stringify(followerData) }
     });
-    disableFollowButton(this);
+    this.innerHTML = 'Followed';
+    $(this).on("click", unfollowEvent);
 }
 
-function followNotLogged() {
-    window.location.href = "/User/Register";
+function unfollowEvent() {
+    console.log("Unfollowed");
+    let index = $(this).index() - 1;
+    let channel = channels[index];
+    let info = {
+        user_id: user.uid,
+        channel_id: channel.channel_id,
+    };
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Community/Unfollow",
+        data: { info: JSON.stringify(info) }
+    });
+    this.innerHTML = 'Follow';
+    $(this).on("click", followEvent);
 }
 
 function appendChannels() {
@@ -46,8 +62,6 @@ function appendChannels() {
             channels.forEach(element => {
                 list.append(renderChannel(element));
             });
-            //Setup event listeners
-            $(list).find(".follow-button").on("click", user.uid ? followEvent : followNotLogged);
         })
 }
 
@@ -56,7 +70,6 @@ function getChannelData() {
         .fail(function (data) {
             console.log('Error fetching channels');
             console.log('Response: ' + data.responseText);
-            //Default item
         });
     return json;
 }
@@ -73,7 +86,10 @@ function renderChannel(data) {
     username.innerHTML = data.channel_name;
     //If the user_id is returned with the data, assume that they've already followed them
     if (data.isFollowed) {
-        disableFollowButton(button);
+        $(button).on("click", unfollowEvent);
+        button.innerHTML = 'Followed';
+    } else {
+        $(button).on("click", followEvent)
     }
     console.log(data);
     return clone;
@@ -81,9 +97,4 @@ function renderChannel(data) {
 
 function clearList() {
     list.innerHTML = "";
-}
-
-function disableFollowButton(button) {
-    button.disabled = true;
-    button.innerHTML = 'Followed';
 }

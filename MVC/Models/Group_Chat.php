@@ -14,6 +14,7 @@ class Group_Chat extends Model implements iSQLQueryable
     public $name;
     public $channel_id;
     public $role_id;
+    public $chat_type;
 
     public function getGroupChats($channel_id)
     {

@@ -71,6 +71,7 @@ html, body{
 
 #group-bar{
     width: 8em;
+    flex: 1;
     background: #484a4c;
 }
 
@@ -139,7 +140,7 @@ html, body{
 
 #chat-window{
     width: 100%;
-    height: 80%;
+    height: 100%;
     background: #829399;
 }
 
@@ -148,7 +149,7 @@ html, body{
     padding: 0;
     background: white;
     border-radius: 10px;
-    height: 90%;
+    height: 94%;
     overflow: auto;
     scrollbar-width: thin;
 }
@@ -194,10 +195,30 @@ html, body{
 
 /* Active Users */
 
-#users-bar > ul{
-    width: 5em;
+#users-bar{
+    background: #484a4c;
 }
 
+#users-bar > ul{
+    width: 5em;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.user{
+    padding: 20%;
+    width: 100%;
+}
+
+.user:hover{
+    background: #BDBDBD;
+}
+
+.active{
+    background: #b0f442;
+}
 
 /* Stream */
 
@@ -209,4 +230,34 @@ html, body{
 #stream{
     width: 65%;
     background: rgb(130, 147, 153);
+}
+
+/* Context Menu */
+
+#right-click-menu{
+    background: #FAFAFA;
+    border: 1px solid #BDBDBD;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 250px;
+    z-index: 999999;
+}
+
+#right-click-menu li {
+    border-bottom: 1px solid #E0E0E0;
+    margin: 0;
+    padding: 5px 35px;
+}
+
+#right-click-menu li:last-child {
+    border-bottom: none;
+}
+
+#right-click-menu li:hover {
+    background: #1E88E5;
+    color: #FAFAFA;
 }

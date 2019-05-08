@@ -5,11 +5,11 @@ export default Vue.component('chat', {
     props: {
         channel: Object, //Use this for Stream
         group: Object,
+        user: Object,
         inStream: Boolean,
     },
     data: function () {
         return {
-            user: {},
             messages: [],
         }
     },
@@ -24,16 +24,6 @@ export default Vue.component('chat', {
         message_history(messages) {
             this.messages = messages;
         },
-    },
-    created() {
-        axios.get('/User/GetCurrentUser/' + this.channel_id)
-            .then(response => {
-                this.user = response.data;
-                this.$socket.emit('register_user', this.user);
-            })
-            .catch(response => {
-                console.log('Invalid Request: ' + response.data.error);
-            })
     },
     watch: {
         group: function (updated, old) {

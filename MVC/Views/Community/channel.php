@@ -20,6 +20,7 @@ if (!isset($_SESSION['uid']))
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
     <script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
     <script src="/Dependencies/vue-socketio.js"></script>
+    <script src="/Dependencies/vue-context.js"></script>
     <script src="/Dependencies/Vue.js"></script>
     <div id="root">
         <?php require "../MVC/Views/Shared/navigationbar.php" ?>
