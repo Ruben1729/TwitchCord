@@ -11,6 +11,29 @@
 					->Set(['user_id' => $_SESSION['uid'], 'user_id_1' => $_POST['userData'], 'status_id' => 1])
 					->Submit();
 		}
+		public function DeleteFriend(){
+			echo "this works beep boop";
+		}
+		public function POST_DeleteFriend(){
+			verifyLoggedIn();
+			echo $_POST['userData'];
+			$query = "DELETE FROM relation
+					WHERE (user_id = ? AND user_id_1 = ?) OR (user_id = ? AND user_id_1 = ?)";
+			$SQL = SQL::GetConnection();
+			$allUserData = $SQL->Query($query, [$_SESSION['uid'], $_POST['userData'], $_POST['userData'], $_SESSION['uid']]);
+		}
+		public function BlockFriend(){
+			echo "this works beep boop";
+		}
+		public function POST_BlockFriend(){
+			verifyLoggedIn();
+			echo $_POST['userData'];
+			$query = "UPDATE relation 
+					SET status_id = 3 
+					WHERE (user_id = ? AND user_id_1 = ?) OR (user_id = ? AND user_id_1 = ?)";
+			$SQL = SQL::GetConnection();
+			$allUserData = $SQL->Query($query, [$_SESSION['uid'], $_POST['userData']]);
+		}
 		public function AddFriend(){
 			echo "this works beep boop";
 		}
@@ -22,7 +45,6 @@
 					WHERE user_id = ? AND user_id_1 = ?";
 			$SQL = SQL::GetConnection();
 			$allUserData = $SQL->Query($query, [$_SESSION['uid'], $_POST['userData']]);
-			header("Location: /Main/index");
 		}
 		public function SearchUser(){
 			verifyLoggedIn();

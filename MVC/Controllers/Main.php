@@ -13,8 +13,9 @@ class Main extends Controller
 
         foreach($relation_list as $person) {
           if($person['status_id'] == 1){
-            array_push($request_list, $person);
-          } else {
+            if(!empty($this->model('RelationModel')->getRelation($person['user_id'], $_SESSION['uid'])))
+              array_push($request_list, $person);
+          } else if ($person['status_id'] == 2){
             array_push($friend_list, $person);
           }
         }

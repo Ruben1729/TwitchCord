@@ -25,6 +25,14 @@ class RelationModel extends Model implements iSQLQueryable
         return $result;
   }
 
+  public function getRelation($user1, $user){
+    $SQL = SQL::GetConnection();
+    $result = $SQL->Query(
+        "SELECT * FROM Relation
+         WHERE user_id = ? OR user_id_1 = ?", [$user, $user1]);
+    return $result;
+  }
+
   public function getAllRelations($id) {
     $SQL = SQL::GetConnection();
     $result = $SQL->Query(

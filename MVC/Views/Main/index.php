@@ -117,11 +117,27 @@
         }
 
         function deleteFriend(){
+            let userData = event.target.classList[1];
 
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: "/Relation/DeleteFriend/",
+                data: { userData: userData }
+            });
+            document.location.reload(true)
         }
 
         function blockFriend(){
+            let userData = event.target.classList[1];
 
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: "/Relation/BlockFriend/",
+                data: { userData: userData }
+            });
+            document.location.reload(true)
         }
 
         function acceptRequest(event){
@@ -133,6 +149,7 @@
                 url: "/Relation/AddFriend/",
                 data: { userData: userData }
             });
+            document.location.reload(true)
         }
     </script>
     <style>
