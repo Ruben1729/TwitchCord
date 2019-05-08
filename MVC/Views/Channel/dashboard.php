@@ -3,10 +3,12 @@ $auth = $data['auth'];
 $description;
 $path;
 $followers;
+$groups;
 if (count($data) > 1) {
 	$description = $data['description'];
 	$path = $data['path'];
 	$followers = $data['followers'];
+	$groups = $data['groups'];
 }
 ?>
 <!DOCTYPE html>
@@ -60,8 +62,30 @@ if (count($data) > 1) {
 				</div>
 				<button type="submit" name="save-btn">Save Changes</button>
 			</div>
-
+			<hr>
 		</form>
+		<?php if ($auth == true) { ?>
+			<form class="right-container" action="add_group" method="post">
+				<div class="input-container">
+					<h1>Group Chats</h1>
+					<ul class="list group">
+						<?php foreach ($groups as $key => $value) : ?>
+							<div class="follower">
+								<p><?= $value->name . ' ' . $value->chat_type ?></p>
+							</div>
+						<?php endforeach; ?>
+					</ul>
+					<div class="group-input">
+						<input type="text" name="group-name" value="" placeholder="group-chat name" required>
+						<fieldset>
+							<label for="group-text"><input type="radio" id="group-text" name="type" value="text" checked="checked">Text</label>
+							<label for="group-voice"><input type="radio" id="group-voice" name="type" value="voice">Voice</label>
+						</fieldset>
+					</div>
+					<button type="submit" name="group-add">Add Group</button>
+				</div>
+			</form>
+		<?php } ?>
 	</main>
 	<script>
 		var elem = document.getElementById("pic-id");

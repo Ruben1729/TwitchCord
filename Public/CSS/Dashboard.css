@@ -32,6 +32,36 @@ html, body{
 	border: solid #29302e 1px;
 }
 
+.group{
+	height: auto;
+	width: 100%;
+	min-height: 25px;
+	margin-bottom: 3%;
+	padding: 0;
+}
+
+.group-input{
+	display: flex;
+	flex-direction: row;
+}
+
+.group-input > input[type=radio]{
+	width: 3em;
+}
+
+.group-input > fieldset{
+	margin: 0;
+	padding: 0 1em;
+	border: 0;
+	display: flex;
+	flex-direction: row;
+}
+
+#group-voice, #group-text{
+	width: 3em;
+	height: 0em;
+}
+
 .list:hover{
 	border-style: none;
 	border: solid #29302e 1px;
