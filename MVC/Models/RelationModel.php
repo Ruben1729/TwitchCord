@@ -25,20 +25,28 @@ class RelationModel extends Model implements iSQLQueryable
         return $result;
   }
 
+  public function getAllRelations($id) {
+    $SQL = SQL::GetConnection();
+    $result = $SQL->Query(
+        "SELECT * FROM Relation
+         WHERE user_id = ? OR user_id_1 = ?", [$id, $id]);
+    return $result;
+  }
+
 	public function getAllFriends($id){
 
 		$SQL = SQL::GetConnection();
         $result = $SQL->Query(
-            "SELECT user_id, username, path
+            "SELECT user_id, username, path, status_id
             FROM 
             (
-                          SELECT user_id
+                          SELECT user_id, status_id
                           FROM relation
                           WHERE user_id_1 = ?
             
                           UNION 
             
-                          SELECT user_id_1
+                          SELECT user_id_1, status_id
                           FROM relation
                           WHERE user_id = ?
             )a

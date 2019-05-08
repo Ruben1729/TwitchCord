@@ -5,10 +5,24 @@
 			echo "this works beep boop";
 		}
 		public function POST_Add(){
+			verifyLoggedIn();
 			echo $_POST['userData'];
 			echo $this->model('RelationModel')
 					->Set(['user_id' => $_SESSION['uid'], 'user_id_1' => $_POST['userData'], 'status_id' => 1])
 					->Submit();
+		}
+		public function AddFriend(){
+			echo "this works beep boop";
+		}
+		public function POST_AddFriend(){
+			verifyLoggedIn();
+			echo $_POST['userData'];
+			$query = "UPDATE relation 
+					SET status_id = 2 
+					WHERE user_id = ? AND user_id_1 = ?";
+			$SQL = SQL::GetConnection();
+			$allUserData = $SQL->Query($query, [$_SESSION['uid'], $_POST['userData']]);
+			header("Location: /Main/index");
 		}
 		public function SearchUser(){
 			verifyLoggedIn();

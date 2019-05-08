@@ -28,6 +28,16 @@ class UserModel extends Model implements iSQLQueryable
 		return $newUser;
 	}
 
+	public function getUserUID($uid) {
+		$SQL = SQL::GetConnection();
+		$newUser = $SQL
+			->Search()
+			->Model('UserModel')
+			->Where("user_id", $uid)
+			->GetAsObj();
+		return $newUser;
+	}
+
 	public function getUser($username)
 	{
 
