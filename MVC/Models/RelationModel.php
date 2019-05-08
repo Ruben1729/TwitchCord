@@ -14,6 +14,17 @@ class RelationModel extends Model implements iSQLQueryable
 	public $user_id_1;
 	public $status_id;
 
+  public function checkIfFriends($uid, $fid){
+
+    $SQL = SQL::GetConnection();
+        $result = $SQL->Query(
+            "SELECT *
+            FROM Relation
+            WHERE (user_id_1 = ? AND user_id = ?)
+            OR (user_id = ? AND user_id_1 = ?)", [$uid, $fid, $uid, $fid]);
+        return $result;
+  }
+
 	public function getAllFriends($id){
 
 		$SQL = SQL::GetConnection();
@@ -33,9 +44,7 @@ class RelationModel extends Model implements iSQLQueryable
             )a
             INNER JOIN user USING (user_id)
             LEFT JOIN profile USING (user_id)
-            LEFT JOIN picture USING (picture_id)",
-            [$id, $id]
-        );
+            LEFT JOIN picture USING (picture_id)", [$id, $id]);
         return $result;
 	}
 }

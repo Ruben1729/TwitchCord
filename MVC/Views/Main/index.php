@@ -39,9 +39,9 @@
     <div class="jumbotron">
         <h1 class="title    ">Friend List</h1>
         <div id="friend-list"></div>
-        <form action="/Community/ChannelList" method="post">
+        <form action="/Relation/SearchUser" method="post">
             <div class="search-box">
-                <input type="text" class="user-name" placeholder="Search for user...">
+                <input type="text" name="user_name" class="user-name" placeholder="Search for user...">
                 <button class="search-user" type="submit">GO</button>
             </div>
         </form>
@@ -51,16 +51,36 @@
         let friendList = <?php echo empty($data['friend_list']) ? '""' : json_encode($data['friend_list']); ?>;
         if(friendList !== ""){
             let parent = document.getElementById('friend-list');
+
             for(let i = 0; i < friendList.length; i ++){
                 let friend = document.createElement("div");
                 let img = document.createElement("img");
+                let userContainer = document.createElement("div");
+                userContainer.classList.add("user-item");
+
                 img.src = friendList[i].path === null ? "/Pictures/default.png" : friendList[i].path;
                 friend.innerText = friendList[i].username;
-                parent.appendChild(img);
-                parent.appendChild(friend);
+                userContainer.appendChild(img);
+                userContainer.appendChild(friend);
+                parent.appendChild(userContainer);
             }
         }
     </script>
+    <style>
+        .user-item{
+            display: inline-block;
+            margin: 25px;
+            width: 100px;
+        }
+        .user-item > div{
+            text-align: center;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+            margin: auto;
+        }
+    </style>
 </body>
 
 </html>
