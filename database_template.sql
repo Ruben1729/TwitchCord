@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2019 at 01:19 AM
+-- Generation Time: May 08, 2019 at 01:35 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.4
 
@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
-CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `test`;
 
 -- --------------------------------------------------------
@@ -33,8 +33,7 @@ USE `test`;
 CREATE TABLE `banned` (
   `user_id` int(5) NOT NULL,
   `channel_id` int(5) NOT NULL,
-  `banned_on` date NOT NULL,
-  `ban_binary` int(5) NOT NULL
+  `banned_on` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -62,8 +61,8 @@ CREATE TABLE `follower` (
   `user_id` int(5) NOT NULL,
   `channel_id` int(6) NOT NULL,
   `followed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `notification` int(1) NOT NULL,
-  `role_id` int(10) NOT NULL DEFAULT '1'
+  `notification` tinyint(1) NOT NULL DEFAULT '0',
+  `permission_binary` int(4) DEFAULT '3'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -76,7 +75,6 @@ CREATE TABLE `group_chat` (
   `group_chat_id` int(6) NOT NULL,
   `name` varchar(50) NOT NULL,
   `channel_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
   `chat_type` enum('TEXT','VOICE') NOT NULL DEFAULT 'TEXT'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -88,11 +86,11 @@ CREATE TABLE `group_chat` (
 
 CREATE TABLE `group_message` (
   `message_id` int(10) NOT NULL,
-  `text` text NOT NULL,
+  `text` text CHARACTER SET latin1 NOT NULL,
   `group_chat_id` int(6) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -131,19 +129,6 @@ CREATE TABLE `relation` (
   `user_id_1` int(11) NOT NULL,
   `status_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
-CREATE TABLE `roles` (
-  `role_id` int(10) NOT NULL,
-  `permission_binary` int(10) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `channel_id` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -192,8 +177,7 @@ ALTER TABLE `channel`
 --
 ALTER TABLE `follower`
   ADD PRIMARY KEY (`user_id`,`channel_id`),
-  ADD KEY `follower_channel_id_FK` (`channel_id`),
-  ADD KEY `follower_role_id_FK` (`role_id`);
+  ADD KEY `follower_channel_id_FK` (`channel_id`);
 
 --
 -- Indexes for table `group_chat`
@@ -226,14 +210,7 @@ ALTER TABLE `profile`
 --
 ALTER TABLE `relation`
   ADD PRIMARY KEY (`user_id`,`user_id_1`),
-  ADD UNIQUE KEY `status_id` (`status_id`),
   ADD KEY `Relation_user_id_1_FK` (`user_id_1`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`role_id`);
 
 --
 -- Indexes for table `status`
@@ -301,8 +278,7 @@ ALTER TABLE `user`
 -- Constraints for table `follower`
 --
 ALTER TABLE `follower`
-  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channel` (`channel_id`),
-  ADD CONSTRAINT `follower_role_id_FK` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
+  ADD CONSTRAINT `follower_channel_id_FK` FOREIGN KEY (`channel_id`) REFERENCES `channel` (`channel_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `follower_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
