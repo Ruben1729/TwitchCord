@@ -30,7 +30,7 @@ class InsertBuilder extends Builder
         //prepare and Bind values
         $stmt = $this->pdo->prepare($query);
         $this->BindValues(array_values($fields), $stmt);
-        $stmt->execute();
+        $status = $stmt->execute();
         $last_id = $this->pdo->lastInsertId();
         //Return the last inserted ID
         return $last_id;

@@ -101,21 +101,6 @@ class Channel extends Controller
 		$this->view('Channel/link');
 	}
 
-	public function POST_add_group()
-	{
-		$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
-
-		//Submit the new group_chat to the DB
-		$group_name = $_POST['group-name'];
-		$type = $_POST['type'];
-		$this->model('Group_Chat')
-			->Set(['name' => $group_name, 'chat_type' => $type, 'channel_id' => $userChannel->channel_id])
-			->Submit();
-
-		//Redirect to channel dashboard
-		header('location: /Channel/Dashboard');
-	}
-
 	public function Create()
 	{
 		verifyLoggedIn();
@@ -152,5 +137,52 @@ class Channel extends Controller
 			$newChannel->Submit();
 		}
 		header('Location: /Main/Index');
+	}
+
+	public function POST_add_group()
+	{
+		$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
+
+		//Submit the new group_chat to the DB
+		$group_name = $_POST['group-name'];
+		$type = $_POST['type'];
+		$this->model('Group_Chat')
+			->Set(['name' => $group_name, 'chat_type' => $type, 'channel_id' => $userChannel->channel_id])
+			->Submit();
+
+		//Redirect to channel dashboard
+		header('location: /Channel/Dashboard');
+	}
+
+	public function POST_Moderation()
+	{
+		$info = json_decode($_POST['type']);
+		$SQL = SQL::GetConnection();
+		switch ($info->type) {
+			case 1: //Kick
+				$SQL->Query(
+					'DELETE FROM follower WHERE user_id = ? AND channel_id = ?',
+					[$info->user_id, $info->channel_id]
+				);
+				break;
+			case 2: //Ban
+				$SQL->Query(
+					"DELETE FROM follower WHERE user_id = ? AND channel_id = ?",
+					[$info->user_id, $info->channel_id]
+				);
+				$SQL->Query(
+					"INSERT INTO banned (user_id, channel_id) VALUES (?, ?)",
+					[$info->user_id, $info->channel_id]
+				);
+				break;
+			case 3: //Mod
+				$SQL->Query(
+					'UPDATE follower SET permission_binary = ? WHERE user_id = ? AND channel_id = ?',
+					[($info->permission_binary | 1 << 2), $info->user_id, $info->channel_id]
+				);
+				break;
+		}
+
+		header('location: /Channel/Dashboard');
 	}
 }

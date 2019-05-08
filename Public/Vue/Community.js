@@ -29,7 +29,10 @@ var app = new Vue({
         },
         channel_id() {
             return this.current_channel ? this.current_channel.channel_id : null;
-        }
+        },
+        permission_binary() {
+            return this.current_channel ? this.current_channel.permission_binary : null;
+        },
     },
     methods: {
         handleChannelSwitch(channel) {
@@ -61,7 +64,7 @@ var app = new Vue({
         },
     },
     created() {
-        axios.get('/User/GetCurrentUser/' + this.channel_id)
+        axios.get('/User/GetCurrentUser/')
             .then(response => {
                 this.user = response.data;
                 this.$socket.emit('register_user', this.user);
@@ -107,7 +110,8 @@ var app = new Vue({
 
                 <users 
                     :channel_name="channel_name"
-                    :channel_id="channel_id">
+                    :channel_id="channel_id"
+                    :permission_binary="permission_binary">
                 </users>
                 
             </div>

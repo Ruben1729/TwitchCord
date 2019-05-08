@@ -4,6 +4,10 @@ $description;
 $path;
 $followers;
 $groups;
+
+//Permission Binary Stuff
+$MOD_FLAG = 1 << 2;
+
 if (count($data) > 1) {
 	$description = $data['description'];
 	$path = $data['path'];
@@ -28,15 +32,17 @@ if (count($data) > 1) {
 	<?php require "../MVC/Views/Shared/verticalNavigation.php" ?>
 	<main <?php if (array_key_exists('reload', $data)) echo "class=\"mainError\"" ?> id="main-form">
 		<?php if ($auth == true) { ?>
-			<form class="left-container">
+			<form class="left-container" action="Moderation" method="post">
 				<h1>Follower list</h1>
 				<ul class="list">
 					<?php foreach ($followers as $key => $value) : ?>
 						<div class="follower">
 							<p><?= $value->username ?></p>
-							<button>Kick</button>
-							<button>Ban</button>
-							<button>Mod</button>
+							<button type="submit" name="type" value="{&quot;type&quot;:1,&quot;user_id&quot;:<?= $value->user_id ?>,&quot;channel_id&quot;:<?= $value->channel_id ?>}">Kick</button>
+							<button type="submit" name="type" value="{&quot;type&quot;:2,&quot;user_id&quot;:<?= $value->user_id ?>,&quot;channel_id&quot;:<?= $value->channel_id ?>}">Ban</button>
+							<?php if (($value->permission_binary & $MOD_FLAG) == 0) { ?>
+								<button type="submit" name="type" value="{&quot;type&quot;:3,&quot;user_id&quot;:<?= $value->user_id ?>,&quot;channel_id&quot;:<?= $value->channel_id ?>,&quot;permission_binary&quot;:<?= $value->permission_binary ?>}">Mod</button>
+							<?php } ?>
 						</div>
 					<?php endforeach; ?>
 				</ul>
@@ -61,8 +67,8 @@ if (count($data) > 1) {
 					<textarea class="paragraph-container" type="text" name="desc"><?php if (isset($description)) echo "$description"; ?></textarea>
 				</div>
 				<button type="submit" name="save-btn">Save Changes</button>
+				<hr>
 			</div>
-			<hr>
 		</form>
 		<?php if ($auth == true) { ?>
 			<form class="right-container" action="add_group" method="post">

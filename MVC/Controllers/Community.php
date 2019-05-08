@@ -25,13 +25,13 @@ class Community extends Controller
         $channels = $SQL
             ->Search()
             ->Model('follower')
-            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path'])
+            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'permission_binary'])
             ->JoinUsing('INNER JOIN', 'channel', 'channel_id')
             ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
             ->Where('user_id', $_SESSION[uid])
             ->GetAll(PDO::FETCH_OBJ);
 
-        echo json_encode($channels);
+        $this->send($channels);
     }
 
     public function GetGroupChats($channel_id)
@@ -62,11 +62,13 @@ class Community extends Controller
 
     public function POST_Follow()
     {
-        $follower_data = $_POST['follower_data'];
+        $follower_data = json_decode($_POST['follower_data']);
         //Set fields from JSON data and submit current obj to database
-        $this->model('Follower')
-            ->Set(json_decode($follower_data, true))
-            ->Submit();
+        $SQL = SQL::GetConnection();
+        $SQL->Query(
+            'INSERT INTO follower (user_id, channel_id) VALUES (?, ?)',
+            [$follower_data->user_id, $follower_data->channel_id]
+        );
     }
 
     public function POST_Unfollow()
@@ -91,12 +93,12 @@ class Community extends Controller
                                                                                             END)
                                                                                     FROM follower a
                                                                                     WHERE user_id = ?) as \"isFollowed\"
-                FROM channel b
-           LEFT JOIN picture USING (picture_id)
-           LEFT JOIN banned USING (channel_id)
-               WHERE channel_name LIKE ?
-                 AND b.owner_id != ?
-                 AND banned_on IS NULL";
+                    FROM channel b
+               LEFT JOIN picture USING (picture_id)
+               LEFT JOIN banned USING (channel_id)
+                   WHERE channel_name LIKE ?
+                     AND b.owner_id != ?
+                     AND banned_on IS NULL";
         $PDO = $SQL->PDO();
         $stmt = $PDO->prepare($query);
         $stmt->execute([$user_id, "%$channel_name%", $user_id]);

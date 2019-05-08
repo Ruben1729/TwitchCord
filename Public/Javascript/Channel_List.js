@@ -21,10 +21,7 @@ function followEvent() {
     let channel = channels[index];
     let followerData = {
         'user_id': user.uid,
-        'channel_id': channel.channel_id,
-        'followed_on': new Date().toISOString().slice(0, 19).replace('T', ' '),
-        'notification': 1,
-        'role_id': 1,
+        'channel_id': channel.channel_id
     };
     $.ajax({
         type: "POST",
@@ -32,8 +29,7 @@ function followEvent() {
         url: "/Community/Follow",
         data: { follower_data: JSON.stringify(followerData) }
     });
-    this.innerHTML = 'Followed';
-    $(this).on("click", unfollowEvent);
+    setFollowType(this, unfollowEvent, 'Unfollow');
 }
 
 function unfollowEvent() {
@@ -50,8 +46,13 @@ function unfollowEvent() {
         url: "/Community/Unfollow",
         data: { info: JSON.stringify(info) }
     });
-    this.innerHTML = 'Follow';
-    $(this).on("click", followEvent);
+    setFollowType(this, followEvent, 'Follow');
+}
+
+function setFollowType(element, event, text) {
+    $(element).off("click");
+    element.innerHTML = text;
+    $(element).on("click", event);
 }
 
 function appendChannels() {

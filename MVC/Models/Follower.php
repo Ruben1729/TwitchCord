@@ -14,9 +14,9 @@ class Follower extends Model implements iSQLQueryable
 
     public $user_id;
     public $channel_id;
-    public $followed_on;
-    public $notification;
-    public $role_id;
+    public $followed_on = null;
+    public $notification = null;
+    public $permission_binary = null;
 
     public function getAllFollowers($channel_id)
     {
@@ -26,6 +26,7 @@ class Follower extends Model implements iSQLQueryable
             ->Model('Follower')
             ->Where('channel_id', $channel_id)
             ->JoinUsing('INNER JOIN', 'user', 'user_id')
+            ->Where('user_id', $_SESSION[uid], '!=')
             ->GetAll(PDO::FETCH_OBJ);
     }
 }

@@ -36,6 +36,7 @@ export default Vue.component('groupchat-bar', {
     template: `
     <div id="group-bar">
         <button 
+        v-show="channel_id"
         id="stream-button"
         @click="$emit('stream-state', true)">Stream</button>
 

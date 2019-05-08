@@ -16,13 +16,19 @@ export default Vue.component('channel-bar', {
         fetchChannels() {
             axios.get('/Community/GetUserChannels')
                 .then(response => {
-                    this.channels = response.data.channels;
-                    this.$emit('channel-change', this.channels[0]);
-                })
-                .catch(response => {
-                    console.log('Invalid Request: ' + response.data.error);
+                    this.channels = response.data;
+                }).catch(() => {
+                    console.log('Error in request');
                 })
         },
+    },
+    watch: {
+        channels(val) {
+            //If there are any channels, switch to the first one
+            if (val) {
+                this.$emit('channel-change', this.channels[0]);
+            }
+        }
     },
     created() {
         this.fetchChannels();
