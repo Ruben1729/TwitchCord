@@ -4,10 +4,30 @@ class Main extends Controller
 {
     public function Index(){
       $data['friend_list'] = null;
+      $relation_list = null;
 
-      if(ISSET($_SESSION['uid']))
-        $data['friend_list'] = $this->model('RelationModel')->getAllFriends($_SESSION['uid']);
+      if(ISSET($_SESSION['uid'])){
+        $relation_list = $this->model('RelationModel')->getAllFriends($_SESSION['uid']);
+        $friend_list = [];
+        $request_list = [];
 
+        foreach($relation_list as $person) {
+          if($person['status_id'] == 1){
+            array_push($request_list, $person);
+          } else {
+            array_push($friend_list, $person);
+          }
+        }
+      }
+      $data['friend_list'] = null;
+      $data['request_list'] = null;
+      if(!empty($friend_list)){
+        $data['friend_list'] = $friend_list;
+      }
+      if(!empty($request_list)){
+        $data['request_list'] = $request_list;
+      }
+    
       $this->view('Main/index', $data);
     }
 

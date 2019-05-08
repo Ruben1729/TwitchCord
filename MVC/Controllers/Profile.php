@@ -1,7 +1,7 @@
 <?php
 	
 	class Profile extends Controller{
-		
+
 		public function Index(){
 			$this->view('Profile/index');
 		}
@@ -15,7 +15,6 @@
 				$data['path'] = NULL;
 				$data['bio'] = "";
 			}else{
-
 				$id = $userProfile->picture_id;
 
 				if($id !== null)
@@ -24,6 +23,9 @@
 					$data['path'] = NULL;
 
 				$data['bio'] = $userProfile->bio;
+
+				$data['friendList'] = $this->model('RelationModel')->getAllFriends($_SESSION['uid']);
+				print_r($data['friendList']);
 			}
 
 			$this->view('Profile/Settings', $data);

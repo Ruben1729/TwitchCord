@@ -62,8 +62,8 @@ class User extends Controller
 			else {
 				$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
 				$this->model('UserModel')
-					->Set(['username' => $username, 'email' => $email, 'password_hash' => $hash_pwd])
-					->Submit();
+					  ->Set(['username' => $username, 'email' => $email, 'password_hash' => $hash_pwd])
+					  ->Submit();
 				header('Location: Login');
 			}
 		}
