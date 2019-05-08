@@ -18,7 +18,6 @@
 		<link rel="stylesheet" href="/CSS/Background-Styles.css">
 		<link rel="stylesheet" href="/CSS/Form.css">
 		<link rel="stylesheet" href="/CSS/Profile.css">
-		<link rel="stylesheet" href="/CSS/Dashboard.css">
 
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
@@ -29,10 +28,6 @@
 	<body>
 		<?php require "../MVC/Views/Shared/verticalNavigation.php" ?>
 		<main id="main-form">
-			<form class="left-container">
-				<h1>Friend List</h1>
-				<textarea class="list" readonly disabled></textarea>
-			</form>
 			<form class="right-container" enctype="multipart/form-data" action="settings" method="post">
 				<h1>Profile Settings</h1>
 

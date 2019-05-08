@@ -25,7 +25,6 @@
 				$data['bio'] = $userProfile->bio;
 
 				$data['friendList'] = $this->model('RelationModel')->getAllFriends($_SESSION['uid']);
-				print_r($data['friendList']);
 			}
 
 			$this->view('Profile/Settings', $data);
