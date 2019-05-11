@@ -28,7 +28,8 @@ class UserModel extends Model implements iSQLQueryable
 		return $newUser;
 	}
 
-	public function getUserUID($uid) {
+	public function getUserUID($uid)
+	{
 		$SQL = SQL::GetConnection();
 		$newUser = $SQL
 			->Search()
@@ -40,13 +41,14 @@ class UserModel extends Model implements iSQLQueryable
 
 	public function getUser($username)
 	{
-
 		$SQL = SQL::GetConnection();
 		$newUser = $SQL
 			->Search()
 			->Model('UserModel')
 			->Where("username", $username)
-			->GetAsObj();
+			->JoinUsing('LEFT JOIN', 'profile', 'user_id')
+			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+			->Get();
 		return $newUser;
 	}
 }

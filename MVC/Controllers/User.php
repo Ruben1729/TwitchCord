@@ -62,8 +62,8 @@ class User extends Controller
 			else {
 				$hash_pwd = password_hash($password, PASSWORD_BCRYPT);
 				$this->model('UserModel')
-					  ->Set(['username' => $username, 'email' => $email, 'password_hash' => $hash_pwd])
-					  ->Submit();
+					->Set(['username' => $username, 'email' => $email, 'password_hash' => $hash_pwd])
+					->Submit();
 				header('Location: Login');
 			}
 		}
@@ -109,6 +109,7 @@ class User extends Controller
 
 					$_SESSION[uid] = $loginUser->user_id;
 					$_SESSION[username] = $loginUser->username;
+					$_SESSION["picture_path"] = $loginUser->path;
 
 					header('Location: /Main/Index');
 				} else {
