@@ -87,7 +87,7 @@ io.on('connection', socket => {
             let queryString = `
             INSERT INTO group_message 
             (text, group_chat_id, created_on, user_id)
-            VALUES (?, ?, ?, ?)`
+            VALUES (?, ?, ?, ?)`;
             sql.query(queryString,
                 [msg.text, msg.group_chat_id, msg.timestamp, msg.user_id],
                 (error, results, fields) => {

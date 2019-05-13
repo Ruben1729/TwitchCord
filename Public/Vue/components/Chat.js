@@ -58,6 +58,7 @@ export default Vue.component('chat', {
             data.user_id = this.user.user_id;
             data.group_chat_id = this.group.group_chat_id;
             data.group_chat = this.group_identifier(this.group);
+            data.path = this.user.path;
             //Send message as JSON
             console.log('sending type: ' + emitType);
             this.$socket.emit(emitType, data);
