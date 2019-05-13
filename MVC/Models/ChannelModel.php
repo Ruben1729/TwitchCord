@@ -40,4 +40,25 @@ class ChannelModel extends Model implements iSQLQueryable
 
 		return $newChannel;
 	}
+
+	//Optional $user_id field, -1 assumes no user
+	public function getChannels($channel_id, $user_id = -1){
+		$SQL = SQL::GetConnection();
+        $query = "SELECT channel_id, channel_name, description, created_on, path, (SELECT (CASE
+                                                                                                WHEN a.channel_id = b.channel_id THEN 1
+                                                                                                ELSE 0
+                                                                                            END)
+                                                                                    FROM follower a
+                                                                                    WHERE user_id = :user_id) as \"isFollowed\"
+                    FROM channel b
+               LEFT JOIN picture USING (picture_id)
+               LEFT JOIN banned USING (channel_id)
+                   WHERE channel_name LIKE :channel_name
+                     AND b.owner_id != :user_id
+                     AND banned_on IS NULL";
+        $PDO = $SQL->PDO();
+        $stmt = $PDO->prepare($query);
+        $stmt->execute(['channel_name' => $channel_name, 'user_id' => $user_id]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+	}
 }

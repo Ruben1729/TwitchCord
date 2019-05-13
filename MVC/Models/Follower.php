@@ -29,4 +29,16 @@ class Follower extends Model implements iSQLQueryable
             ->Where('user_id', $_SESSION[uid], '!=')
             ->GetAll(PDO::FETCH_OBJ);
     }
+
+    public function getAllChannels($id){
+        $SQL = SQL::GetConnection();
+        return $SQL
+            ->Search()
+            ->Model('follower')
+            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'permission_binary'])
+            ->JoinUsing('INNER JOIN', 'channel', 'channel_id')
+            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+            ->Where('user_id', $id)
+            ->GetAll(PDO::FETCH_OBJ);
+    }
 }

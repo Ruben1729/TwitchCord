@@ -21,15 +21,7 @@ class Community extends Controller
         }
 
         //Get the channels for the current user
-        $SQL = SQL::GetConnection();
-        $channels = $SQL
-            ->Search()
-            ->Model('follower')
-            ->Fields(['channel_id', 'channel_name', 'description', 'created_on', 'path', 'permission_binary'])
-            ->JoinUsing('INNER JOIN', 'channel', 'channel_id')
-            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-            ->Where('user_id', $_SESSION[uid])
-            ->GetAll(PDO::FETCH_OBJ);
+        $channels = $this->model('Follower')->GetAllChannels($_SESSION[uid]);
 
         $this->send($channels);
     }
@@ -46,17 +38,7 @@ class Community extends Controller
 
     public function GetUsersFromChannel($channel_id)
     {
-        $SQL = SQL::GetConnection();
-        $users = $SQL
-            ->Search()
-            ->Fields(['user_id', 'username', 'path', '0 as "isActive"'])
-            ->Model('UserModel')
-            ->JoinUsing('INNER JOIN', 'follower', 'user_id')
-            ->JoinUsing('LEFT JOIN', 'profile', 'user_id')
-            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-            ->Where('channel_id', $channel_id)
-            ->GetAll();
-
+        $this->model('UserModel')->getChannels($channel_id);
         $this->send($users);
     }
 
@@ -86,23 +68,7 @@ class Community extends Controller
         $channel_name = $_GET['channel_name'];
         $user_id = isset($_SESSION[uid]) ? $_SESSION[uid] : -1;
 
-        $SQL = SQL::GetConnection();
-        $query = "SELECT channel_id, channel_name, description, created_on, path, (SELECT (CASE
-                                                                                                WHEN a.channel_id = b.channel_id THEN 1
-                                                                                                ELSE 0
-                                                                                            END)
-                                                                                    FROM follower a
-                                                                                    WHERE user_id = ?) as \"isFollowed\"
-                    FROM channel b
-               LEFT JOIN picture USING (picture_id)
-               LEFT JOIN banned USING (channel_id)
-                   WHERE channel_name LIKE ?
-                     AND b.owner_id != ?
-                     AND banned_on IS NULL";
-        $PDO = $SQL->PDO();
-        $stmt = $PDO->prepare($query);
-        $stmt->execute([$user_id, "%$channel_name%", $user_id]);
-        $channels = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $this->model('ChannelModel')->getChannels($channel_name, $user_id);
         $this->send($channels);
     }
 
