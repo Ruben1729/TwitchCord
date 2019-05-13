@@ -67,11 +67,10 @@ if (count($data) > 1) {
 					<textarea class="paragraph-container" type="text" name="desc"><?php if (isset($description)) echo "$description"; ?></textarea>
 				</div>
 				<button type="submit" name="save-btn">Save Changes</button>
-				<hr>
 			</div>
 		</form>
 		<?php if ($auth == true) { ?>
-			<form class="right-container" action="add_group" method="post">
+			<form class="group-container" action="add_group" method="post">
 				<div class="input-container">
 					<h1>Group Chats</h1>
 					<ul class="list group">

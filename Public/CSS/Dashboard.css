@@ -59,7 +59,7 @@ html, body{
 
 #group-voice, #group-text{
 	width: 3em;
-	height: 0em;
+	height: 1em;
 }
 
 .list:hover{
@@ -70,11 +70,18 @@ html, body{
 .right-container{
 	position: relative;
 	bottom: 320px;
-	left: 300px;
+	left: 50px;	
 }
 
 .left-container{
 	position: relative;
 	top: 288px;
-	right: 300px;
+	right: 450px;
+}
+
+.group-container{
+	position: absolute;
+    top: 288px;
+    right: -83px;
+    	width: 289px;
 }
