@@ -143,7 +143,7 @@ io.on('connection', socket => {
     });
 
     socket.on('live-chat_message', msg => {
-        socket.to(msg.group_chat).emit('message_recieved', msg);
+        socket.to(msg.group_chat).emit('live_chat_message', msg);
     });
 
     socket.on('join_group-chat', group => {

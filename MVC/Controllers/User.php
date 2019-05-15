@@ -127,7 +127,7 @@ class User extends Controller
 
 	public function GetCurrentUser()
 	{
-		$this->model('UserModel')->GetUserDetails($_SESSION[uid]);
+		$newUser = $this->model('UserModel')->GetUserDetails($_SESSION[uid]);
 		$this->send($newUser);
 	}
 }

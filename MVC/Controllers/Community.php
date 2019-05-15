@@ -38,7 +38,7 @@ class Community extends Controller
 
     public function GetUsersFromChannel($channel_id)
     {
-        $this->model('UserModel')->getChannels($channel_id);
+        $users = $this->model('UserModel')->getChannels($channel_id);
         $this->send($users);
     }
 
@@ -68,7 +68,7 @@ class Community extends Controller
         $channel_name = $_GET['channel_name'];
         $user_id = isset($_SESSION[uid]) ? $_SESSION[uid] : -1;
 
-        $this->model('ChannelModel')->getChannels($channel_name, $user_id);
+        $channels = $this->model('ChannelModel')->getChannels($channel_name, $user_id);
         $this->send($channels);
     }
 

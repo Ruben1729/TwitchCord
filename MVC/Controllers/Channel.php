@@ -75,7 +75,7 @@ class Channel extends Controller
 			$data['description'] = $_POST['desc'];
 		}
 
-		$this->view('Channel/Dashboard', $data);
+		header("location: /Channel/Dashboard");
 	}
 
 	public function Link()
