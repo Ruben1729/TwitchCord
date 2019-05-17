@@ -127,16 +127,7 @@ class User extends Controller
 
 	public function GetCurrentUser()
 	{
-		$SQL = SQL::GetConnection();
-		$newUser = $SQL
-			->Search()
-			->Fields(['user_id', 'username', 'bio', 'created_on', 'path'])
-			->Table('User')
-			->JoinUsing('LEFT JOIN', 'Profile', 'user_id')
-			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
-			->Where("user_id", $_SESSION[uid])
-			->GetAsObj();
-
+		$newUser = $this->model('UserModel')->GetUserDetails($_SESSION[uid]);
 		$this->send($newUser);
 	}
 }

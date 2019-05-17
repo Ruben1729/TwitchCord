@@ -51,4 +51,29 @@ class UserModel extends Model implements iSQLQueryable
 			->Get();
 		return $newUser;
 	}
+
+	public function getUserDetails($user_id){
+		$SQL = SQL::GetConnection();
+		return $SQL
+			->Search()
+			->Fields(['user_id', 'username', 'bio', 'created_on', 'path'])
+			->Table('User')
+			->JoinUsing('LEFT JOIN', 'Profile', 'user_id')
+			->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+			->Where("user_id", $user_id)
+			->GetAsObj();
+	}
+
+	public function getChannels($channel_id){
+		$SQL = SQL::GetConnection();
+        $users = $SQL
+            ->Search()
+            ->Fields(['user_id', 'username', 'path', '0 as "isActive"'])
+            ->Model('UserModel')
+            ->JoinUsing('INNER JOIN', 'follower', 'user_id')
+            ->JoinUsing('LEFT JOIN', 'profile', 'user_id')
+            ->JoinUsing('LEFT JOIN', 'picture', 'picture_id')
+            ->Where('channel_id', $channel_id)
+            ->GetAll();
+	}
 }

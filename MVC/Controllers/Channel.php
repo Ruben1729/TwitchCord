@@ -74,7 +74,6 @@ class Channel extends Controller
 			$data['path'] = $pictureModel->path;
 			$data['description'] = $_POST['desc'];
 		}
-
 		header("Location: /Channel/Dashboard");
 	}
 
