@@ -44,7 +44,7 @@
 					SET status_id = 2 
 					WHERE user_id = ? AND user_id_1 = ?";
 			$SQL = SQL::GetConnection();
-			$allUserData = $SQL->Query($query, [$_SESSION['uid'], $_POST['userData']]);
+			$allUserData = $SQL->Query($query, [$_POST['userData'], $_SESSION['uid']]);
 		}
 		public function SearchUser(){
 			verifyLoggedIn();

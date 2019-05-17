@@ -30,13 +30,14 @@
 		border-left: 4px solid #666;
 	}
 </style>
+
 <div class="container">
 	<div id="contextMenu" class="context-menu">
 		<ul>
-			<li>
+			<li id="setChanPic">
 				Set As Channel Picture
 			</li>
-			<li>
+			<li id="setProfPic">
 				Set As Profile Picture
 			</li>
 		</ul>
@@ -47,10 +48,50 @@
 	window.onclick = hideContextMenu;
 	var contextMenu = document.getElementById('contextMenu');
 
+	var id;
+
+	let chanPicOpt = document.getElementById("setChanPic");
+	let profPicOpt = document.getElementById("setProfPic");
+
+	chanPicOpt.addEventListener("click", setChannelPic);
+	profPicOpt.addEventListener("click", setProfPic);
+
+	function setChannelPic(){
+		console.log(id);
+		console.log("chanel listener");
+
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/Picture/ChangeChanPic/",
+            data: { picID: id }
+        });
+        document.location.reload(true);
+	}
+
+	function setProfPic(){
+		console.log(id);
+		console.log("profile listener");
+		
+		$.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/Picture/ChangeProfPic/",
+            data: { picID: id }
+        });
+        document.location.reload(true);
+	}
+
 	function showContextMenu(event){
+
+		event.preventDefault();
+
 		contextMenu.style.display = 'block';
 		contextMenu.style.left = event.clientX + 'px';
 		contextMenu.style.top = event.clientY + 'px';
+
+		id = event.target.id;
+
 		return false;
 	}
 

@@ -1,87 +1,87 @@
 html, body{
-	overflow: hidden;
+    overflow: hidden;
 }
 
 #main-form{
-	width: 70%;
-	margin-left: 360px;
+    width: 70%;
+    margin-left: 360px;
 }
 
 .follower{
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .follower > p {
-	padding: 0% 5%;
+    padding: 0% 5%;
 }
 
 .follower > button{
-	width: 3em;
+    width: 3em;
 }
 
 .list{
-	width: 350px;
-	height: 485px;
-	margin: auto;
+    width: 350px;
+    height: 485px;
+    margin: auto;
 
-	color: #dcdfe0;
-	background-color:#434c51;
+    color: #dcdfe0;
+    background-color:#434c51;
 
-	border-style: none;
-	border: solid #29302e 1px;
+    border-style: none;
+    border: solid #29302e 1px;
 }
 
 .group{
-	height: auto;
-	width: 100%;
-	min-height: 25px;
-	margin-bottom: 3%;
-	padding: 0;
+    height: auto;
+    width: 100%;
+    min-height: 25px;
+    margin-bottom: 3%;
+    padding: 0;
 }
 
 .group-input{
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .group-input > input[type=radio]{
-	width: 3em;
+    width: 3em;
 }
 
 .group-input > fieldset{
-	margin: 0;
-	padding: 0 1em;
-	border: 0;
-	display: flex;
-	flex-direction: row;
+    margin: 0;
+    padding: 0 1em;
+    border: 0;
+    display: flex;
+    flex-direction: row;
 }
 
 #group-voice, #group-text{
-	width: 3em;
-	height: 1em;
+    width: 3em;
+    height: 1em;
 }
 
 .list:hover{
-	border-style: none;
-	border: solid #29302e 1px;
+    border-style: none;
+    border: solid #29302e 1px;
 }
 
 .right-container{
-	position: relative;
-	bottom: 320px;
-	left: 50px;	
+    position: relative;
+    bottom: 320px;
+    left: 50px;    
 }
 
 .left-container{
-	position: relative;
-	top: 288px;
-	right: 450px;
+    position: relative;
+    top: 288px;
+    right: 450px;
 }
 
 .group-container{
-	position: absolute;
+    position: absolute;
     top: 288px;
     right: -83px;
-    	width: 289px;
+        width: 289px;
 }

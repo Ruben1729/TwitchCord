@@ -125,7 +125,7 @@
                 url: "/Relation/DeleteFriend/",
                 data: { userData: userData }
             });
-            document.location.reload(true)
+            document.location.reload(true);
         }
 
         function blockFriend(){
@@ -137,12 +137,11 @@
                 url: "/Relation/BlockFriend/",
                 data: { userData: userData }
             });
-            document.location.reload(true)
+            document.location.reload(true);
         }
 
         function acceptRequest(event){
             let userData = event.target.classList[1];
-
             $.ajax({
                 type: "POST",
                 dataType: "text",

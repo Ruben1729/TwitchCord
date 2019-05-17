@@ -32,6 +32,8 @@
 		</main>
 		<script>
 
+			
+			
 			window.addEventListener("load", function() {
 
 				let reload = <?php 
@@ -56,9 +58,9 @@
 					let img = document.createElement("img");
 
 					img.src = picArray[i].path;
-					img.addEventListener('click', showContextMenu, event);
+					img.id = picArray[i].picture_id;
+					img.addEventListener('contextmenu', showContextMenu, event);
 					parent.appendChild(img);
-					console.log(picArray[i]);
 				}
 
 			})
@@ -71,7 +73,9 @@
 				text-decoration: none;
 			}
 		</style>
+
 		<?php require "../MVC/Views/Shared/rightClickListener.php" ?>
+
 	</body>
 	<footer>
 	</footer>
