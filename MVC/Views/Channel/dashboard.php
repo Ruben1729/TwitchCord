@@ -38,6 +38,8 @@ if (count($data) > 1) {
 					<?php foreach ($followers as $key => $value) : ?>
 						<div class="follower">
 							<p><?= $value->username ?></p>
+							<?php 
+							?>
 							<button type="submit" name="type" value="{&quot;type&quot;:1,&quot;user_id&quot;:<?= $value->user_id ?>,&quot;channel_id&quot;:<?= $value->channel_id ?>}">Kick</button>
 							<button type="submit" name="type" value="{&quot;type&quot;:2,&quot;user_id&quot;:<?= $value->user_id ?>,&quot;channel_id&quot;:<?= $value->channel_id ?>}">Ban</button>
 							<?php if (($value->permission_binary & $MOD_FLAG) == 0) { ?>

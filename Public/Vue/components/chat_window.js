@@ -12,6 +12,7 @@ export default Vue.component('chat-window', {
     },
   },
   updated: function () {
+    //Scroll the chat box to the bottom of the UL tag
     this.$refs.ul_message.scrollTop = this.$refs.ul_message.scrollHeight;
   },
   data: function () {

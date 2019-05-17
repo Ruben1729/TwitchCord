@@ -59,8 +59,8 @@ class Channel extends Controller
 			if (strpos($result, 'ERROR') === 0) {
 				$data['picture_error'] = $result;
 			} else {
-
-				$newPic = $this->model('PictureModel')
+				//Submit the picture to the DB
+				$this->model('PictureModel')
 					->Set(['picture_id' => null, 'path' => $result, 'owner_id' => $_SESSION['uid']])
 					->Submit();
 
@@ -81,6 +81,7 @@ class Channel extends Controller
 	{
 		$displayname = getToken($_GET['code']);
 		if (!empty($displayname)) {
+			//The fourth bit is used as the FLAG for the owner permission
 			$owner_permission = 1 << 3;
 			$channel_id =
 				$this->model('ChannelModel')
@@ -104,6 +105,7 @@ class Channel extends Controller
 	{
 		verifyLoggedIn();
 
+		//If the channel isn't avaliable, the create page will contain a way for the user to create a channel
 		$userChannel = $this->model('ChannelModel')->getChannelById($_SESSION['uid']);
 		if (empty($userChannel))
 			$data['auth'] = false;

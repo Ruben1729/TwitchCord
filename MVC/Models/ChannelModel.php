@@ -59,6 +59,7 @@ class ChannelModel extends Model implements iSQLQueryable
                      AND banned_on IS NULL";
 		$PDO = $SQL->PDO();
 		$stmt = $PDO->prepare($query);
+		//I could be wrong, but named parameters for multiple fields don't work correctly
 		$stmt->execute([$user_id, "%$channel_name%", $user_id]);
 		return $stmt->fetchAll(PDO::FETCH_OBJ);
 	}
